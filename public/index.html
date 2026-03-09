@@ -699,24 +699,24 @@ function showProfileModal(data) {
     </div>`).join('');
   }
 
-  // Footer buttons
-  const foot = document.getElementById('profileFoot');
+  // Footer — show/hide the static trade button
+  const tradeBtn = document.getElementById('profileTradeBtn');
   if (isMe) {
-    foot.innerHTML = '<button class="btn btn-secondary" id="profileCloseBtn">Close</button>';
+    tradeBtn.style.display = 'none';
   } else {
-    foot.innerHTML = `<button class="btn btn-primary" id="profileTradeBtn">🤝 Send Trade Request</button>
-      <button class="btn btn-secondary" id="profileCloseBtn">Close</button>`;
-    document.getElementById('profileTradeBtn').addEventListener('click', () => {
-      closeProfileModal();
-      socket.emit('tradeRequest', profileViewId);
-    });
+    tradeBtn.style.display = '';
   }
-  document.getElementById('profileCloseBtn').addEventListener('click', closeProfileModal);
 
   document.getElementById('profileModal').style.display = 'flex';
 }
 
 document.getElementById('profileCloseX').addEventListener('click', closeProfileModal);
+document.getElementById('profileCloseBtn').addEventListener('click', closeProfileModal);
+document.getElementById('profileTradeBtn').addEventListener('click', () => {
+  const targetId = profileViewId;   // capture before closeProfileModal nulls it
+  closeProfileModal();
+  if (targetId && socket) socket.emit('tradeRequest', targetId);
+});
 document.getElementById('profileModal').addEventListener('click', e => {
   if (e.target === document.getElementById('profileModal')) closeProfileModal();
 });
