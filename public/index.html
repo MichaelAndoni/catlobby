@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐱 Cat Lobby</title>
+<script src="/socket.io/socket.io.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1025;
+    --panel: #231533;
+    --border: #3d2060;
+    --accent: #c77dff;
+    --accent2: #ff9de2;
+    --text: #f0e6ff;
+    --muted: #9b8ab0;
+    --chat-bg: #160e22;
+    --input-bg: #2a1945;
+    --grass1: #2d6a4f;
+    --grass2: #1b4332;
+    --path: #8b7355;
+    --path2: #6b5a42;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  #app {
+    display: flex;
+    gap: 0;
+    width: 1060px;
+    height: 600px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(199,125,255,0.25), 0 0 0 1px var(--border);
+  }
+
+  /* ── GAME CANVAS SIDE ── */
+  #gameWrap {
+    position: relative;
+    flex: 0 0 780px;
+    height: 600px;
+    background: #0d0818;
+    overflow: hidden;
+  }
+
+  canvas {
+    display: block;
+    image-rendering: pixelated;
+  }
+
+  #hud {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  #playerCount {
+    background: rgba(35,21,51,0.85);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    backdrop-filter: blur(8px);
+  }
+
+  #controls {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(35,21,51,0.75);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 11px;
+    color: var(--muted);
+    backdrop-filter: blur(6px);
+    pointer-events: none;
+  }
+
+  #emoteBar {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    background: rgba(35,21,51,0.85);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 6px 12px;
+    backdrop-filter: blur(8px);
+  }
+
+  .emote-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 8px;
+    transition: transform 0.1s, background 0.1s;
+    line-height: 1;
+  }
+
+  .emote-btn:hover {
+    transform: scale(1.35);
+    background: rgba(199,125,255,0.15);
+  }
+
+  /* ── NAME OVERLAY ── */
+  #nameOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10,5,20,0.88);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    backdrop-filter: blur(6px);
+    z-index: 10;
+  }
+
+  #nameOverlay h1 {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+
+  #nameOverlay p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  #nameInput {
+    background: var(--input-bg);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-size: 16px;
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    outline: none;
+    width: 220px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  #nameInput:focus { border-color: var(--accent); }
+
+  #joinBtn {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    border-radius: 12px;
+    padding: 10px 32px;
+    font-size: 15px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    color: #1a0030;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(199,125,255,0.35);
+  }
+
+  #joinBtn:hover { transform: scale(1.04); box-shadow: 0 6px 28px rgba(199,125,255,0.5); }
+  #joinBtn:active { transform: scale(0.97); }
+
+  /* ── CHAT SIDE ── */
+  #chatPanel {
+    flex: 1;
+    background: var(--panel);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+  }
+
+  #chatHeader {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #chatHeader .icon { font-size: 18px; }
+
+  #chatHeader h2 {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  #chatMessages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--chat-bg);
+    scroll-behavior: smooth;
+  }
+
+  #chatMessages::-webkit-scrollbar { width: 4px; }
+  #chatMessages::-webkit-scrollbar-track { background: transparent; }
+  #chatMessages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .chat-msg {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    animation: fadeUp 0.2s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .chat-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .chat-name {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+  }
+
+  .chat-time {
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  .chat-text {
+    font-size: 13px;
+    color: #d9cce8;
+    padding-left: 14px;
+    line-height: 1.45;
+    word-break: break-word;
+  }
+
+  .chat-system {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    padding: 2px 0;
+  }
+
+  #chatInputWrap {
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    background: var(--panel);
+  }
+
+  #chatInput {
+    flex: 1;
+    background: var(--input-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  #chatInput:focus { border-color: var(--accent); }
+  #chatInput::placeholder { color: var(--muted); }
+
+  #sendBtn {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    border-radius: 10px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s;
+    flex-shrink: 0;
+  }
+
+  #sendBtn:hover { transform: scale(1.08); }
+  #sendBtn:active { transform: scale(0.93); }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="gameWrap">
+    <canvas id="canvas" width="780" height="600"></canvas>
+
+    <div id="hud">
+      <div id="playerCount">🐱 1 cat online</div>
+    </div>
+
+    <div id="controls">WASD / Arrow Keys to move</div>
+
+    <div id="emoteBar">
+      <button class="emote-btn" data-emote="👋">👋</button>
+      <button class="emote-btn" data-emote="❤️">❤️</button>
+      <button class="emote-btn" data-emote="😸">😸</button>
+      <button class="emote-btn" data-emote="🐟">🐟</button>
+      <button class="emote-btn" data-emote="⭐">⭐</button>
+      <button class="emote-btn" data-emote="💤">💤</button>
+      <button class="emote-btn" data-emote="🎵">🎵</button>
+    </div>
+
+    <div id="nameOverlay">
+      <h1>🐱 Cat Lobby</h1>
+      <p>A cozy place for cats to hang out</p>
+      <input id="nameInput" type="text" maxlength="16" placeholder="Your cat's name..." autocomplete="off">
+      <button id="joinBtn">Join the Lobby →</button>
+    </div>
+  </div>
+
+  <div id="chatPanel">
+    <div id="chatHeader">
+      <span class="icon">💬</span>
+      <h2>Lobby Chat</h2>
+    </div>
+    <div id="chatMessages"></div>
+    <div id="chatInputWrap">
+      <input id="chatInput" type="text" maxlength="120" placeholder="Say something..." disabled autocomplete="off">
+      <button id="sendBtn">➤</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const W = 780, H = 600;
+
+const CAT_COLORS = [
+  { body: '#f4a261', ear: '#e07a2f', stripe: '#d4813f', name: 'Orange' },
+  { body: '#a8dadc', ear: '#6cbfc3', stripe: '#89c8ca', name: 'Blue' },
+  { body: '#c9b1ff', ear: '#a07dff', stripe: '#b396ff', name: 'Purple' },
+  { body: '#ffd6e0', ear: '#ffb3c6', stripe: '#ffbed5', name: 'Pink' },
+  { body: '#b7e4c7', ear: '#74c69d', stripe: '#95d6b0', name: 'Green' },
+  { body: '#f8edeb', ear: '#d9c4c0', stripe: '#e8d8d5', name: 'White' },
+  { body: '#9d8ca1', ear: '#6d6875', stripe: '#8a7a8e', name: 'Gray' },
+  { body: '#e9c46a', ear: '#c9a227', stripe: '#d4ad47', name: 'Yellow' },
+];
+
+// WORLD DECORATIONS
+const decorations = generateDecorations();
+function generateDecorations() {
+  const decs = [];
+  // Trees (avoid center area)
+  const treePositions = [
+    [60,60],[150,80],[700,65],[720,160],[50,220],[70,420],
+    [710,380],[730,500],[160,520],[350,55],[430,545],[600,520],
+    [80,320],[680,280],[340,540],[450,60]
+  ];
+  treePositions.forEach(([x,y]) => decs.push({ type: 'tree', x, y }));
+
+  // Flowers
+  for (let i = 0; i < 28; i++) {
+    decs.push({
+      type: 'flower',
+      x: 30 + Math.random() * (W-60),
+      y: 30 + Math.random() * (H-60),
+      color: ['#ff6b9d','#ffd166','#06d6a0','#ff9de2','#c77dff'][Math.floor(Math.random()*5)],
+      seed: Math.random()
+    });
+  }
+
+  // Rocks
+  const rocks = [[200,150],[580,200],[150,400],[650,420],[300,490],[480,130]];
+  rocks.forEach(([x,y]) => decs.push({ type:'rock', x, y, size: 0.8+Math.random()*0.5 }));
+
+  // Benches
+  decs.push({ type:'bench', x:200, y:100 });
+  decs.push({ type:'bench', x:560, y:480 });
+
+  // Well
+  decs.push({ type:'well', x:390, y:300 });
+
+  // Pond
+  decs.push({ type:'pond', x:620, y:150, rx:52, ry:32 });
+
+  return decs;
+}
+
+// Sort decorations: trees behind, pond behind
+decorations.sort((a,b) => {
+  const order = { pond:0, rock:1, flower:1, bench:2, tree:3, well:3 };
+  return (order[a.type]||0) - (order[b.type]||0);
+});
+
+function drawWorld() {
+  // Grass base
+  ctx.fillStyle = '#2d6a4f';
+  ctx.fillRect(0, 0, W, H);
+
+  // Subtle grass texture patches
+  ctx.globalAlpha = 0.18;
+  for (let i = 0; i < 60; i++) {
+    const gx = (i * 137) % W;
+    const gy = (i * 97 + 30) % H;
+    ctx.fillStyle = i % 2 === 0 ? '#40916c' : '#1b4332';
+    ctx.fillRect(gx, gy, 40 + (i%3)*20, 30 + (i%4)*15);
+  }
+  ctx.globalAlpha = 1;
+
+  // Dirt path (cross)
+  ctx.fillStyle = '#8b7355';
+  // Horizontal path
+  ctx.fillRect(0, H/2-22, W, 44);
+  // Vertical path
+  ctx.fillRect(W/2-22, 0, 44, H);
+
+  // Path detail
+  ctx.fillStyle = '#7a6444';
+  ctx.globalAlpha = 0.4;
+  ctx.fillRect(0, H/2-1, W, 2);
+  ctx.fillRect(W/2-1, 0, 2, H);
+  ctx.globalAlpha = 1;
+
+  // Border grass edge
+  ctx.strokeStyle = '#1b4332';
+  ctx.lineWidth = 6;
+  ctx.strokeRect(3, 3, W-6, H-6);
+
+  // Draw decorations
+  decorations.forEach(d => drawDecoration(d));
+}
+
+function drawDecoration(d) {
+  if (d.type === 'pond') {
+    // Pond
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(d.x, d.y, d.rx, d.ry, 0, 0, Math.PI*2);
+    const pg = ctx.createRadialGradient(d.x-10, d.y-8, 4, d.x, d.y, d.rx);
+    pg.addColorStop(0, '#64b5f6');
+    pg.addColorStop(0.6, '#1e88e5');
+    pg.addColorStop(1, '#0d47a1');
+    ctx.fillStyle = pg;
+    ctx.fill();
+    ctx.strokeStyle = '#42a5f5';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Shine
+    ctx.globalAlpha = 0.35;
+    ctx.beginPath();
+    ctx.ellipse(d.x-14, d.y-10, 18, 8, -0.4, 0, Math.PI*2);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  } else if (d.type === 'tree') {
+    drawTree(d.x, d.y);
+  } else if (d.type === 'flower') {
+    drawFlower(d.x, d.y, d.color);
+  } else if (d.type === 'rock') {
+    drawRock(d.x, d.y, d.size);
+  } else if (d.type === 'bench') {
+    drawBench(d.x, d.y);
+  } else if (d.type === 'well') {
+    drawWell(d.x, d.y);
+  }
+}
+
+function drawTree(x, y) {
+  // Shadow
+  ctx.save();
+  ctx.globalAlpha = 0.2;
+  ctx.beginPath();
+  ctx.ellipse(x+4, y+6, 14, 8, 0, 0, Math.PI*2);
+  ctx.fillStyle = '#000';
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  // Trunk
+  ctx.fillStyle = '#795548';
+  ctx.fillRect(x-4, y-4, 8, 18);
+  // Canopy layers
+  ctx.fillStyle = '#2e7d32';
+  ctx.beginPath();
+  ctx.arc(x, y-18, 17, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#388e3c';
+  ctx.beginPath();
+  ctx.arc(x-3, y-22, 13, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#43a047';
+  ctx.beginPath();
+  ctx.arc(x+2, y-24, 10, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawFlower(x, y, color) {
+  ctx.save();
+  // Stem
+  ctx.strokeStyle = '#4caf50';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(x, y+6);
+  ctx.lineTo(x, y);
+  ctx.stroke();
+  // Petals
+  ctx.fillStyle = color;
+  for (let i = 0; i < 5; i++) {
+    const a = (i / 5) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.arc(x + Math.cos(a)*4, y + Math.sin(a)*4, 3.5, 0, Math.PI*2);
+    ctx.fill();
+  }
+  // Center
+  ctx.fillStyle = '#fff176';
+  ctx.beginPath();
+  ctx.arc(x, y, 2.5, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawRock(x, y, size) {
+  ctx.save();
+  ctx.fillStyle = '#78909c';
+  ctx.beginPath();
+  ctx.ellipse(x, y, 10*size, 7*size, 0.2, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#90a4ae';
+  ctx.beginPath();
+  ctx.ellipse(x-2, y-2, 6*size, 4*size, 0.2, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawBench(x, y) {
+  ctx.save();
+  // Legs
+  ctx.fillStyle = '#5d4037';
+  ctx.fillRect(x-14, y-2, 5, 12);
+  ctx.fillRect(x+9, y-2, 5, 12);
+  // Seat
+  ctx.fillStyle = '#8d6e63';
+  ctx.fillRect(x-18, y-6, 36, 7);
+  // Back
+  ctx.fillRect(x-18, y-16, 36, 5);
+  ctx.restore();
+}
+
+function drawWell(x, y) {
+  ctx.save();
+  // Base
+  ctx.fillStyle = '#9e9e9e';
+  ctx.beginPath();
+  ctx.ellipse(x, y+6, 18, 10, 0, 0, Math.PI*2);
+  ctx.fill();
+  // Walls
+  ctx.fillStyle = '#bdbdbd';
+  ctx.fillRect(x-18, y-14, 36, 20);
+  ctx.fillStyle = '#9e9e9e';
+  ctx.beginPath();
+  ctx.ellipse(x, y-14, 18, 10, 0, 0, Math.PI*2);
+  ctx.fill();
+  // Water
+  ctx.fillStyle = '#4fc3f7';
+  ctx.beginPath();
+  ctx.ellipse(x, y-14, 14, 7, 0, 0, Math.PI*2);
+  ctx.fill();
+  // Roof posts
+  ctx.fillStyle = '#5d4037';
+  ctx.fillRect(x-22, y-36, 5, 26);
+  ctx.fillRect(x+17, y-36, 5, 26);
+  // Roof
+  ctx.fillStyle = '#bf360c';
+  ctx.beginPath();
+  ctx.moveTo(x-28, y-34);
+  ctx.lineTo(x, y-52);
+  ctx.lineTo(x+28, y-34);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+// CAT DRAWING
+function drawCat(x, y, color, name, isMe, emote) {
+  const c = color;
+  ctx.save();
+
+  const r = 14;
+  const shadowAlpha = isMe ? 0.35 : 0.2;
+
+  // Shadow
+  ctx.globalAlpha = shadowAlpha;
+  ctx.beginPath();
+  ctx.ellipse(x+2, y+r+4, r, 5, 0, 0, Math.PI*2);
+  ctx.fillStyle = '#000';
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // Me ring
+  if (isMe) {
+    ctx.beginPath();
+    ctx.arc(x, y, r+5, 0, Math.PI*2);
+    ctx.strokeStyle = '#c77dff';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4, 3]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Body
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI*2);
+  ctx.fillStyle = c.body;
+  ctx.fill();
+
+  // Stripe (subtle)
+  ctx.globalAlpha = 0.3;
+  ctx.fillStyle = c.stripe;
+  ctx.beginPath();
+  ctx.ellipse(x, y-2, 6, 9, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // Ears
+  function ear(ex, ey, flip) {
+    ctx.beginPath();
+    ctx.moveTo(ex, ey);
+    ctx.lineTo(ex + flip*10, ey - 14);
+    ctx.lineTo(ex + flip*16, ey - 2);
+    ctx.closePath();
+    ctx.fillStyle = c.ear;
+    ctx.fill();
+    // Inner ear
+    ctx.beginPath();
+    ctx.moveTo(ex + flip*2, ey - 2);
+    ctx.lineTo(ex + flip*10, ey - 11);
+    ctx.lineTo(ex + flip*13, ey - 3);
+    ctx.closePath();
+    ctx.fillStyle = '#ffcdd2';
+    ctx.globalAlpha = 0.7;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  ear(x - 8, y - 10, -1);
+  ear(x + 8, y - 10, 1);
+
+  // Eyes
+  ctx.fillStyle = '#1a0030';
+  ctx.beginPath();
+  ctx.ellipse(x - 5, y - 3, 3, 4, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(x + 5, y - 3, 3, 4, 0, 0, Math.PI*2);
+  ctx.fill();
+  // Eye shine
+  ctx.fillStyle = 'white';
+  ctx.beginPath();
+  ctx.arc(x - 4, y - 5, 1.2, 0, Math.PI*2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(x + 6, y - 5, 1.2, 0, Math.PI*2);
+  ctx.fill();
+
+  // Nose
+  ctx.fillStyle = '#f48fb1';
+  ctx.beginPath();
+  ctx.moveTo(x, y + 1);
+  ctx.lineTo(x - 2.5, y + 4);
+  ctx.lineTo(x + 2.5, y + 4);
+  ctx.closePath();
+  ctx.fill();
+
+  // Mouth
+  ctx.strokeStyle = '#1a0030';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(x, y + 4);
+  ctx.quadraticCurveTo(x - 4, y + 8, x - 6, y + 6);
+  ctx.moveTo(x, y + 4);
+  ctx.quadraticCurveTo(x + 4, y + 8, x + 6, y + 6);
+  ctx.stroke();
+
+  // Whiskers
+  ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+  ctx.lineWidth = 1;
+  for (let s of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(x + s*3, y + 3);
+    ctx.lineTo(x + s*16, y + 1);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x + s*3, y + 5);
+    ctx.lineTo(x + s*16, y + 5);
+    ctx.stroke();
+  }
+
+  // Tail (little arc behind)
+  ctx.strokeStyle = c.ear;
+  ctx.lineWidth = 3.5;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(x - r + 2, y + 8);
+  ctx.quadraticCurveTo(x - r - 12, y + 22, x - r - 4, y + 32);
+  ctx.stroke();
+
+  // Name tag
+  const nameText = isMe ? `${name} ★` : name;
+  ctx.font = 'bold 11px Nunito, sans-serif';
+  const tw = ctx.measureText(nameText).width;
+  const tagW = tw + 10;
+  const tagH = 16;
+  const tagX = x - tagW/2;
+  const tagY = y - r - 24;
+
+  ctx.fillStyle = isMe ? 'rgba(199,125,255,0.9)' : 'rgba(22,14,34,0.85)';
+  roundRect(ctx, tagX, tagY, tagW, tagH, 5);
+  ctx.fill();
+
+  ctx.fillStyle = isMe ? '#1a0030' : '#f0e6ff';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(nameText, x, tagY + tagH/2);
+
+  // Emote bubble
+  if (emote) {
+    const bx = x + 16;
+    const by = y - r - 10;
+    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+    roundRect(ctx, bx - 2, by - 14, 28, 24, 8);
+    ctx.fill();
+    ctx.font = '16px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(emote, bx + 12, by - 2);
+  }
+
+  ctx.restore();
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+// ── GAME STATE ──
+let myId = null;
+let players = {};
+let keys = {};
+let joined = false;
+let socket = null;
+
+// ── SOCKET ──
+function initSocket() {
+  socket = io();
+
+  socket.on('init', (data) => {
+    myId = data.id;
+    players = {};
+    data.players.forEach(p => { players[p.id] = p; });
+    data.chatHistory.forEach(addChatMsg);
+    document.getElementById('chatInput').disabled = false;
+    updatePlayerCount();
+  });
+
+  socket.on('playerJoined', (p) => {
+    players[p.id] = p;
+    updatePlayerCount();
+    addSystemMsg(`🐱 ${p.name} joined the lobby`);
+  });
+
+  socket.on('playerLeft', (id) => {
+    const p = players[id];
+    if (p) addSystemMsg(`👋 ${p.name} left the lobby`);
+    delete players[id];
+    updatePlayerCount();
+  });
+
+  socket.on('playerUpdate', (p) => {
+    if (players[p.id]) Object.assign(players[p.id], p);
+  });
+
+  socket.on('tick', (updates) => {
+    updates.forEach(u => {
+      if (players[u.id]) {
+        players[u.id].x = u.x;
+        players[u.id].y = u.y;
+        players[u.id].emote = u.emote;
+      }
+    });
+  });
+
+  socket.on('chat', addChatMsg);
+
+  socket.on('emote', ({ id, emote }) => {
+    if (players[id]) players[id].emote = emote;
+  });
+}
+
+// ── CHAT ──
+const chatMessages = document.getElementById('chatMessages');
+
+function addChatMsg(entry) {
+  const color = CAT_COLORS[entry.colorIndex];
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+  const t = new Date(entry.time);
+  const time = t.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  div.innerHTML = `
+    <div class="chat-meta">
+      <div class="chat-dot" style="background:${color.body};border:1.5px solid ${color.ear}"></div>
+      <span class="chat-name" style="color:${color.body}">${escHtml(entry.name)}</span>
+      <span class="chat-time">${time}</span>
+    </div>
+    <div class="chat-text">${escHtml(entry.msg)}</div>
+  `;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addSystemMsg(text) {
+  const div = document.createElement('div');
+  div.className = 'chat-system';
+  div.textContent = text;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function updatePlayerCount() {
+  const n = Object.keys(players).length;
+  document.getElementById('playerCount').textContent = `🐱 ${n} cat${n===1?'':'s'} online`;
+}
+
+// ── INPUT ──
+window.addEventListener('keydown', e => {
+  const tag = e.target.tagName;
+  if (tag === 'INPUT') return;
+  if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s'].includes(e.key)) {
+    e.preventDefault();
+  }
+  handleKey(e.key, true);
+});
+window.addEventListener('keyup', e => handleKey(e.key, false));
+
+function handleKey(key, down) {
+  if (!joined) return;
+  const map = {
+    ArrowLeft: 'left', a: 'left', A: 'left',
+    ArrowRight: 'right', d: 'right', D: 'right',
+    ArrowUp: 'up', w: 'up', W: 'up',
+    ArrowDown: 'down', s: 'down', S: 'down',
+  };
+  const k = map[key];
+  if (!k) return;
+  if (keys[k] !== down) {
+    keys[k] = down;
+    socket.emit('keys', keys);
+  }
+}
+
+// ── JOIN ──
+document.getElementById('joinBtn').addEventListener('click', doJoin);
+document.getElementById('nameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doJoin();
+});
+
+function doJoin() {
+  const name = document.getElementById('nameInput').value.trim() || 'Cat';
+  joined = true;
+  initSocket();
+  setTimeout(() => {
+    socket.emit('setName', name);
+    document.getElementById('nameOverlay').style.display = 'none';
+  }, 200);
+}
+
+// ── CHAT SEND ──
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg || !socket) return;
+  socket.emit('chat', msg);
+  input.value = '';
+}
+document.getElementById('sendBtn').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendChat();
+});
+
+// ── EMOTES ──
+document.querySelectorAll('.emote-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (!socket || !joined) return;
+    socket.emit('emote', btn.dataset.emote);
+  });
+});
+
+// ── RENDER LOOP ──
+function render() {
+  ctx.clearRect(0, 0, W, H);
+  drawWorld();
+
+  // Sort players by y for correct overlap
+  const sorted = Object.values(players).sort((a,b) => a.y - b.y);
+  sorted.forEach(p => {
+    drawCat(p.x, p.y, p.color, p.name, p.id === myId, p.emote);
+  });
+
+  requestAnimationFrame(render);
+}
+
+render();
+</script>
+</body>
+</html>
