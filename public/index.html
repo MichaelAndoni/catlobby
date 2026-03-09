@@ -6,8 +6,7 @@
 <title>🐱 Cat Lobby</title>
 <script src="/socket.io/socket.io.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
-
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -20,10 +19,11 @@
     --muted: #9b8ab0;
     --chat-bg: #160e22;
     --input-bg: #2a1945;
-    --grass1: #2d6a4f;
-    --grass2: #1b4332;
-    --path: #8b7355;
-    --path2: #6b5a42;
+
+    --rarity-common: #b0bec5;
+    --rarity-uncommon: #69f0ae;
+    --rarity-rare: #40c4ff;
+    --rarity-legendary: #ffd740;
   }
 
   body {
@@ -37,185 +37,70 @@
     overflow: hidden;
   }
 
+  /* ──────────────────────────── LAYOUT ──────────────────────────── */
   #app {
     display: flex;
-    gap: 0;
-    width: 1060px;
-    height: 600px;
+    width: 1160px;
+    height: 620px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 0 60px rgba(199,125,255,0.25), 0 0 0 1px var(--border);
   }
 
-  /* ── GAME CANVAS SIDE ── */
   #gameWrap {
     position: relative;
     flex: 0 0 780px;
-    height: 600px;
+    height: 620px;
     background: #0d0818;
     overflow: hidden;
   }
 
-  canvas {
-    display: block;
-    image-rendering: pixelated;
-  }
+  canvas { display: block; }
 
-  #hud {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    pointer-events: none;
-  }
-
-  #playerCount {
-    background: rgba(35,21,51,0.85);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--accent);
-    backdrop-filter: blur(8px);
-  }
-
-  #controls {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background: rgba(35,21,51,0.75);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 6px 12px;
-    font-size: 11px;
-    color: var(--muted);
-    backdrop-filter: blur(6px);
-    pointer-events: none;
-  }
-
-  #emoteBar {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 6px;
-    background: rgba(35,21,51,0.85);
-    border: 1px solid var(--border);
-    border-radius: 30px;
-    padding: 6px 12px;
-    backdrop-filter: blur(8px);
-  }
-
-  .emote-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: 8px;
-    transition: transform 0.1s, background 0.1s;
-    line-height: 1;
-  }
-
-  .emote-btn:hover {
-    transform: scale(1.35);
-    background: rgba(199,125,255,0.15);
-  }
-
-  /* ── NAME OVERLAY ── */
-  #nameOverlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(10,5,20,0.88);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    backdrop-filter: blur(6px);
-    z-index: 10;
-  }
-
-  #nameOverlay h1 {
-    font-size: 36px;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.5px;
-  }
-
-  #nameOverlay p {
-    color: var(--muted);
-    font-size: 14px;
-  }
-
-  #nameInput {
-    background: var(--input-bg);
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 18px;
-    font-size: 16px;
-    font-family: 'Nunito', sans-serif;
-    color: var(--text);
-    outline: none;
-    width: 220px;
-    text-align: center;
-    transition: border-color 0.2s;
-  }
-
-  #nameInput:focus { border-color: var(--accent); }
-
-  #joinBtn {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border: none;
-    border-radius: 12px;
-    padding: 10px 32px;
-    font-size: 15px;
-    font-weight: 800;
-    font-family: 'Nunito', sans-serif;
-    color: #1a0030;
-    cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.2s;
-    box-shadow: 0 4px 20px rgba(199,125,255,0.35);
-  }
-
-  #joinBtn:hover { transform: scale(1.04); box-shadow: 0 6px 28px rgba(199,125,255,0.5); }
-  #joinBtn:active { transform: scale(0.97); }
-
-  /* ── CHAT SIDE ── */
-  #chatPanel {
+  /* ──────────────────────────── RIGHT PANEL ──────────────────────────── */
+  #rightPanel {
     flex: 1;
     background: var(--panel);
     border-left: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-    height: 600px;
+    height: 620px;
+    overflow: hidden;
   }
 
-  #chatHeader {
-    padding: 14px 16px 12px;
-    border-bottom: 1px solid var(--border);
+  /* Tab bar */
+  #tabBar {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
   }
 
-  #chatHeader .icon { font-size: 18px; }
-
-  #chatHeader h2 {
-    font-size: 14px;
+  .tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 6px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
     font-weight: 800;
-    color: var(--accent);
-    letter-spacing: 0.5px;
+    color: var(--muted);
+    cursor: pointer;
+    letter-spacing: 0.4px;
     text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
   }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tab-btn:hover:not(.active) { color: var(--text); }
 
+  /* Tab content */
+  .tab-pane { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+  .tab-pane.active { display: flex; }
+
+  /* ── CHAT TAB ── */
   #chatMessages {
     flex: 1;
     overflow-y: auto;
@@ -226,72 +111,29 @@
     background: var(--chat-bg);
     scroll-behavior: smooth;
   }
-
   #chatMessages::-webkit-scrollbar { width: 4px; }
-  #chatMessages::-webkit-scrollbar-track { background: transparent; }
   #chatMessages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-  .chat-msg {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    animation: fadeUp 0.2s ease;
-  }
-
+  .chat-msg { display: flex; flex-direction: column; gap: 2px; animation: fadeUp 0.2s ease; }
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(6px); }
+    from { opacity: 0; transform: translateY(5px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-
-  .chat-meta {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .chat-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .chat-name {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.3px;
-  }
-
-  .chat-time {
-    font-size: 10px;
-    color: var(--muted);
-    margin-left: auto;
-  }
-
-  .chat-text {
-    font-size: 13px;
-    color: #d9cce8;
-    padding-left: 14px;
-    line-height: 1.45;
-    word-break: break-word;
-  }
-
-  .chat-system {
-    text-align: center;
-    font-size: 11px;
-    color: var(--muted);
-    font-style: italic;
-    padding: 2px 0;
-  }
+  .chat-meta { display: flex; align-items: center; gap: 6px; }
+  .chat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .chat-name { font-size: 11px; font-weight: 800; letter-spacing: 0.3px; }
+  .chat-time { font-size: 10px; color: var(--muted); margin-left: auto; }
+  .chat-text { font-size: 13px; color: #d9cce8; padding-left: 14px; line-height: 1.45; word-break: break-word; }
+  .chat-system { text-align: center; font-size: 11px; color: var(--muted); font-style: italic; padding: 2px 0; }
 
   #chatInputWrap {
-    padding: 12px;
+    padding: 10px;
     border-top: 1px solid var(--border);
     display: flex;
     gap: 8px;
     background: var(--panel);
+    flex-shrink: 0;
   }
-
   #chatInput {
     flex: 1;
     background: var(--input-bg);
@@ -304,522 +146,628 @@
     outline: none;
     transition: border-color 0.2s;
   }
-
   #chatInput:focus { border-color: var(--accent); }
   #chatInput::placeholder { color: var(--muted); }
-
   #sendBtn {
     background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border: none;
-    border-radius: 10px;
-    width: 36px;
-    height: 36px;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.1s;
-    flex-shrink: 0;
+    border: none; border-radius: 10px;
+    width: 36px; height: 36px; cursor: pointer;
+    font-size: 16px; display: flex; align-items: center; justify-content: center;
+    transition: transform 0.1s; flex-shrink: 0;
+  }
+  #sendBtn:hover { transform: scale(1.08); }
+
+  /* ── INVENTORY TAB ── */
+  #inventoryPane {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    background: var(--chat-bg);
+  }
+  #inventoryPane::-webkit-scrollbar { width: 4px; }
+  #inventoryPane::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .inv-section-title {
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin: 10px 0 6px;
+  }
+  .inv-section-title:first-child { margin-top: 0; }
+
+  .inv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
   }
 
-  #sendBtn:hover { transform: scale(1.08); }
-  #sendBtn:active { transform: scale(0.93); }
+  .inv-item {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 6px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+    transition: border-color 0.15s;
+  }
+  .inv-item:hover { border-color: var(--accent); }
+
+  .inv-item .emoji { font-size: 22px; line-height: 1; }
+  .inv-item .item-name { font-size: 9px; font-weight: 700; text-align: center; color: var(--text); line-height: 1.2; }
+  .inv-item .item-qty {
+    position: absolute; top: 4px; right: 6px;
+    font-size: 10px; font-weight: 900; color: var(--muted);
+  }
+  .inv-item .item-rarity {
+    font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .rarity-common    { color: var(--rarity-common); }
+  .rarity-uncommon  { color: var(--rarity-uncommon); }
+  .rarity-rare      { color: var(--rarity-rare); }
+  .rarity-legendary { color: var(--rarity-legendary); }
+
+  .inv-empty {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 30px 10px;
+  }
+  .inv-empty .big { font-size: 32px; display: block; margin-bottom: 8px; }
+
+  /* Inventory border accent per rarity */
+  .inv-item.rarity-uncommon  { border-color: rgba(105,240,174,0.3); }
+  .inv-item.rarity-rare      { border-color: rgba(64,196,255,0.3); }
+  .inv-item.rarity-legendary { border-color: rgba(255,215,64,0.4); box-shadow: 0 0 8px rgba(255,215,64,0.15); }
+
+  /* ──────────────────────────── HUD ──────────────────────────── */
+  #hud {
+    position: absolute;
+    top: 10px; left: 10px;
+    display: flex; gap: 8px; align-items: center;
+    pointer-events: none;
+  }
+  #playerCount {
+    background: rgba(35,21,51,0.85);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 13px; font-weight: 700; color: var(--accent);
+    backdrop-filter: blur(8px);
+  }
+  #coinHud {
+    background: rgba(35,21,51,0.85);
+    border: 1px solid #c9a227;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 13px; font-weight: 800; color: #ffd740;
+    backdrop-filter: blur(8px);
+    display: none;
+  }
+
+  /* ──────────────────────────── DIG BUTTON & BAR ──────────────────────────── */
+  #bottomBar {
+    position: absolute;
+    bottom: 10px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+
+  #emoteBar {
+    display: flex; gap: 6px;
+    background: rgba(35,21,51,0.85);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 5px 10px;
+    backdrop-filter: blur(8px);
+  }
+  .emote-btn {
+    background: none; border: none; font-size: 19px; cursor: pointer;
+    padding: 2px 4px; border-radius: 8px;
+    transition: transform 0.1s, background 0.1s; line-height: 1;
+  }
+  .emote-btn:hover { transform: scale(1.35); background: rgba(199,125,255,0.15); }
+
+  #digRow {
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  #digBtn {
+    background: linear-gradient(135deg, #8b5e3c, #c8874a);
+    border: none; border-radius: 20px;
+    padding: 7px 20px;
+    font-size: 13px; font-weight: 900; font-family: 'Nunito', sans-serif;
+    color: #fff3e0; cursor: pointer;
+    box-shadow: 0 3px 12px rgba(200,135,74,0.4);
+    transition: transform 0.1s, box-shadow 0.1s;
+    letter-spacing: 0.3px;
+  }
+  #digBtn:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 4px 18px rgba(200,135,74,0.6); }
+  #digBtn:active:not(:disabled) { transform: scale(0.96); }
+  #digBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+  #digBtn.digging {
+    background: linear-gradient(135deg, #c62828, #e53935);
+    box-shadow: 0 3px 12px rgba(229,57,53,0.45);
+  }
+
+  #digProgressWrap {
+    display: none;
+    width: 120px; height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  #digProgress {
+    height: 100%;
+    background: linear-gradient(90deg, #8b5e3c, #ffd740);
+    border-radius: 4px;
+    width: 100%;
+    transition: width 0.2s linear;
+  }
+  #digProgressWrap.active { display: block; }
+
+  #controls {
+    position: absolute;
+    bottom: 10px; left: 10px;
+    background: rgba(35,21,51,0.75);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 5px 10px; font-size: 10px; color: var(--muted);
+    backdrop-filter: blur(6px); pointer-events: none;
+  }
+
+  /* ──────────────────────────── FIND TOASTS ──────────────────────────── */
+  #toastContainer {
+    position: absolute;
+    top: 54px; left: 10px;
+    display: flex; flex-direction: column; gap: 6px;
+    pointer-events: none;
+    width: 220px;
+  }
+
+  .find-toast {
+    background: rgba(22,14,34,0.93);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 10px;
+    animation: toastIn 0.25s ease forwards;
+    backdrop-filter: blur(8px);
+    font-size: 13px;
+  }
+  .find-toast.remove { animation: toastOut 0.3s ease forwards; }
+
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes toastOut {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(-16px); }
+  }
+
+  .find-toast .t-emoji { font-size: 22px; flex-shrink: 0; }
+  .find-toast .t-text  { display: flex; flex-direction: column; gap: 1px; }
+  .find-toast .t-label { font-weight: 800; font-size: 12px; }
+  .find-toast .t-sub   { font-size: 10px; color: var(--muted); }
+  .find-toast.coin     { border-color: #c9a227; }
+  .find-toast.legendary { border-color: var(--rarity-legendary); box-shadow: 0 0 12px rgba(255,215,64,0.3); }
+  .find-toast.rare      { border-color: var(--rarity-rare); }
+  .find-toast.uncommon  { border-color: var(--rarity-uncommon); }
+  .find-toast.nothing   { opacity: 0.6; }
+
+  /* ──────────────────────────── NAME OVERLAY ──────────────────────────── */
+  #nameOverlay {
+    position: absolute; inset: 0;
+    background: rgba(10,5,20,0.9);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 16px;
+    backdrop-filter: blur(6px); z-index: 10;
+  }
+  #nameOverlay h1 {
+    font-size: 36px; font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  #nameOverlay p { color: var(--muted); font-size: 14px; }
+  #nameInput {
+    background: var(--input-bg); border: 2px solid var(--border); border-radius: 12px;
+    padding: 10px 18px; font-size: 16px; font-family: 'Nunito', sans-serif;
+    color: var(--text); outline: none; width: 220px; text-align: center;
+    transition: border-color 0.2s;
+  }
+  #nameInput:focus { border-color: var(--accent); }
+  #joinBtn {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; border-radius: 12px; padding: 10px 32px;
+    font-size: 15px; font-weight: 800; font-family: 'Nunito', sans-serif;
+    color: #1a0030; cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(199,125,255,0.35);
+  }
+  #joinBtn:hover { transform: scale(1.04); box-shadow: 0 6px 28px rgba(199,125,255,0.5); }
+
+  /* ──────────────────────────── INV BADGE ──────────────────────────── */
+  #invBadge {
+    display: none;
+    position: absolute; top: -4px; right: -4px;
+    background: var(--accent2);
+    color: #1a0030; font-size: 9px; font-weight: 900;
+    width: 16px; height: 16px; border-radius: 50%;
+    align-items: center; justify-content: center;
+  }
+  #invBadge.show { display: flex; }
+
+  .tab-btn { position: relative; }
 </style>
 </head>
 <body>
-
 <div id="app">
+
+  <!-- GAME -->
   <div id="gameWrap">
-    <canvas id="canvas" width="780" height="600"></canvas>
+    <canvas id="canvas" width="780" height="620"></canvas>
 
     <div id="hud">
       <div id="playerCount">🐱 1 cat online</div>
+      <div id="coinHud">🪙 0</div>
     </div>
 
-    <div id="controls">WASD / Arrow Keys to move</div>
+    <div id="toastContainer"></div>
 
-    <div id="emoteBar">
-      <button class="emote-btn" data-emote="👋">👋</button>
-      <button class="emote-btn" data-emote="❤️">❤️</button>
-      <button class="emote-btn" data-emote="😸">😸</button>
-      <button class="emote-btn" data-emote="🐟">🐟</button>
-      <button class="emote-btn" data-emote="⭐">⭐</button>
-      <button class="emote-btn" data-emote="💤">💤</button>
-      <button class="emote-btn" data-emote="🎵">🎵</button>
+    <div id="bottomBar">
+      <div id="emoteBar">
+        <button class="emote-btn" data-emote="👋">👋</button>
+        <button class="emote-btn" data-emote="❤️">❤️</button>
+        <button class="emote-btn" data-emote="😸">😸</button>
+        <button class="emote-btn" data-emote="🐟">🐟</button>
+        <button class="emote-btn" data-emote="⭐">⭐</button>
+        <button class="emote-btn" data-emote="💤">💤</button>
+        <button class="emote-btn" data-emote="🎵">🎵</button>
+      </div>
+      <div id="digRow">
+        <button id="digBtn">⛏️ Dig</button>
+        <div id="digProgressWrap"><div id="digProgress"></div></div>
+      </div>
     </div>
+
+    <div id="controls">WASD / Arrows to move · ⛏️ to dig</div>
 
     <div id="nameOverlay">
       <h1>🐱 Cat Lobby</h1>
-      <p>A cozy place for cats to hang out</p>
+      <p>A cozy place for cats to dig and hang out</p>
       <input id="nameInput" type="text" maxlength="16" placeholder="Your cat's name..." autocomplete="off">
       <button id="joinBtn">Join the Lobby →</button>
     </div>
   </div>
 
-  <div id="chatPanel">
-    <div id="chatHeader">
-      <span class="icon">💬</span>
-      <h2>Lobby Chat</h2>
+  <!-- RIGHT PANEL -->
+  <div id="rightPanel">
+    <div id="tabBar">
+      <button class="tab-btn active" data-tab="chat">💬 Chat</button>
+      <button class="tab-btn" data-tab="inventory" id="invTab">
+        🎒 Inventory
+        <span id="invBadge">!</span>
+      </button>
     </div>
-    <div id="chatMessages"></div>
-    <div id="chatInputWrap">
-      <input id="chatInput" type="text" maxlength="120" placeholder="Say something..." disabled autocomplete="off">
-      <button id="sendBtn">➤</button>
+
+    <!-- CHAT -->
+    <div class="tab-pane active" id="pane-chat">
+      <div id="chatMessages"></div>
+      <div id="chatInputWrap">
+        <input id="chatInput" type="text" maxlength="120" placeholder="Say something..." disabled autocomplete="off">
+        <button id="sendBtn">➤</button>
+      </div>
+    </div>
+
+    <!-- INVENTORY -->
+    <div class="tab-pane" id="pane-inventory">
+      <div id="inventoryPane">
+        <div class="inv-empty">
+          <span class="big">🎒</span>
+          Go dig something up!
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
+// ════════════════════════════════════════════
+//  WORLD DRAWING
+// ════════════════════════════════════════════
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const W = 780, H = 600;
+const W = 780, H = 620;
 
 const CAT_COLORS = [
-  { body: '#f4a261', ear: '#e07a2f', stripe: '#d4813f', name: 'Orange' },
-  { body: '#a8dadc', ear: '#6cbfc3', stripe: '#89c8ca', name: 'Blue' },
-  { body: '#c9b1ff', ear: '#a07dff', stripe: '#b396ff', name: 'Purple' },
-  { body: '#ffd6e0', ear: '#ffb3c6', stripe: '#ffbed5', name: 'Pink' },
-  { body: '#b7e4c7', ear: '#74c69d', stripe: '#95d6b0', name: 'Green' },
-  { body: '#f8edeb', ear: '#d9c4c0', stripe: '#e8d8d5', name: 'White' },
-  { body: '#9d8ca1', ear: '#6d6875', stripe: '#8a7a8e', name: 'Gray' },
-  { body: '#e9c46a', ear: '#c9a227', stripe: '#d4ad47', name: 'Yellow' },
+  { body: '#f4a261', ear: '#e07a2f', stripe: '#d4813f' },
+  { body: '#a8dadc', ear: '#6cbfc3', stripe: '#89c8ca' },
+  { body: '#c9b1ff', ear: '#a07dff', stripe: '#b396ff' },
+  { body: '#ffd6e0', ear: '#ffb3c6', stripe: '#ffbed5' },
+  { body: '#b7e4c7', ear: '#74c69d', stripe: '#95d6b0' },
+  { body: '#f8edeb', ear: '#d9c4c0', stripe: '#e8d8d5' },
+  { body: '#9d8ca1', ear: '#6d6875', stripe: '#8a7a8e' },
+  { body: '#e9c46a', ear: '#c9a227', stripe: '#d4ad47' },
 ];
 
-// WORLD DECORATIONS
+const RARITY_COLORS = {
+  common: '#b0bec5', uncommon: '#69f0ae', rare: '#40c4ff', legendary: '#ffd740'
+};
+
 const decorations = generateDecorations();
+
 function generateDecorations() {
   const decs = [];
-  // Trees (avoid center area)
-  const treePositions = [
-    [60,60],[150,80],[700,65],[720,160],[50,220],[70,420],
-    [710,380],[730,500],[160,520],[350,55],[430,545],[600,520],
-    [80,320],[680,280],[340,540],[450,60]
+  const treePos = [
+    [60,60],[150,80],[700,65],[720,160],[50,220],[70,440],
+    [710,400],[730,520],[160,540],[350,55],[430,565],[600,540],
+    [80,340],[680,290],[340,560],[450,60]
   ];
-  treePositions.forEach(([x,y]) => decs.push({ type: 'tree', x, y }));
-
-  // Flowers
-  for (let i = 0; i < 28; i++) {
-    decs.push({
-      type: 'flower',
-      x: 30 + Math.random() * (W-60),
-      y: 30 + Math.random() * (H-60),
-      color: ['#ff6b9d','#ffd166','#06d6a0','#ff9de2','#c77dff'][Math.floor(Math.random()*5)],
-      seed: Math.random()
-    });
+  treePos.forEach(([x,y]) => decs.push({ type:'tree', x, y }));
+  for (let i = 0; i < 30; i++) {
+    decs.push({ type:'flower', x:30+Math.random()*(W-60), y:30+Math.random()*(H-60),
+      color:['#ff6b9d','#ffd166','#06d6a0','#ff9de2','#c77dff'][Math.floor(Math.random()*5)], seed:Math.random() });
   }
-
-  // Rocks
-  const rocks = [[200,150],[580,200],[150,400],[650,420],[300,490],[480,130]];
-  rocks.forEach(([x,y]) => decs.push({ type:'rock', x, y, size: 0.8+Math.random()*0.5 }));
-
-  // Benches
+  [[200,150],[580,200],[150,420],[650,440],[300,510],[480,130]].forEach(([x,y]) =>
+    decs.push({ type:'rock', x, y, size:0.8+Math.random()*0.5 }));
   decs.push({ type:'bench', x:200, y:100 });
-  decs.push({ type:'bench', x:560, y:480 });
-
-  // Well
+  decs.push({ type:'bench', x:560, y:500 });
   decs.push({ type:'well', x:390, y:300 });
-
-  // Pond
-  decs.push({ type:'pond', x:620, y:150, rx:52, ry:32 });
-
+  decs.push({ type:'pond', x:620, y:155, rx:52, ry:32 });
   return decs;
 }
-
-// Sort decorations: trees behind, pond behind
-decorations.sort((a,b) => {
-  const order = { pond:0, rock:1, flower:1, bench:2, tree:3, well:3 };
-  return (order[a.type]||0) - (order[b.type]||0);
-});
+decorations.sort((a,b) => ({pond:0,rock:1,flower:1,bench:2,tree:3,well:3}[a.type]||0) - ({pond:0,rock:1,flower:1,bench:2,tree:3,well:3}[b.type]||0));
 
 function drawWorld() {
-  // Grass base
-  ctx.fillStyle = '#2d6a4f';
-  ctx.fillRect(0, 0, W, H);
-
-  // Subtle grass texture patches
-  ctx.globalAlpha = 0.18;
-  for (let i = 0; i < 60; i++) {
-    const gx = (i * 137) % W;
-    const gy = (i * 97 + 30) % H;
-    ctx.fillStyle = i % 2 === 0 ? '#40916c' : '#1b4332';
-    ctx.fillRect(gx, gy, 40 + (i%3)*20, 30 + (i%4)*15);
+  ctx.fillStyle='#2d6a4f'; ctx.fillRect(0,0,W,H);
+  ctx.globalAlpha=0.18;
+  for(let i=0;i<60;i++){
+    ctx.fillStyle=i%2?'#40916c':'#1b4332';
+    ctx.fillRect((i*137)%W,(i*97+30)%H,40+(i%3)*20,30+(i%4)*15);
   }
-  ctx.globalAlpha = 1;
-
-  // Dirt path (cross)
-  ctx.fillStyle = '#8b7355';
-  // Horizontal path
-  ctx.fillRect(0, H/2-22, W, 44);
-  // Vertical path
-  ctx.fillRect(W/2-22, 0, 44, H);
-
-  // Path detail
-  ctx.fillStyle = '#7a6444';
-  ctx.globalAlpha = 0.4;
-  ctx.fillRect(0, H/2-1, W, 2);
-  ctx.fillRect(W/2-1, 0, 2, H);
-  ctx.globalAlpha = 1;
-
-  // Border grass edge
-  ctx.strokeStyle = '#1b4332';
-  ctx.lineWidth = 6;
-  ctx.strokeRect(3, 3, W-6, H-6);
-
-  // Draw decorations
-  decorations.forEach(d => drawDecoration(d));
+  ctx.globalAlpha=1;
+  ctx.fillStyle='#8b7355'; ctx.fillRect(0,H/2-22,W,44); ctx.fillRect(W/2-22,0,44,H);
+  ctx.fillStyle='#7a6444'; ctx.globalAlpha=0.4;
+  ctx.fillRect(0,H/2-1,W,2); ctx.fillRect(W/2-1,0,2,H);
+  ctx.globalAlpha=1;
+  ctx.strokeStyle='#1b4332'; ctx.lineWidth=6; ctx.strokeRect(3,3,W-6,H-6);
+  decorations.forEach(drawDecoration);
 }
 
 function drawDecoration(d) {
-  if (d.type === 'pond') {
-    // Pond
+  if(d.type==='pond'){
     ctx.save();
-    ctx.beginPath();
-    ctx.ellipse(d.x, d.y, d.rx, d.ry, 0, 0, Math.PI*2);
-    const pg = ctx.createRadialGradient(d.x-10, d.y-8, 4, d.x, d.y, d.rx);
-    pg.addColorStop(0, '#64b5f6');
-    pg.addColorStop(0.6, '#1e88e5');
-    pg.addColorStop(1, '#0d47a1');
-    ctx.fillStyle = pg;
-    ctx.fill();
-    ctx.strokeStyle = '#42a5f5';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    // Shine
-    ctx.globalAlpha = 0.35;
-    ctx.beginPath();
-    ctx.ellipse(d.x-14, d.y-10, 18, 8, -0.4, 0, Math.PI*2);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-    ctx.globalAlpha = 1;
-    ctx.restore();
-  } else if (d.type === 'tree') {
-    drawTree(d.x, d.y);
-  } else if (d.type === 'flower') {
-    drawFlower(d.x, d.y, d.color);
-  } else if (d.type === 'rock') {
-    drawRock(d.x, d.y, d.size);
-  } else if (d.type === 'bench') {
-    drawBench(d.x, d.y);
-  } else if (d.type === 'well') {
-    drawWell(d.x, d.y);
-  }
+    ctx.beginPath(); ctx.ellipse(d.x,d.y,d.rx,d.ry,0,0,Math.PI*2);
+    const pg=ctx.createRadialGradient(d.x-10,d.y-8,4,d.x,d.y,d.rx);
+    pg.addColorStop(0,'#64b5f6'); pg.addColorStop(0.6,'#1e88e5'); pg.addColorStop(1,'#0d47a1');
+    ctx.fillStyle=pg; ctx.fill(); ctx.strokeStyle='#42a5f5'; ctx.lineWidth=2; ctx.stroke();
+    ctx.globalAlpha=0.35; ctx.beginPath(); ctx.ellipse(d.x-14,d.y-10,18,8,-0.4,0,Math.PI*2);
+    ctx.fillStyle='white'; ctx.fill(); ctx.globalAlpha=1; ctx.restore();
+  } else if(d.type==='tree') drawTree(d.x,d.y);
+  else if(d.type==='flower') drawFlower(d.x,d.y,d.color);
+  else if(d.type==='rock') drawRock(d.x,d.y,d.size);
+  else if(d.type==='bench') drawBench(d.x,d.y);
+  else if(d.type==='well') drawWell(d.x,d.y);
 }
-
-function drawTree(x, y) {
-  // Shadow
+function drawTree(x,y){
   ctx.save();
-  ctx.globalAlpha = 0.2;
-  ctx.beginPath();
-  ctx.ellipse(x+4, y+6, 14, 8, 0, 0, Math.PI*2);
-  ctx.fillStyle = '#000';
-  ctx.fill();
-  ctx.globalAlpha = 1;
-  // Trunk
-  ctx.fillStyle = '#795548';
-  ctx.fillRect(x-4, y-4, 8, 18);
-  // Canopy layers
-  ctx.fillStyle = '#2e7d32';
-  ctx.beginPath();
-  ctx.arc(x, y-18, 17, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#388e3c';
-  ctx.beginPath();
-  ctx.arc(x-3, y-22, 13, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#43a047';
-  ctx.beginPath();
-  ctx.arc(x+2, y-24, 10, 0, Math.PI*2);
-  ctx.fill();
+  ctx.globalAlpha=0.2; ctx.beginPath(); ctx.ellipse(x+4,y+6,14,8,0,0,Math.PI*2); ctx.fillStyle='#000'; ctx.fill(); ctx.globalAlpha=1;
+  ctx.fillStyle='#795548'; ctx.fillRect(x-4,y-4,8,18);
+  ctx.fillStyle='#2e7d32'; ctx.beginPath(); ctx.arc(x,y-18,17,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#388e3c'; ctx.beginPath(); ctx.arc(x-3,y-22,13,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#43a047'; ctx.beginPath(); ctx.arc(x+2,y-24,10,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+function drawFlower(x,y,color){
+  ctx.save();
+  ctx.strokeStyle='#4caf50'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x,y+6); ctx.lineTo(x,y); ctx.stroke();
+  ctx.fillStyle=color;
+  for(let i=0;i<5;i++){ const a=(i/5)*Math.PI*2; ctx.beginPath(); ctx.arc(x+Math.cos(a)*4,y+Math.sin(a)*4,3.5,0,Math.PI*2); ctx.fill(); }
+  ctx.fillStyle='#fff176'; ctx.beginPath(); ctx.arc(x,y,2.5,0,Math.PI*2); ctx.fill(); ctx.restore();
+}
+function drawRock(x,y,size){
+  ctx.save();
+  ctx.fillStyle='#78909c'; ctx.beginPath(); ctx.ellipse(x,y,10*size,7*size,0.2,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#90a4ae'; ctx.beginPath(); ctx.ellipse(x-2,y-2,6*size,4*size,0.2,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+function drawBench(x,y){
+  ctx.save();
+  ctx.fillStyle='#5d4037'; ctx.fillRect(x-14,y-2,5,12); ctx.fillRect(x+9,y-2,5,12);
+  ctx.fillStyle='#8d6e63'; ctx.fillRect(x-18,y-6,36,7); ctx.fillRect(x-18,y-16,36,5);
+  ctx.restore();
+}
+function drawWell(x,y){
+  ctx.save();
+  ctx.fillStyle='#9e9e9e'; ctx.beginPath(); ctx.ellipse(x,y+6,18,10,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#bdbdbd'; ctx.fillRect(x-18,y-14,36,20);
+  ctx.fillStyle='#9e9e9e'; ctx.beginPath(); ctx.ellipse(x,y-14,18,10,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#4fc3f7'; ctx.beginPath(); ctx.ellipse(x,y-14,14,7,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#5d4037'; ctx.fillRect(x-22,y-36,5,26); ctx.fillRect(x+17,y-36,5,26);
+  ctx.fillStyle='#bf360c'; ctx.beginPath(); ctx.moveTo(x-28,y-34); ctx.lineTo(x,y-52); ctx.lineTo(x+28,y-34); ctx.closePath(); ctx.fill();
   ctx.restore();
 }
 
-function drawFlower(x, y, color) {
-  ctx.save();
-  // Stem
-  ctx.strokeStyle = '#4caf50';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(x, y+6);
-  ctx.lineTo(x, y);
-  ctx.stroke();
-  // Petals
-  ctx.fillStyle = color;
-  for (let i = 0; i < 5; i++) {
-    const a = (i / 5) * Math.PI * 2;
-    ctx.beginPath();
-    ctx.arc(x + Math.cos(a)*4, y + Math.sin(a)*4, 3.5, 0, Math.PI*2);
-    ctx.fill();
-  }
-  // Center
-  ctx.fillStyle = '#fff176';
-  ctx.beginPath();
-  ctx.arc(x, y, 2.5, 0, Math.PI*2);
-  ctx.fill();
-  ctx.restore();
-}
-
-function drawRock(x, y, size) {
-  ctx.save();
-  ctx.fillStyle = '#78909c';
-  ctx.beginPath();
-  ctx.ellipse(x, y, 10*size, 7*size, 0.2, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#90a4ae';
-  ctx.beginPath();
-  ctx.ellipse(x-2, y-2, 6*size, 4*size, 0.2, 0, Math.PI*2);
-  ctx.fill();
-  ctx.restore();
-}
-
-function drawBench(x, y) {
-  ctx.save();
-  // Legs
-  ctx.fillStyle = '#5d4037';
-  ctx.fillRect(x-14, y-2, 5, 12);
-  ctx.fillRect(x+9, y-2, 5, 12);
-  // Seat
-  ctx.fillStyle = '#8d6e63';
-  ctx.fillRect(x-18, y-6, 36, 7);
-  // Back
-  ctx.fillRect(x-18, y-16, 36, 5);
-  ctx.restore();
-}
-
-function drawWell(x, y) {
-  ctx.save();
-  // Base
-  ctx.fillStyle = '#9e9e9e';
-  ctx.beginPath();
-  ctx.ellipse(x, y+6, 18, 10, 0, 0, Math.PI*2);
-  ctx.fill();
-  // Walls
-  ctx.fillStyle = '#bdbdbd';
-  ctx.fillRect(x-18, y-14, 36, 20);
-  ctx.fillStyle = '#9e9e9e';
-  ctx.beginPath();
-  ctx.ellipse(x, y-14, 18, 10, 0, 0, Math.PI*2);
-  ctx.fill();
-  // Water
-  ctx.fillStyle = '#4fc3f7';
-  ctx.beginPath();
-  ctx.ellipse(x, y-14, 14, 7, 0, 0, Math.PI*2);
-  ctx.fill();
-  // Roof posts
-  ctx.fillStyle = '#5d4037';
-  ctx.fillRect(x-22, y-36, 5, 26);
-  ctx.fillRect(x+17, y-36, 5, 26);
-  // Roof
-  ctx.fillStyle = '#bf360c';
-  ctx.beginPath();
-  ctx.moveTo(x-28, y-34);
-  ctx.lineTo(x, y-52);
-  ctx.lineTo(x+28, y-34);
-  ctx.closePath();
-  ctx.fill();
-  ctx.restore();
-}
-
-// CAT DRAWING
-function drawCat(x, y, color, name, isMe, emote) {
+// ════════════════════════════════════════════
+//  CAT DRAWING
+// ════════════════════════════════════════════
+function drawCat(x, y, color, name, isMe, emote, digging, digPhase) {
   const c = color;
   ctx.save();
 
+  // Digging wobble offset
+  let wobbleX = 0, wobbleY = 0;
+  if (digging) {
+    wobbleX = Math.sin(digPhase * 0.4) * 3;
+    wobbleY = Math.abs(Math.sin(digPhase * 0.3)) * -2;
+  }
+  const cx = x + wobbleX, cy = y + wobbleY;
+
   const r = 14;
-  const shadowAlpha = isMe ? 0.35 : 0.2;
 
   // Shadow
-  ctx.globalAlpha = shadowAlpha;
-  ctx.beginPath();
-  ctx.ellipse(x+2, y+r+4, r, 5, 0, 0, Math.PI*2);
-  ctx.fillStyle = '#000';
-  ctx.fill();
-  ctx.globalAlpha = 1;
+  ctx.globalAlpha = isMe ? 0.35 : 0.2;
+  ctx.beginPath(); ctx.ellipse(cx+2, cy+r+4, r, 5, 0, 0, Math.PI*2);
+  ctx.fillStyle = '#000'; ctx.fill(); ctx.globalAlpha = 1;
 
   // Me ring
   if (isMe) {
-    ctx.beginPath();
-    ctx.arc(x, y, r+5, 0, Math.PI*2);
-    ctx.strokeStyle = '#c77dff';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([4, 3]);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(cx, cy, r+5, 0, Math.PI*2);
+    ctx.strokeStyle = '#c77dff'; ctx.lineWidth = 2; ctx.setLineDash([4,3]); ctx.stroke(); ctx.setLineDash([]);
+  }
+
+  // Digging dust particles
+  if (digging) {
+    ctx.globalAlpha = 0.5;
+    for (let i = 0; i < 4; i++) {
+      const a = (digPhase * 0.15 + i * 1.57);
+      const dr = 18 + Math.sin(digPhase * 0.2 + i) * 4;
+      ctx.beginPath();
+      ctx.arc(cx + Math.cos(a)*dr, cy + r + Math.abs(Math.sin(a))*8, 2.5, 0, Math.PI*2);
+      ctx.fillStyle = '#8b7355';
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
   }
 
   // Body
-  ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI*2);
-  ctx.fillStyle = c.body;
-  ctx.fill();
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+  ctx.fillStyle = c.body; ctx.fill();
 
-  // Stripe (subtle)
-  ctx.globalAlpha = 0.3;
-  ctx.fillStyle = c.stripe;
-  ctx.beginPath();
-  ctx.ellipse(x, y-2, 6, 9, 0, 0, Math.PI*2);
-  ctx.fill();
-  ctx.globalAlpha = 1;
+  // Stripe
+  ctx.globalAlpha = 0.3; ctx.fillStyle = c.stripe;
+  ctx.beginPath(); ctx.ellipse(cx, cy-2, 6, 9, 0, 0, Math.PI*2); ctx.fill(); ctx.globalAlpha = 1;
 
   // Ears
   function ear(ex, ey, flip) {
-    ctx.beginPath();
-    ctx.moveTo(ex, ey);
-    ctx.lineTo(ex + flip*10, ey - 14);
-    ctx.lineTo(ex + flip*16, ey - 2);
-    ctx.closePath();
-    ctx.fillStyle = c.ear;
-    ctx.fill();
-    // Inner ear
-    ctx.beginPath();
-    ctx.moveTo(ex + flip*2, ey - 2);
-    ctx.lineTo(ex + flip*10, ey - 11);
-    ctx.lineTo(ex + flip*13, ey - 3);
-    ctx.closePath();
-    ctx.fillStyle = '#ffcdd2';
-    ctx.globalAlpha = 0.7;
-    ctx.fill();
-    ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.moveTo(ex,ey); ctx.lineTo(ex+flip*10,ey-14); ctx.lineTo(ex+flip*16,ey-2); ctx.closePath();
+    ctx.fillStyle = c.ear; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(ex+flip*2,ey-2); ctx.lineTo(ex+flip*10,ey-11); ctx.lineTo(ex+flip*13,ey-3); ctx.closePath();
+    ctx.fillStyle='#ffcdd2'; ctx.globalAlpha=0.7; ctx.fill(); ctx.globalAlpha=1;
   }
-  ear(x - 8, y - 10, -1);
-  ear(x + 8, y - 10, 1);
+  ear(cx-8, cy-10, -1); ear(cx+8, cy-10, 1);
 
-  // Eyes
-  ctx.fillStyle = '#1a0030';
-  ctx.beginPath();
-  ctx.ellipse(x - 5, y - 3, 3, 4, 0, 0, Math.PI*2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(x + 5, y - 3, 3, 4, 0, 0, Math.PI*2);
-  ctx.fill();
-  // Eye shine
-  ctx.fillStyle = 'white';
-  ctx.beginPath();
-  ctx.arc(x - 4, y - 5, 1.2, 0, Math.PI*2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(x + 6, y - 5, 1.2, 0, Math.PI*2);
-  ctx.fill();
+  // Eyes — squint while digging
+  if (digging) {
+    ctx.strokeStyle = '#1a0030'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(cx-7,cy-3); ctx.lineTo(cx-3,cy-3); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx+3,cy-3); ctx.lineTo(cx+7,cy-3); ctx.stroke();
+  } else {
+    ctx.fillStyle = '#1a0030';
+    ctx.beginPath(); ctx.ellipse(cx-5,cy-3,3,4,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx+5,cy-3,3,4,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'white';
+    ctx.beginPath(); ctx.arc(cx-4,cy-5,1.2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+6,cy-5,1.2,0,Math.PI*2); ctx.fill();
+  }
 
   // Nose
-  ctx.fillStyle = '#f48fb1';
-  ctx.beginPath();
-  ctx.moveTo(x, y + 1);
-  ctx.lineTo(x - 2.5, y + 4);
-  ctx.lineTo(x + 2.5, y + 4);
-  ctx.closePath();
-  ctx.fill();
+  ctx.fillStyle='#f48fb1';
+  ctx.beginPath(); ctx.moveTo(cx,cy+1); ctx.lineTo(cx-2.5,cy+4); ctx.lineTo(cx+2.5,cy+4); ctx.closePath(); ctx.fill();
 
   // Mouth
-  ctx.strokeStyle = '#1a0030';
-  ctx.lineWidth = 1.2;
-  ctx.beginPath();
-  ctx.moveTo(x, y + 4);
-  ctx.quadraticCurveTo(x - 4, y + 8, x - 6, y + 6);
-  ctx.moveTo(x, y + 4);
-  ctx.quadraticCurveTo(x + 4, y + 8, x + 6, y + 6);
-  ctx.stroke();
+  ctx.strokeStyle='#1a0030'; ctx.lineWidth=1.2;
+  ctx.beginPath(); ctx.moveTo(cx,cy+4); ctx.quadraticCurveTo(cx-4,cy+8,cx-6,cy+6);
+  ctx.moveTo(cx,cy+4); ctx.quadraticCurveTo(cx+4,cy+8,cx+6,cy+6); ctx.stroke();
 
   // Whiskers
-  ctx.strokeStyle = 'rgba(255,255,255,0.7)';
-  ctx.lineWidth = 1;
-  for (let s of [-1, 1]) {
-    ctx.beginPath();
-    ctx.moveTo(x + s*3, y + 3);
-    ctx.lineTo(x + s*16, y + 1);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x + s*3, y + 5);
-    ctx.lineTo(x + s*16, y + 5);
-    ctx.stroke();
+  ctx.strokeStyle='rgba(255,255,255,0.7)'; ctx.lineWidth=1;
+  for(let s of[-1,1]){
+    ctx.beginPath(); ctx.moveTo(cx+s*3,cy+3); ctx.lineTo(cx+s*16,cy+1); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx+s*3,cy+5); ctx.lineTo(cx+s*16,cy+5); ctx.stroke();
   }
 
-  // Tail (little arc behind)
-  ctx.strokeStyle = c.ear;
-  ctx.lineWidth = 3.5;
-  ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(x - r + 2, y + 8);
-  ctx.quadraticCurveTo(x - r - 12, y + 22, x - r - 4, y + 32);
-  ctx.stroke();
+  // Tail
+  ctx.strokeStyle=c.ear; ctx.lineWidth=3.5; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(cx-r+2,cy+8); ctx.quadraticCurveTo(cx-r-12,cy+22,cx-r-4,cy+32); ctx.stroke();
+
+  // Shovel if digging
+  if (digging) {
+    ctx.save();
+    ctx.translate(cx+16, cy+10);
+    ctx.rotate(Math.sin(digPhase * 0.3) * 0.4 - 0.3);
+    ctx.fillStyle = '#8d6e63'; ctx.fillRect(-2, -16, 4, 14);
+    ctx.fillStyle = '#78909c'; ctx.fillRect(-5, -20, 10, 8); ctx.restore();
+  }
 
   // Name tag
   const nameText = isMe ? `${name} ★` : name;
   ctx.font = 'bold 11px Nunito, sans-serif';
   const tw = ctx.measureText(nameText).width;
-  const tagW = tw + 10;
-  const tagH = 16;
-  const tagX = x - tagW/2;
-  const tagY = y - r - 24;
-
+  const tagW = tw+10, tagH = 16;
+  const tagX = cx-tagW/2, tagY = cy-r-24;
   ctx.fillStyle = isMe ? 'rgba(199,125,255,0.9)' : 'rgba(22,14,34,0.85)';
-  roundRect(ctx, tagX, tagY, tagW, tagH, 5);
-  ctx.fill();
-
+  roundRect(ctx,tagX,tagY,tagW,tagH,5); ctx.fill();
   ctx.fillStyle = isMe ? '#1a0030' : '#f0e6ff';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(nameText, x, tagY + tagH/2);
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(nameText, cx, tagY+tagH/2);
 
   // Emote bubble
   if (emote) {
-    const bx = x + 16;
-    const by = y - r - 10;
-    ctx.fillStyle = 'rgba(255,255,255,0.92)';
-    roundRect(ctx, bx - 2, by - 14, 28, 24, 8);
-    ctx.fill();
-    ctx.font = '16px serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(emote, bx + 12, by - 2);
+    const bx=cx+16, by=cy-r-10;
+    ctx.fillStyle='rgba(255,255,255,0.92)';
+    roundRect(ctx,bx-2,by-14,28,24,8); ctx.fill();
+    ctx.font='16px serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(emote, bx+12, by-2);
   }
 
   ctx.restore();
 }
 
-function roundRect(ctx, x, y, w, h, r) {
+function roundRect(ctx,x,y,w,h,r){
   ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
   ctx.closePath();
 }
 
-// ── GAME STATE ──
+// ════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════
 let myId = null;
 let players = {};
 let keys = {};
 let joined = false;
 let socket = null;
+let myCoins = 0;
+let myInventory = [];
+let isDigging = false;
+let digStartTime = 0;
+let digPhase = 0; // animation counter
+const DIG_DURATION = 15000;
+let newItemCount = 0;
 
-// ── SOCKET ──
+// ════════════════════════════════════════════
+//  SOCKET
+// ════════════════════════════════════════════
 function initSocket() {
   socket = io();
 
   socket.on('init', (data) => {
     myId = data.id;
     players = {};
-    data.players.forEach(p => { players[p.id] = p; });
+    data.players.forEach(p => { players[p.id] = p; players[p.id].digPhase = 0; });
     data.chatHistory.forEach(addChatMsg);
     document.getElementById('chatInput').disabled = false;
+    document.getElementById('coinHud').style.display = 'flex';
     updatePlayerCount();
   });
 
   socket.on('playerJoined', (p) => {
-    players[p.id] = p;
+    players[p.id] = { ...p, digPhase: 0 };
     updatePlayerCount();
     addSystemMsg(`🐱 ${p.name} joined the lobby`);
   });
 
   socket.on('playerLeft', (id) => {
-    const p = players[id];
-    if (p) addSystemMsg(`👋 ${p.name} left the lobby`);
+    if (players[id]) addSystemMsg(`👋 ${players[id].name} left`);
     delete players[id];
     updatePlayerCount();
   });
@@ -834,22 +782,177 @@ function initSocket() {
         players[u.id].x = u.x;
         players[u.id].y = u.y;
         players[u.id].emote = u.emote;
+        players[u.id].digging = u.digging;
+        if (u.digging) players[u.id].digPhase = (players[u.id].digPhase||0) + 1;
       }
     });
   });
 
   socket.on('chat', addChatMsg);
+  socket.on('emote', ({ id, emote }) => { if (players[id]) players[id].emote = emote; });
 
-  socket.on('emote', ({ id, emote }) => {
-    if (players[id]) players[id].emote = emote;
+  socket.on('playerDig', ({ id, digging }) => {
+    if (players[id]) {
+      players[id].digging = digging;
+      if (!digging) players[id].digPhase = 0;
+    }
+  });
+
+  socket.on('digFind', (find) => {
+    handleDigFind(find);
+  });
+
+  socket.on('digStopped', () => {
+    endDig();
   });
 }
 
-// ── CHAT ──
+// ════════════════════════════════════════════
+//  DIG LOGIC
+// ════════════════════════════════════════════
+const digBtn = document.getElementById('digBtn');
+const digProgressWrap = document.getElementById('digProgressWrap');
+const digProgressBar = document.getElementById('digProgress');
+let digProgressInterval = null;
+
+digBtn.addEventListener('click', () => {
+  if (!joined || !socket) return;
+  if (isDigging) {
+    socket.emit('stopDig');
+    endDig();
+  } else {
+    startDig();
+  }
+});
+
+function startDig() {
+  isDigging = true;
+  digStartTime = Date.now();
+  digBtn.textContent = '✋ Stop Digging';
+  digBtn.classList.add('digging');
+  digProgressWrap.classList.add('active');
+  digProgressBar.style.width = '100%';
+  socket.emit('startDig');
+
+  digProgressInterval = setInterval(() => {
+    const elapsed = Date.now() - digStartTime;
+    const pct = Math.max(0, 100 - (elapsed / DIG_DURATION) * 100);
+    digProgressBar.style.width = pct + '%';
+    if (elapsed >= DIG_DURATION) endDig();
+  }, 100);
+}
+
+function endDig() {
+  if (!isDigging) return;
+  isDigging = false;
+  clearInterval(digProgressInterval);
+  digBtn.textContent = '⛏️ Dig';
+  digBtn.classList.remove('digging');
+  digProgressWrap.classList.remove('active');
+  digProgressBar.style.width = '100%';
+}
+
+// ════════════════════════════════════════════
+//  DIG FIND HANDLER
+// ════════════════════════════════════════════
+function handleDigFind(find) {
+  if (find.type === 'coin') {
+    myCoins = find.totalCoins;
+    document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
+    showToast(find.emoji, `+${find.value} Coin${find.value>1?'s':''}`, 'Found coins!', 'coin');
+  } else if (find.type === 'item') {
+    myInventory = find.inventory;
+    renderInventory();
+    showToast(find.emoji, find.label, find.rarity.charAt(0).toUpperCase()+find.rarity.slice(1), find.rarity);
+    // Badge on inventory tab
+    newItemCount++;
+    const badge = document.getElementById('invBadge');
+    badge.textContent = newItemCount > 9 ? '!' : newItemCount;
+    badge.classList.add('show');
+  } else {
+    showToast(find.emoji, find.label, 'Keep digging...', 'nothing');
+  }
+}
+
+// ════════════════════════════════════════════
+//  INVENTORY RENDER
+// ════════════════════════════════════════════
+const rarityOrder = { legendary:0, rare:1, uncommon:2, common:3 };
+
+function renderInventory() {
+  const pane = document.getElementById('inventoryPane');
+  if (!myInventory.length) {
+    pane.innerHTML = '<div class="inv-empty"><span class="big">🎒</span>Go dig something up!</div>';
+    return;
+  }
+
+  const sorted = [...myInventory].sort((a,b) => (rarityOrder[a.rarity]||3) - (rarityOrder[b.rarity]||3));
+  const groups = {};
+  sorted.forEach(item => {
+    const r = item.rarity || 'common';
+    if (!groups[r]) groups[r] = [];
+    groups[r].push(item);
+  });
+
+  let html = '';
+  const order = ['legendary','rare','uncommon','common'];
+  order.forEach(r => {
+    if (!groups[r]) return;
+    html += `<div class="inv-section-title">${r}</div><div class="inv-grid">`;
+    groups[r].forEach(item => {
+      html += `
+        <div class="inv-item rarity-${item.rarity}" title="${item.label}">
+          <span class="emoji">${item.emoji}</span>
+          <span class="item-name">${item.label}</span>
+          <span class="item-rarity rarity-${item.rarity}">${item.rarity}</span>
+          ${item.qty > 1 ? `<span class="item-qty">x${item.qty}</span>` : ''}
+        </div>`;
+    });
+    html += '</div>';
+  });
+
+  pane.innerHTML = html;
+}
+
+// ════════════════════════════════════════════
+//  TOASTS
+// ════════════════════════════════════════════
+function showToast(emoji, label, sub, type) {
+  const container = document.getElementById('toastContainer');
+  const div = document.createElement('div');
+  div.className = `find-toast ${type}`;
+  div.innerHTML = `<span class="t-emoji">${emoji}</span><div class="t-text"><span class="t-label">${label}</span><span class="t-sub">${sub}</span></div>`;
+  container.appendChild(div);
+  setTimeout(() => {
+    div.classList.add('remove');
+    setTimeout(() => div.remove(), 350);
+  }, 2800);
+}
+
+// ════════════════════════════════════════════
+//  TABS
+// ════════════════════════════════════════════
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`pane-${tab}`).classList.add('active');
+    if (tab === 'inventory') {
+      newItemCount = 0;
+      document.getElementById('invBadge').classList.remove('show');
+    }
+  });
+});
+
+// ════════════════════════════════════════════
+//  CHAT
+// ════════════════════════════════════════════
 const chatMessages = document.getElementById('chatMessages');
 
 function addChatMsg(entry) {
-  const color = CAT_COLORS[entry.colorIndex];
+  const color = CAT_COLORS[entry.colorIndex] || CAT_COLORS[0];
   const div = document.createElement('div');
   div.className = 'chat-msg';
   const t = new Date(entry.time);
@@ -860,8 +963,7 @@ function addChatMsg(entry) {
       <span class="chat-name" style="color:${color.body}">${escHtml(entry.name)}</span>
       <span class="chat-time">${time}</span>
     </div>
-    <div class="chat-text">${escHtml(entry.msg)}</div>
-  `;
+    <div class="chat-text">${escHtml(entry.msg)}</div>`;
   chatMessages.appendChild(div);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
@@ -883,12 +985,28 @@ function updatePlayerCount() {
   document.getElementById('playerCount').textContent = `🐱 ${n} cat${n===1?'':'s'} online`;
 }
 
-// ── INPUT ──
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg || !socket) return;
+  socket.emit('chat', msg);
+  input.value = '';
+}
+document.getElementById('sendBtn').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e => { if(e.key==='Enter') sendChat(); });
+
+// ════════════════════════════════════════════
+//  INPUT
+// ════════════════════════════════════════════
 window.addEventListener('keydown', e => {
-  const tag = e.target.tagName;
-  if (tag === 'INPUT') return;
-  if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s'].includes(e.key)) {
-    e.preventDefault();
+  if (e.target.tagName === 'INPUT') return;
+  if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' '].includes(e.key)) e.preventDefault();
+  if (e.key === ' ' || e.key === 'e' || e.key === 'E') {
+    if (joined && socket) {
+      if (isDigging) { socket.emit('stopDig'); endDig(); }
+      else startDig();
+    }
+    return;
   }
   handleKey(e.key, true);
 });
@@ -896,25 +1014,23 @@ window.addEventListener('keyup', e => handleKey(e.key, false));
 
 function handleKey(key, down) {
   if (!joined) return;
-  const map = {
-    ArrowLeft: 'left', a: 'left', A: 'left',
-    ArrowRight: 'right', d: 'right', D: 'right',
-    ArrowUp: 'up', w: 'up', W: 'up',
-    ArrowDown: 'down', s: 'down', S: 'down',
-  };
+  const map = { ArrowLeft:'left', a:'left', A:'left', ArrowRight:'right', d:'right', D:'right',
+                ArrowUp:'up', w:'up', W:'up', ArrowDown:'down', s:'down', S:'down' };
   const k = map[key];
   if (!k) return;
-  if (keys[k] !== down) {
-    keys[k] = down;
-    socket.emit('keys', keys);
-  }
+  if (keys[k] !== down) { keys[k] = down; socket.emit('keys', keys); }
 }
 
-// ── JOIN ──
-document.getElementById('joinBtn').addEventListener('click', doJoin);
-document.getElementById('nameInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doJoin();
+// Emotes
+document.querySelectorAll('.emote-btn').forEach(btn => {
+  btn.addEventListener('click', () => { if(socket&&joined) socket.emit('emote', btn.dataset.emote); });
 });
+
+// ════════════════════════════════════════════
+//  JOIN
+// ════════════════════════════════════════════
+document.getElementById('joinBtn').addEventListener('click', doJoin);
+document.getElementById('nameInput').addEventListener('keydown', e => { if(e.key==='Enter') doJoin(); });
 
 function doJoin() {
   const name = document.getElementById('nameInput').value.trim() || 'Cat';
@@ -926,36 +1042,20 @@ function doJoin() {
   }, 200);
 }
 
-// ── CHAT SEND ──
-function sendChat() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg || !socket) return;
-  socket.emit('chat', msg);
-  input.value = '';
-}
-document.getElementById('sendBtn').addEventListener('click', sendChat);
-document.getElementById('chatInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') sendChat();
-});
-
-// ── EMOTES ──
-document.querySelectorAll('.emote-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    if (!socket || !joined) return;
-    socket.emit('emote', btn.dataset.emote);
-  });
-});
-
-// ── RENDER LOOP ──
+// ════════════════════════════════════════════
+//  RENDER LOOP
+// ════════════════════════════════════════════
 function render() {
   ctx.clearRect(0, 0, W, H);
   drawWorld();
 
-  // Sort players by y for correct overlap
+  if (isDigging) digPhase++;
+
   const sorted = Object.values(players).sort((a,b) => a.y - b.y);
   sorted.forEach(p => {
-    drawCat(p.x, p.y, p.color, p.name, p.id === myId, p.emote);
+    const isMe = p.id === myId;
+    const phase = isMe ? digPhase : (p.digPhase || 0);
+    drawCat(p.x, p.y, p.color, p.name, isMe, p.emote, p.digging, phase);
   });
 
   requestAnimationFrame(render);
