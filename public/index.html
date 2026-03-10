@@ -27,8 +27,24 @@ canvas{display:block}
 .tab-btn{flex:1;background:none;border:none;padding:11px 4px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;letter-spacing:.4px;text-transform:uppercase;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;position:relative}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-btn:hover:not(.active){color:var(--text)}
-.tab-pane{display:none;flex:1;flex-direction:column;overflow:hidden}
+.tab-pane{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
 .tab-pane.active{display:flex}
+
+/* ══ GUEST BANNER ══ */
+#guestBanner{flex-shrink:0;background:linear-gradient(135deg,rgba(199,125,255,.12),rgba(255,157,226,.08));border-bottom:1px solid rgba(199,125,255,.25);padding:10px 14px;display:flex;flex-direction:column;gap:6px}
+#guestBanner.hidden{display:none}
+.gb-title{font-size:11px;font-weight:900;color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
+.gb-text{font-size:11px;color:var(--muted);line-height:1.4}
+.gb-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer;align-self:flex-start;transition:transform .1s}
+.gb-btn:hover{transform:scale(1.03)}
+
+/* ══ LOGGED-IN HUD ══ */
+#accountBar{flex-shrink:0;background:rgba(42,25,69,.5);border-bottom:1px solid var(--border);padding:7px 14px;display:flex;align-items:center;gap:8px}
+#accountBar.hidden{display:none}
+.ab-name{font-size:12px;font-weight:800;color:var(--accent);flex:1}
+.ab-email{font-size:10px;color:var(--muted)}
+.ab-logout{background:none;border:1px solid var(--border);border-radius:7px;padding:3px 10px;font-size:11px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--muted);cursor:pointer;transition:color .1s,border-color .1s}
+.ab-logout:hover{color:var(--danger);border-color:var(--danger)}
 
 /* ══ CHAT ══ */
 #chatMessages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:7px;background:var(--chat-bg)}
@@ -43,20 +59,16 @@ canvas{display:block}
 .chat-time{font-size:10px;color:var(--muted);margin-left:auto}
 .chat-text{font-size:13px;color:#d9cce8;padding-left:14px;line-height:1.45;word-break:break-word}
 .chat-system{text-align:center;font-size:11px;color:var(--muted);font-style:italic;padding:1px 0}
-
-/* Private trade notification in chat */
 .chat-trade-notif{background:rgba(42,25,69,.7);border:1px solid var(--border);border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:7px;animation:fadeUp .18s ease}
 .chat-trade-notif.incoming{border-color:rgba(199,125,255,.5)}
 .chat-trade-notif.sent{border-color:rgba(102,187,106,.4)}
 .chat-trade-notif.declined{border-color:rgba(239,83,80,.4)}
-.trade-notif-text{font-size:12px;font-weight:700;color:var(--text)}
+.trade-notif-text{font-size:12px;font-weight:700}
 .trade-notif-text span{color:var(--accent)}
 .trade-notif-btns{display:flex;gap:6px}
-.trade-notif-btns button{flex:1;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:opacity .1s}
-.trade-notif-btns button:hover{opacity:.85}
-.btn-accept{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#1a0030}
-.btn-decline-small{background:rgba(239,83,80,.2);border:1px solid rgba(239,83,80,.4)!important;color:var(--danger)}
-
+.trade-notif-btns button{flex:1;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
+.btn-accept-sm{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#1a0030}
+.btn-decline-sm{background:rgba(239,83,80,.2);border:1px solid rgba(239,83,80,.4)!important;color:var(--danger)}
 #chatInputWrap{padding:10px;border-top:1px solid var(--border);display:flex;gap:8px;background:var(--panel);flex-shrink:0}
 #chatInput{flex:1;background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:13px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;transition:border-color .2s}
 #chatInput:focus{border-color:var(--accent)}
@@ -64,7 +76,7 @@ canvas{display:block}
 #sendBtn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:transform .1s;flex-shrink:0}
 #sendBtn:hover{transform:scale(1.07)}
 
-/* ══ INVENTORY TAB ══ */
+/* ══ INVENTORY ══ */
 #inventoryPane{flex:1;overflow-y:auto;padding:12px;background:var(--chat-bg)}
 #inventoryPane::-webkit-scrollbar{width:4px}
 #inventoryPane::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
@@ -106,7 +118,7 @@ canvas{display:block}
 #digProgressWrap.active{display:block}
 #controls{position:absolute;bottom:10px;left:10px;background:rgba(35,21,51,.75);border:1px solid var(--border);border-radius:12px;padding:5px 10px;font-size:10px;color:var(--muted);backdrop-filter:blur(6px);pointer-events:none;z-index:2}
 
-/* ══ FIND TOASTS ══ */
+/* ══ TOASTS ══ */
 #toastContainer{position:absolute;top:54px;left:10px;display:flex;flex-direction:column;gap:6px;pointer-events:none;width:210px;z-index:5}
 .find-toast{background:rgba(22,14,34,.94);border:1px solid var(--border);border-radius:12px;padding:7px 11px;display:flex;align-items:center;gap:9px;animation:toastIn .22s ease;backdrop-filter:blur(8px)}
 .find-toast.remove{animation:toastOut .28s ease forwards}
@@ -119,15 +131,6 @@ canvas{display:block}
 .find-toast.legendary{border-color:var(--rl);box-shadow:0 0 10px rgba(255,215,64,.25)}
 .find-toast.rare{border-color:var(--rr)}.find-toast.uncommon{border-color:var(--ru)}.find-toast.nothing{opacity:.55}
 
-/* ══ JOIN OVERLAY ══ */
-#nameOverlay{position:absolute;inset:0;background:rgba(10,5,20,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;backdrop-filter:blur(6px);z-index:20}
-#nameOverlay h1{font-size:36px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-#nameOverlay p{color:var(--muted);font-size:14px}
-#nameInput{background:var(--input-bg);border:2px solid var(--border);border-radius:12px;padding:10px 18px;font-size:16px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;width:220px;text-align:center;transition:border-color .2s}
-#nameInput:focus{border-color:var(--accent)}
-#joinBtn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;padding:10px 32px;font-size:15px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer;box-shadow:0 4px 20px rgba(199,125,255,.35);transition:transform .1s}
-#joinBtn:hover{transform:scale(1.04)}
-
 /* ══ CONTEXT MENU ══ */
 #ctxMenu{position:fixed;background:rgba(20,11,32,.97);border:1px solid var(--border);border-radius:12px;padding:5px;min-width:148px;z-index:500;box-shadow:0 8px 32px rgba(0,0,0,.6);backdrop-filter:blur(12px);display:none}
 .ctx-head{padding:5px 10px 7px;border-bottom:1px solid var(--border);margin-bottom:3px}
@@ -137,7 +140,7 @@ canvas{display:block}
 .ctx-icon{font-size:14px;width:18px;text-align:center}
 
 /* ══ MODAL BASE ══ */
-.modal-back{position:fixed;inset:0;background:rgba(8,4,18,.72);backdrop-filter:blur(4px);z-index:300;display:flex;align-items:center;justify-content:center;animation:mfadeIn .15s ease}
+.modal-back{position:fixed;inset:0;background:rgba(8,4,18,.75);backdrop-filter:blur(4px);z-index:300;display:flex;align-items:center;justify-content:center;animation:mfadeIn .15s ease}
 @keyframes mfadeIn{from{opacity:0}to{opacity:1}}
 .modal-box{background:var(--panel);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);animation:mslide .18s ease}
 @keyframes mslide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -145,19 +148,60 @@ canvas{display:block}
 .modal-title{font-size:16px;font-weight:900;color:var(--text);flex:1}
 .modal-close-btn{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;padding:2px 4px;border-radius:6px}
 .modal-close-btn:hover{color:var(--text);background:rgba(255,255,255,.06)}
-.modal-foot{padding:11px 18px;border-top:1px solid var(--border);display:flex;gap:8px}
-.btn{border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:opacity .1s}
+.modal-foot{padding:11px 18px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:opacity .1s,transform .1s}
 .btn:hover{opacity:.88}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#1a0030}
 .btn-secondary{background:var(--input-bg);color:var(--muted);border:1px solid var(--border)}
 .btn-secondary:hover{color:var(--text)}
 .btn-danger{background:rgba(239,83,80,.18);border:1px solid rgba(239,83,80,.4);color:var(--danger)}
 .btn-success{background:linear-gradient(135deg,#388e3c,#66bb6a);color:#fff}
 
+/* ══ FORM FIELDS ══ */
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.form-input{background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:9px 13px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;transition:border-color .2s;width:100%}
+.form-input:focus{border-color:var(--accent)}
+.form-input::placeholder{color:var(--muted)}
+.form-input.error{border-color:var(--danger)}
+.form-error{font-size:11px;color:var(--danger);font-weight:700;min-height:16px}
+.form-success{font-size:11px;color:var(--success);font-weight:700;min-height:16px}
+.form-link{font-size:12px;color:var(--accent);cursor:pointer;font-weight:700;background:none;border:none;padding:0;text-decoration:underline dotted;text-underline-offset:2px}
+.form-link:hover{opacity:.8}
+
+/* ══ AUTH MODAL ══ */
+#authModal .modal-box{width:360px}
+.auth-body{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.auth-divider{text-align:center;color:var(--muted);font-size:11px;position:relative}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
+.auth-divider::before{left:0}.auth-divider::after{right:0}
+
+/* ══ ENTRY OVERLAY ══ */
+#entryOverlay{position:absolute;inset:0;background:rgba(10,5,20,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;backdrop-filter:blur(8px);z-index:20}
+.entry-card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:36px 40px;width:340px;display:flex;flex-direction:column;align-items:center;gap:18px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.entry-logo{font-size:48px;line-height:1}
+.entry-title{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center}
+.entry-sub{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
+.entry-sep{width:100%;height:1px;background:var(--border)}
+.entry-section-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted);align-self:flex-start}
+.entry-name-row{display:flex;gap:8px;width:100%}
+.entry-name-input{flex:1;background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;transition:border-color .2s}
+.entry-name-input:focus{border-color:var(--accent)}
+.entry-name-input::placeholder{color:var(--muted)}
+.entry-guest-btn{background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer;white-space:nowrap;transition:border-color .15s}
+.entry-guest-btn:hover{border-color:var(--accent)}
+.entry-divider-text{font-size:12px;color:var(--muted)}
+.entry-auth-btns{display:flex;gap:10px;width:100%}
+.entry-signin-btn{flex:1;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;padding:11px;font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer;transition:transform .1s}
+.entry-signin-btn:hover{transform:scale(1.03)}
+.entry-signup-btn{flex:1;background:var(--input-bg);border:1.5px solid var(--border);border-radius:12px;padding:11px;font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer;transition:border-color .15s}
+.entry-signup-btn:hover{border-color:var(--accent)}
+
 /* ══ PROFILE MODAL ══ */
 #profileModal .modal-box{width:310px}
 .profile-cat-wrap{flex-shrink:0}
-.profile-name{font-size:17px;font-weight:900}
+.profile-name-text{font-size:17px;font-weight:900}
 .profile-sub{font-size:11px;color:var(--muted);margin-top:2px}
 .profile-body{padding:14px 18px}
 .stat-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(61,32,96,.4);font-size:13px}
@@ -184,14 +228,9 @@ canvas{display:block}
 .trade-col-name{font-size:15px;font-weight:900}
 .trade-divider{width:1px;background:var(--border);flex-shrink:0;margin:14px 0}
 .section-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
-
-/* Offer zone - drag items here */
 .offer-zone{min-height:80px;background:rgba(42,25,69,.35);border:1.5px dashed rgba(61,32,96,.8);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;transition:border-color .2s}
-.offer-zone.mine{cursor:default}
 .offer-zone.mine:hover{border-color:var(--accent)}
 .offer-empty-label{font-size:11px;color:var(--muted);font-style:italic;padding:6px 2px;width:100%}
-
-/* Items in offer zone */
 .offer-chip{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:6px 5px 5px;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;min-width:52px;max-width:60px}
 .offer-chip.mine{cursor:pointer}
 .offer-chip.mine:hover{border-color:var(--danger)}
@@ -202,16 +241,12 @@ canvas{display:block}
 .offer-chip.rarity-uncommon{border-color:rgba(105,240,174,.3)}
 .offer-chip.rarity-rare{border-color:rgba(64,196,255,.3)}
 .offer-chip.rarity-legendary{border-color:rgba(255,215,64,.4)}
-
-/* Coins row */
 .coins-offer-row{background:rgba(42,25,69,.35);border:1px solid var(--border);border-radius:9px;padding:8px 11px;display:flex;align-items:center;gap:8px}
 .coins-offer-row label{font-size:12px;font-weight:700;color:#ffd740;flex:1}
 .coins-offer-row .coins-avail{font-size:10px;color:var(--muted)}
 .coins-offer-row input{width:68px;background:var(--input-bg);border:1.5px solid var(--border);border-radius:7px;padding:4px 7px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:#ffd740;outline:none;text-align:right}
 .coins-offer-row input:focus{border-color:#ffd740}
 .coins-offer-row .coins-display{font-size:14px;font-weight:900;color:#ffd740}
-
-/* Available items grid */
 .avail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
 .avail-item{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:6px 4px 5px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;transition:border-color .15s,background .1s}
 .avail-item:hover{background:rgba(199,125,255,.1);border-color:var(--accent)}
@@ -222,19 +257,16 @@ canvas{display:block}
 .avail-item .a-name{font-size:8px;font-weight:700;text-align:center;line-height:1.2}
 .avail-item .a-qty{position:absolute;top:2px;right:4px;font-size:9px;font-weight:900;color:var(--muted)}
 .avail-item.used-up{opacity:.38;cursor:not-allowed;pointer-events:none}
-
-/* Trade footer */
 .trade-footer{padding:11px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
 .trade-status-text{flex:1;font-size:11px;color:var(--muted)}
 .status-chip{display:inline-block;border-radius:20px;padding:1px 9px;font-size:10px;font-weight:800;font-style:normal}
 .chip-ready{background:rgba(102,187,106,.15);border:1px solid var(--success);color:var(--success)}
-.chip-wait{background:rgba(155,138,176,.1);border:1px solid var(--muted);color:var(--muted)}
 </style>
 </head>
 <body>
 
 <div id="app">
-  <!-- GAME -->
+  <!-- GAME CANVAS -->
   <div id="gameWrap">
     <canvas id="canvas" width="780" height="620"></canvas>
     <div id="hud">
@@ -258,11 +290,30 @@ canvas{display:block}
       </div>
     </div>
     <div id="controls">WASD · Space to dig · Right-click player to interact</div>
-    <div id="nameOverlay">
-      <h1>🐱 Cat Lobby</h1>
-      <p>Dig, collect, and trade with other cats!</p>
-      <input id="nameInput" type="text" maxlength="16" placeholder="Your cat's name..." autocomplete="off">
-      <button id="joinBtn">Join the Lobby →</button>
+
+    <!-- ENTRY OVERLAY (shown before joining) -->
+    <div id="entryOverlay">
+      <div class="entry-card">
+        <div class="entry-logo">🐱</div>
+        <div class="entry-title">Cat Lobby</div>
+        <div class="entry-sub">Dig for treasures, trade with friends,<br>and keep your collection forever.</div>
+        <div class="entry-sep"></div>
+
+        <!-- Guest join -->
+        <div class="entry-section-label">Play as Guest</div>
+        <div class="entry-name-row">
+          <input class="entry-name-input" id="guestNameInput" type="text" maxlength="16" placeholder="Choose a username..." autocomplete="off">
+          <button class="entry-guest-btn" id="guestJoinBtn">Play →</button>
+        </div>
+
+        <div class="entry-divider-text">— or save your progress —</div>
+
+        <!-- Auth buttons -->
+        <div class="entry-auth-btns">
+          <button class="entry-signin-btn" id="entrySignInBtn">🔑 Sign In</button>
+          <button class="entry-signup-btn" id="entrySignUpBtn">✨ Sign Up</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -272,6 +323,23 @@ canvas{display:block}
       <button class="tab-btn active" data-tab="chat">💬 Chat</button>
       <button class="tab-btn" data-tab="inventory" id="invTabBtn">🎒 Bag<span id="invBadge">!</span></button>
     </div>
+
+    <!-- ACCOUNT BAR (shown when logged in) -->
+    <div id="accountBar" class="hidden">
+      <div style="display:flex;flex-direction:column;flex:1;min-width:0">
+        <div class="ab-name" id="abName">Cat</div>
+        <div class="ab-email" id="abEmail"></div>
+      </div>
+      <button class="ab-logout" id="abLogoutBtn">Sign Out</button>
+    </div>
+
+    <!-- GUEST BANNER (shown when guest, top of chat) -->
+    <div id="guestBanner" class="hidden">
+      <div class="gb-title">🔒 Guest Account</div>
+      <div class="gb-text">Your items won't be saved when you leave. Sign up to keep your progress!</div>
+      <button class="gb-btn" id="gbSignUpBtn">Login / Sign Up</button>
+    </div>
+
     <div class="tab-pane active" id="pane-chat">
       <div id="chatMessages"></div>
       <div id="chatInputWrap">
@@ -292,13 +360,26 @@ canvas{display:block}
   <div class="ctx-row" id="ctxSendTrade"><span class="ctx-icon">🤝</span> Send Trade Request</div>
 </div>
 
+<!-- AUTH MODAL (sign in / sign up / claim guest) -->
+<div id="authModal" class="modal-back" style="display:none">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title" id="authModalTitle">🐱 Sign In</div>
+      <button class="modal-close-btn" id="authModalClose">✕</button>
+    </div>
+    <div class="auth-body" id="authModalBody">
+      <!-- content injected by JS -->
+    </div>
+  </div>
+</div>
+
 <!-- PROFILE MODAL -->
 <div id="profileModal" class="modal-back" style="display:none">
   <div class="modal-box">
     <div class="modal-head">
       <canvas id="profileMiniCat" width="46" height="58" class="profile-cat-wrap"></canvas>
       <div style="flex:1">
-        <div class="profile-name" id="profileName">Cat</div>
+        <div class="profile-name-text" id="profileName">Cat</div>
         <div class="profile-sub" id="profileSub">Player</div>
       </div>
       <button class="modal-close-btn" id="profileCloseX">✕</button>
@@ -324,7 +405,6 @@ canvas{display:block}
       <button class="modal-close-btn" id="tradeCloseX">✕</button>
     </div>
     <div class="trade-body">
-      <!-- MY SIDE -->
       <div class="trade-col" id="myTradeCol">
         <div>
           <div class="trade-col-title">Your Offer</div>
@@ -341,7 +421,6 @@ canvas{display:block}
         <div class="avail-grid" id="myAvailGrid"></div>
       </div>
       <div class="trade-divider"></div>
-      <!-- PARTNER SIDE -->
       <div class="trade-col" id="partnerTradeCol">
         <div>
           <div class="trade-col-title">Their Offer</div>
@@ -367,7 +446,7 @@ canvas{display:block}
 'use strict';
 
 // ══════════════════════════════════════════════════════════════
-//  CONSTANTS & STATE
+//  CONSTANTS
 // ══════════════════════════════════════════════════════════════
 const W = 780, H = 620;
 const CAT_COLORS = [
@@ -381,7 +460,12 @@ const CAT_COLORS = [
   {body:'#e9c46a',ear:'#c9a227',stripe:'#d4ad47'},
 ];
 const RARITY_ORDER = {legendary:0,rare:1,uncommon:2,common:3};
+const DIG_DUR = 15000;
+const TOKEN_KEY = 'catlobby_token';
 
+// ══════════════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════════════
 let socket = null;
 let myId = null;
 let players = {};
@@ -389,19 +473,20 @@ let keys = {};
 let joined = false;
 let myCoins = 0;
 let myInventory = [];
-let isDigging = false;
-let digStart = 0;
-let digPhase = 0;
-let digInterval = null;
-const DIG_DUR = 15000;
+let isGuest = true;
+let loggedInUser = null;  // { id, username, email, colorIndex }
+let isDigging = false, digStart = 0, digPhase = 0, digInterval = null;
 let newItemCount = 0;
-
-// Trade state
-let trade = null; // { tradeId, partnerId, partnerName, myOffer:{items,coins}, partnerOffer:{items,coins}, myAccepted, partnerAccepted }
-
-// Context menu state
+let trade = null;
 let ctxTargetId = null;
-let ctxTargetName = '';
+let profileViewId = null;
+
+// ══════════════════════════════════════════════════════════════
+//  TOKEN STORAGE
+// ══════════════════════════════════════════════════════════════
+function getToken()       { return localStorage.getItem(TOKEN_KEY); }
+function setToken(t)      { localStorage.setItem(TOKEN_KEY, t); }
+function clearToken()     { localStorage.removeItem(TOKEN_KEY); }
 
 // ══════════════════════════════════════════════════════════════
 //  CANVAS & WORLD
@@ -422,110 +507,315 @@ const DECS = (()=>{
 
 function drawWorld(){
   ctx.fillStyle='#2d6a4f';ctx.fillRect(0,0,W,H);
-  ctx.globalAlpha=.17;
-  for(let i=0;i<60;i++){ctx.fillStyle=i%2?'#40916c':'#1b4332';ctx.fillRect((i*137)%W,(i*97+30)%H,40+(i%3)*20,30+(i%4)*15);}
-  ctx.globalAlpha=1;
+  ctx.globalAlpha=.17;for(let i=0;i<60;i++){ctx.fillStyle=i%2?'#40916c':'#1b4332';ctx.fillRect((i*137)%W,(i*97+30)%H,40+(i%3)*20,30+(i%4)*15);}ctx.globalAlpha=1;
   ctx.fillStyle='#8b7355';ctx.fillRect(0,H/2-22,W,44);ctx.fillRect(W/2-22,0,44,H);
   ctx.globalAlpha=.4;ctx.fillStyle='#7a6444';ctx.fillRect(0,H/2-1,W,2);ctx.fillRect(W/2-1,0,2,H);ctx.globalAlpha=1;
   ctx.strokeStyle='#1b4332';ctx.lineWidth=6;ctx.strokeRect(3,3,W-6,H-6);
   DECS.forEach(drawDec);
 }
 function drawDec(d){
-  if(d.t==='pond'){
-    ctx.save();ctx.beginPath();ctx.ellipse(d.x,d.y,d.rx,d.ry,0,0,Math.PI*2);
-    const g=ctx.createRadialGradient(d.x-10,d.y-8,4,d.x,d.y,d.rx);
-    g.addColorStop(0,'#64b5f6');g.addColorStop(.6,'#1e88e5');g.addColorStop(1,'#0d47a1');
-    ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='#42a5f5';ctx.lineWidth=2;ctx.stroke();
-    ctx.globalAlpha=.33;ctx.beginPath();ctx.ellipse(d.x-14,d.y-10,18,8,-.4,0,Math.PI*2);ctx.fillStyle='white';ctx.fill();ctx.globalAlpha=1;ctx.restore();
-  } else if(d.t==='tree'){
-    ctx.save();ctx.globalAlpha=.18;ctx.beginPath();ctx.ellipse(d.x+4,d.y+6,14,8,0,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();ctx.globalAlpha=1;
-    ctx.fillStyle='#795548';ctx.fillRect(d.x-4,d.y-4,8,18);
-    ctx.fillStyle='#2e7d32';ctx.beginPath();ctx.arc(d.x,d.y-18,17,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#388e3c';ctx.beginPath();ctx.arc(d.x-3,d.y-22,13,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#43a047';ctx.beginPath();ctx.arc(d.x+2,d.y-24,10,0,Math.PI*2);ctx.fill();ctx.restore();
-  } else if(d.t==='flower'){
-    ctx.save();ctx.strokeStyle='#4caf50';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(d.x,d.y+6);ctx.lineTo(d.x,d.y);ctx.stroke();
-    ctx.fillStyle=d.c;for(let i=0;i<5;i++){const a=(i/5)*Math.PI*2;ctx.beginPath();ctx.arc(d.x+Math.cos(a)*4,d.y+Math.sin(a)*4,3.5,0,Math.PI*2);ctx.fill();}
-    ctx.fillStyle='#fff176';ctx.beginPath();ctx.arc(d.x,d.y,2.5,0,Math.PI*2);ctx.fill();ctx.restore();
-  } else if(d.t==='rock'){
-    ctx.save();ctx.fillStyle='#78909c';ctx.beginPath();ctx.ellipse(d.x,d.y,10*d.s,7*d.s,.2,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#90a4ae';ctx.beginPath();ctx.ellipse(d.x-2,d.y-2,6*d.s,4*d.s,.2,0,Math.PI*2);ctx.fill();ctx.restore();
-  } else if(d.t==='bench'){
-    ctx.save();ctx.fillStyle='#5d4037';ctx.fillRect(d.x-14,d.y-2,5,12);ctx.fillRect(d.x+9,d.y-2,5,12);
-    ctx.fillStyle='#8d6e63';ctx.fillRect(d.x-18,d.y-6,36,7);ctx.fillRect(d.x-18,d.y-16,36,5);ctx.restore();
-  } else if(d.t==='well'){
-    ctx.save();
-    ctx.fillStyle='#9e9e9e';ctx.beginPath();ctx.ellipse(d.x,d.y+6,18,10,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#bdbdbd';ctx.fillRect(d.x-18,d.y-14,36,20);
-    ctx.fillStyle='#9e9e9e';ctx.beginPath();ctx.ellipse(d.x,d.y-14,18,10,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#4fc3f7';ctx.beginPath();ctx.ellipse(d.x,d.y-14,14,7,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#5d4037';ctx.fillRect(d.x-22,d.y-36,5,26);ctx.fillRect(d.x+17,d.y-36,5,26);
-    ctx.fillStyle='#bf360c';ctx.beginPath();ctx.moveTo(d.x-28,d.y-34);ctx.lineTo(d.x,d.y-52);ctx.lineTo(d.x+28,d.y-34);ctx.closePath();ctx.fill();ctx.restore();
-  }
+  if(d.t==='pond'){ctx.save();ctx.beginPath();ctx.ellipse(d.x,d.y,d.rx,d.ry,0,0,Math.PI*2);const g=ctx.createRadialGradient(d.x-10,d.y-8,4,d.x,d.y,d.rx);g.addColorStop(0,'#64b5f6');g.addColorStop(.6,'#1e88e5');g.addColorStop(1,'#0d47a1');ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='#42a5f5';ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=.33;ctx.beginPath();ctx.ellipse(d.x-14,d.y-10,18,8,-.4,0,Math.PI*2);ctx.fillStyle='white';ctx.fill();ctx.globalAlpha=1;ctx.restore();}
+  else if(d.t==='tree'){ctx.save();ctx.globalAlpha=.18;ctx.beginPath();ctx.ellipse(d.x+4,d.y+6,14,8,0,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();ctx.globalAlpha=1;ctx.fillStyle='#795548';ctx.fillRect(d.x-4,d.y-4,8,18);ctx.fillStyle='#2e7d32';ctx.beginPath();ctx.arc(d.x,d.y-18,17,0,Math.PI*2);ctx.fill();ctx.fillStyle='#388e3c';ctx.beginPath();ctx.arc(d.x-3,d.y-22,13,0,Math.PI*2);ctx.fill();ctx.fillStyle='#43a047';ctx.beginPath();ctx.arc(d.x+2,d.y-24,10,0,Math.PI*2);ctx.fill();ctx.restore();}
+  else if(d.t==='flower'){ctx.save();ctx.strokeStyle='#4caf50';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(d.x,d.y+6);ctx.lineTo(d.x,d.y);ctx.stroke();ctx.fillStyle=d.c;for(let i=0;i<5;i++){const a=(i/5)*Math.PI*2;ctx.beginPath();ctx.arc(d.x+Math.cos(a)*4,d.y+Math.sin(a)*4,3.5,0,Math.PI*2);ctx.fill();}ctx.fillStyle='#fff176';ctx.beginPath();ctx.arc(d.x,d.y,2.5,0,Math.PI*2);ctx.fill();ctx.restore();}
+  else if(d.t==='rock'){ctx.save();ctx.fillStyle='#78909c';ctx.beginPath();ctx.ellipse(d.x,d.y,10*d.s,7*d.s,.2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#90a4ae';ctx.beginPath();ctx.ellipse(d.x-2,d.y-2,6*d.s,4*d.s,.2,0,Math.PI*2);ctx.fill();ctx.restore();}
+  else if(d.t==='bench'){ctx.save();ctx.fillStyle='#5d4037';ctx.fillRect(d.x-14,d.y-2,5,12);ctx.fillRect(d.x+9,d.y-2,5,12);ctx.fillStyle='#8d6e63';ctx.fillRect(d.x-18,d.y-6,36,7);ctx.fillRect(d.x-18,d.y-16,36,5);ctx.restore();}
+  else if(d.t==='well'){ctx.save();ctx.fillStyle='#9e9e9e';ctx.beginPath();ctx.ellipse(d.x,d.y+6,18,10,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#bdbdbd';ctx.fillRect(d.x-18,d.y-14,36,20);ctx.fillStyle='#9e9e9e';ctx.beginPath();ctx.ellipse(d.x,d.y-14,18,10,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#4fc3f7';ctx.beginPath();ctx.ellipse(d.x,d.y-14,14,7,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5d4037';ctx.fillRect(d.x-22,d.y-36,5,26);ctx.fillRect(d.x+17,d.y-36,5,26);ctx.fillStyle='#bf360c';ctx.beginPath();ctx.moveTo(d.x-28,d.y-34);ctx.lineTo(d.x,d.y-52);ctx.lineTo(d.x+28,d.y-34);ctx.closePath();ctx.fill();ctx.restore();}
 }
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();}
 
-function rr(c,x,y,w,h,r){
-  c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);
-  c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-  c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);
-  c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();
-}
-
-function drawCat(c, x, y, color, name, isMe, emote, digging, phase){
-  const cc = color || CAT_COLORS[0];
-  c.save();
-  let wx=0,wy=0;
-  if(digging){wx=Math.sin(phase*.4)*3;wy=Math.abs(Math.sin(phase*.3))*-2;}
-  const cx=x+wx, cy=y+wy, R=14;
-
-  // Shadow
+function drawCat(c,x,y,color,name,isMe,emote,digging,phase){
+  const cc=color||CAT_COLORS[0];c.save();
+  let wx=0,wy=0;if(digging){wx=Math.sin(phase*.4)*3;wy=Math.abs(Math.sin(phase*.3))*-2;}
+  const cx=x+wx,cy=y+wy,R=14;
   c.globalAlpha=isMe?.34:.18;c.beginPath();c.ellipse(cx+2,cy+R+4,R,5,0,0,Math.PI*2);c.fillStyle='#000';c.fill();c.globalAlpha=1;
-  // Me ring
   if(isMe){c.beginPath();c.arc(cx,cy,R+5,0,Math.PI*2);c.strokeStyle='#c77dff';c.lineWidth=2;c.setLineDash([4,3]);c.stroke();c.setLineDash([]);}
-  // Dig dust
   if(digging){c.globalAlpha=.45;for(let i=0;i<4;i++){const a=(phase*.15+i*1.57),dr=18+Math.sin(phase*.2+i)*4;c.beginPath();c.arc(cx+Math.cos(a)*dr,cy+R+Math.abs(Math.sin(a))*8,2.5,0,Math.PI*2);c.fillStyle='#8b7355';c.fill();}c.globalAlpha=1;}
-  // Body
   c.beginPath();c.arc(cx,cy,R,0,Math.PI*2);c.fillStyle=cc.body;c.fill();
-  // Stripe
   c.globalAlpha=.28;c.fillStyle=cc.stripe;c.beginPath();c.ellipse(cx,cy-2,6,9,0,0,Math.PI*2);c.fill();c.globalAlpha=1;
-  // Ears
-  function ear(ex,ey,f){
-    c.beginPath();c.moveTo(ex,ey);c.lineTo(ex+f*10,ey-14);c.lineTo(ex+f*16,ey-2);c.closePath();c.fillStyle=cc.ear;c.fill();
-    c.beginPath();c.moveTo(ex+f*2,ey-2);c.lineTo(ex+f*10,ey-11);c.lineTo(ex+f*13,ey-3);c.closePath();c.fillStyle='#ffcdd2';c.globalAlpha=.7;c.fill();c.globalAlpha=1;
-  }
+  function ear(ex,ey,f){c.beginPath();c.moveTo(ex,ey);c.lineTo(ex+f*10,ey-14);c.lineTo(ex+f*16,ey-2);c.closePath();c.fillStyle=cc.ear;c.fill();c.beginPath();c.moveTo(ex+f*2,ey-2);c.lineTo(ex+f*10,ey-11);c.lineTo(ex+f*13,ey-3);c.closePath();c.fillStyle='#ffcdd2';c.globalAlpha=.7;c.fill();c.globalAlpha=1;}
   ear(cx-8,cy-10,-1);ear(cx+8,cy-10,1);
-  // Eyes
   if(digging){c.strokeStyle='#1a0030';c.lineWidth=2;c.lineCap='round';c.beginPath();c.moveTo(cx-7,cy-3);c.lineTo(cx-3,cy-3);c.stroke();c.beginPath();c.moveTo(cx+3,cy-3);c.lineTo(cx+7,cy-3);c.stroke();}
   else{c.fillStyle='#1a0030';c.beginPath();c.ellipse(cx-5,cy-3,3,4,0,0,Math.PI*2);c.fill();c.beginPath();c.ellipse(cx+5,cy-3,3,4,0,0,Math.PI*2);c.fill();c.fillStyle='white';c.beginPath();c.arc(cx-4,cy-5,1.2,0,Math.PI*2);c.fill();c.beginPath();c.arc(cx+6,cy-5,1.2,0,Math.PI*2);c.fill();}
-  // Nose
   c.fillStyle='#f48fb1';c.beginPath();c.moveTo(cx,cy+1);c.lineTo(cx-2.5,cy+4);c.lineTo(cx+2.5,cy+4);c.closePath();c.fill();
-  // Mouth
   c.strokeStyle='#1a0030';c.lineWidth=1.2;c.beginPath();c.moveTo(cx,cy+4);c.quadraticCurveTo(cx-4,cy+8,cx-6,cy+6);c.moveTo(cx,cy+4);c.quadraticCurveTo(cx+4,cy+8,cx+6,cy+6);c.stroke();
-  // Whiskers
-  c.strokeStyle='rgba(255,255,255,.68)';c.lineWidth=1;
-  for(const s of[-1,1]){c.beginPath();c.moveTo(cx+s*3,cy+3);c.lineTo(cx+s*16,cy+1);c.stroke();c.beginPath();c.moveTo(cx+s*3,cy+5);c.lineTo(cx+s*16,cy+5);c.stroke();}
-  // Tail
+  c.strokeStyle='rgba(255,255,255,.68)';c.lineWidth=1;for(const s of[-1,1]){c.beginPath();c.moveTo(cx+s*3,cy+3);c.lineTo(cx+s*16,cy+1);c.stroke();c.beginPath();c.moveTo(cx+s*3,cy+5);c.lineTo(cx+s*16,cy+5);c.stroke();}
   c.strokeStyle=cc.ear;c.lineWidth=3.5;c.lineCap='round';c.beginPath();c.moveTo(cx-R+2,cy+8);c.quadraticCurveTo(cx-R-12,cy+22,cx-R-4,cy+32);c.stroke();
-  // Shovel when digging
   if(digging){c.save();c.translate(cx+16,cy+10);c.rotate(Math.sin(phase*.3)*.4-.3);c.fillStyle='#8d6e63';c.fillRect(-2,-16,4,14);c.fillStyle='#78909c';c.fillRect(-5,-20,10,8);c.restore();}
-  // Nametag
-  if(name){
-    const nt=isMe?`${name} ★`:name;
-    c.font='bold 11px Nunito,sans-serif';
-    const tw=c.measureText(nt).width,tW=tw+10,tH=16,tX=cx-tW/2,tY=cy-R-24;
-    c.fillStyle=isMe?'rgba(199,125,255,.92)':'rgba(22,14,34,.85)';
-    rr(c,tX,tY,tW,tH,5);c.fill();
-    c.fillStyle=isMe?'#1a0030':'#f0e6ff';c.textAlign='center';c.textBaseline='middle';c.fillText(nt,cx,tY+tH/2);
-  }
-  // Emote
+  if(name){const nt=isMe?`${name} ★`:name;c.font='bold 11px Nunito,sans-serif';const tw=c.measureText(nt).width,tW=tw+10,tH=16,tX=cx-tW/2,tY=cy-R-24;c.fillStyle=isMe?'rgba(199,125,255,.92)':'rgba(22,14,34,.85)';rr(c,tX,tY,tW,tH,5);c.fill();c.fillStyle=isMe?'#1a0030':'#f0e6ff';c.textAlign='center';c.textBaseline='middle';c.fillText(nt,cx,tY+tH/2);}
   if(emote){const bx=cx+16,by=cy-R-10;c.fillStyle='rgba(255,255,255,.93)';rr(c,bx-2,by-14,28,24,8);c.fill();c.font='16px serif';c.textAlign='center';c.textBaseline='middle';c.fillText(emote,bx+12,by-2);}
   c.restore();
 }
 
 // ══════════════════════════════════════════════════════════════
+//  API HELPERS
+// ══════════════════════════════════════════════════════════════
+async function apiPost(url, body) {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  return res.json();
+}
+
+// ══════════════════════════════════════════════════════════════
+//  AUTH MODAL
+// ══════════════════════════════════════════════════════════════
+const authModal      = document.getElementById('authModal');
+const authModalTitle = document.getElementById('authModalTitle');
+const authModalBody  = document.getElementById('authModalBody');
+const authModalClose = document.getElementById('authModalClose');
+let authModalMode = 'signin'; // 'signin' | 'signup' | 'claim'
+let authModalOnSuccess = null; // callback after login
+
+authModalClose.addEventListener('click', () => { authModal.style.display = 'none'; });
+authModal.addEventListener('click', e => { if (e.target === authModal) authModal.style.display = 'none'; });
+
+function openAuthModal(mode, onSuccess) {
+  authModalMode = mode;
+  authModalOnSuccess = onSuccess || null;
+  authModal.style.display = 'flex';
+  renderAuthModal();
+}
+
+function renderAuthModal() {
+  if (authModalMode === 'signup' || authModalMode === 'claim') {
+    renderSignUpForm();
+  } else {
+    renderSignInForm();
+  }
+}
+
+function renderSignInForm(prefillEmail) {
+  authModalMode = 'signin';
+  authModalTitle.textContent = '🔑 Sign In to Cat Lobby';
+  authModalBody.innerHTML = `
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" id="siEmail" type="email" placeholder="your@email.com" value="${esc(prefillEmail||'')}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="siPassword" type="password" placeholder="Your password">
+    </div>
+    <div id="siError" class="form-error"></div>
+    <button class="btn btn-primary" id="siSubmit" style="width:100%">Sign In →</button>
+    <div class="auth-divider">or</div>
+    <div style="text-align:center">
+      <span style="font-size:12px;color:var(--muted)">Don't have an account? </span>
+      <button class="form-link" id="siToSignUp">Sign up here</button>
+    </div>`;
+
+  document.getElementById('siToSignUp').addEventListener('click', () => { authModalMode='signup'; renderSignUpForm(); });
+  document.getElementById('siSubmit').addEventListener('click', doSignIn);
+  document.getElementById('siPassword').addEventListener('keydown', e => { if (e.key==='Enter') doSignIn(); });
+}
+
+function renderSignUpForm(prefillEmail) {
+  const isClaim = authModalMode === 'claim';
+  authModalTitle.textContent = isClaim ? '✨ Save Your Progress' : '✨ Create an Account';
+  authModalBody.innerHTML = `
+    ${isClaim ? `<div style="background:rgba(199,125,255,.1);border:1px solid rgba(199,125,255,.3);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted)">
+      🎒 Your current coins and items will be saved to your new account!
+    </div>` : ''}
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input class="form-input" id="suUsername" type="text" maxlength="16" placeholder="Your cat's name" value="${esc(isClaim && joined ? (players[myId]?.name||'') : '')}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" id="suEmail" type="email" placeholder="your@email.com" value="${esc(prefillEmail||'')}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password <span style="font-weight:400;font-size:10px">(min 6 chars)</span></label>
+      <input class="form-input" id="suPassword" type="password" placeholder="Choose a password">
+    </div>
+    <div id="suError" class="form-error"></div>
+    <div id="suSuccess" class="form-success"></div>
+    <button class="btn btn-primary" id="suSubmit" style="width:100%">${isClaim ? '🎒 Save & Sign Up' : 'Create Account →'}</button>
+    <div class="auth-divider">or</div>
+    <div style="text-align:center">
+      <span style="font-size:12px;color:var(--muted)">Already have an account? </span>
+      <button class="form-link" id="suToSignIn">Click here to Log In</button>
+    </div>`;
+
+  document.getElementById('suToSignIn').addEventListener('click', () => { authModalMode='signin'; renderSignInForm(); });
+  document.getElementById('suSubmit').addEventListener('click', doSignUp);
+  document.getElementById('suPassword').addEventListener('keydown', e => { if (e.key==='Enter') doSignUp(); });
+}
+
+async function doSignIn() {
+  const email    = document.getElementById('siEmail').value.trim();
+  const password = document.getElementById('siPassword').value;
+  const errEl    = document.getElementById('siError');
+  const btn      = document.getElementById('siSubmit');
+  errEl.textContent = '';
+  if (!email || !password) { errEl.textContent = 'Please fill in all fields.'; return; }
+
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  const res = await apiPost('/auth/login', { email, password });
+  btn.disabled = false; btn.textContent = 'Sign In →';
+
+  if (!res.ok) {
+    errEl.textContent = res.error || 'Sign in failed.';
+    if (res.needsVerification) {
+      errEl.innerHTML = res.error + ' <button class="form-link" id="resendVerify">Resend email</button>';
+      document.getElementById('resendVerify').addEventListener('click', async () => {
+        await apiPost('/auth/resend-verification', { email });
+        errEl.textContent = 'Verification email resent!';
+      });
+    }
+    return;
+  }
+
+  setToken(res.token);
+  authModal.style.display = 'none';
+  onAuthSuccess(res.user);
+  if (authModalOnSuccess) authModalOnSuccess(res.user);
+}
+
+async function doSignUp() {
+  const username = document.getElementById('suUsername').value.trim();
+  const email    = document.getElementById('suEmail').value.trim();
+  const password = document.getElementById('suPassword').value;
+  const errEl    = document.getElementById('suError');
+  const succEl   = document.getElementById('suSuccess');
+  const btn      = document.getElementById('suSubmit');
+  errEl.textContent = ''; succEl.textContent = '';
+  if (!username || !email || !password) { errEl.textContent = 'Please fill in all fields.'; return; }
+
+  const isClaim = authModalMode === 'claim';
+  btn.disabled = true; btn.textContent = 'Creating account…';
+
+  const body = { username, email, password };
+  if (isClaim && joined) {
+    body.guestCoins     = myCoins;
+    body.guestInventory = JSON.stringify(myInventory);
+  }
+
+  const res = await apiPost('/auth/signup', body);
+  btn.disabled = false; btn.textContent = isClaim ? '🎒 Save & Sign Up' : 'Create Account →';
+
+  if (!res.ok) { errEl.textContent = res.error || 'Sign up failed.'; return; }
+
+  succEl.textContent = '✓ Account created! Check your email to verify, then sign in.';
+  btn.style.display = 'none';
+  // Show sign-in shortcut
+  setTimeout(() => { authModalMode = 'signin'; renderSignInForm(email); }, 3000);
+}
+
+function onAuthSuccess(user) {
+  loggedInUser = user;
+  isGuest = false;
+  myCoins     = user.coins;
+  myInventory = user.inventory || [];
+
+  // Update in-game state if already in lobby
+  if (joined && socket) {
+    socket.emit('authLogin', getToken());
+    // Don't need to wait for response — server will push playerUpdate
+  }
+
+  // Update UI
+  updateAccountUI();
+  renderInventory();
+  document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
+}
+
+function updateAccountUI() {
+  const guestBanner = document.getElementById('guestBanner');
+  const accountBar  = document.getElementById('accountBar');
+
+  if (loggedInUser) {
+    guestBanner.classList.add('hidden');
+    accountBar.classList.remove('hidden');
+    document.getElementById('abName').textContent  = loggedInUser.username;
+    document.getElementById('abEmail').textContent = loggedInUser.email;
+  } else if (joined) {
+    guestBanner.classList.remove('hidden');
+    accountBar.classList.add('hidden');
+  } else {
+    guestBanner.classList.add('hidden');
+    accountBar.classList.add('hidden');
+  }
+}
+
+// Sign out
+document.getElementById('abLogoutBtn').addEventListener('click', async () => {
+  clearToken();
+  loggedInUser = null;
+  isGuest = true;
+  await fetch('/auth/logout', { method: 'POST' });
+  // Reload to reset everything cleanly
+  window.location.reload();
+});
+
+// Guest banner → sign up
+document.getElementById('gbSignUpBtn').addEventListener('click', () => {
+  openAuthModal('claim');
+});
+
+// ══════════════════════════════════════════════════════════════
+//  ENTRY OVERLAY
+// ══════════════════════════════════════════════════════════════
+const entryOverlay = document.getElementById('entryOverlay');
+
+// Check for existing session on load
+(async () => {
+  const token = getToken();
+  if (token) {
+    const res = await fetch('/auth/me', { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (data.user) {
+      loggedInUser = data.user;
+      isGuest = false;
+      myCoins     = data.user.coins;
+      myInventory = data.user.inventory || [];
+      // Auto-join with saved account
+      doJoin(data.user.username);
+      return;
+    } else {
+      clearToken();
+    }
+  }
+})();
+
+// Guest join
+document.getElementById('guestJoinBtn').addEventListener('click', () => {
+  const name = document.getElementById('guestNameInput').value.trim() || 'Cat';
+  doJoin(name, true);
+});
+document.getElementById('guestNameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const name = document.getElementById('guestNameInput').value.trim() || 'Cat';
+    doJoin(name, true);
+  }
+});
+
+// Entry sign in / sign up
+document.getElementById('entrySignInBtn').addEventListener('click', () => {
+  openAuthModal('signin', (user) => {
+    // After successful login from entry screen, join the lobby
+    if (!joined) doJoin(user.username);
+  });
+});
+document.getElementById('entrySignUpBtn').addEventListener('click', () => {
+  openAuthModal('signup');
+});
+
+function doJoin(name, asGuest) {
+  if (joined) return;
+  isGuest = asGuest !== false && !loggedInUser;
+  joined = true;
+  entryOverlay.style.display = 'none';
+  initSocket(name);
+  updateAccountUI();
+}
+
+// ══════════════════════════════════════════════════════════════
 //  SOCKET
 // ══════════════════════════════════════════════════════════════
-function initSocket(){
+function initSocket(name) {
   socket = io();
 
   socket.on('init', data => {
@@ -535,7 +825,28 @@ function initSocket(){
     data.chatHistory.forEach(addChatMsg);
     document.getElementById('chatInput').disabled = false;
     document.getElementById('coinHud').style.display = 'flex';
+    document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
     updateOnlineCount();
+
+    // Set name
+    socket.emit('setName', loggedInUser ? loggedInUser.username : name);
+
+    // If logged in, authenticate with server to load saved data
+    if (loggedInUser && getToken()) {
+      socket.emit('authLogin', getToken());
+    }
+  });
+
+  socket.on('authResult', data => {
+    if (data.ok) {
+      loggedInUser   = data.user;
+      isGuest        = false;
+      myCoins        = data.user.coins;
+      myInventory    = data.user.inventory || [];
+      document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
+      renderInventory();
+      updateAccountUI();
+    }
   });
 
   socket.on('playerJoined', p => {
@@ -553,597 +864,334 @@ function initSocket(){
   socket.on('tick', updates => {
     updates.forEach(u => {
       if (!players[u.id]) return;
-      players[u.id].x = u.x; players[u.id].y = u.y;
-      players[u.id].emote = u.emote; players[u.id].digging = u.digging;
-      if (u.digging) players[u.id].digPhase = (players[u.id].digPhase||0)+1;
+      players[u.id].x=u.x; players[u.id].y=u.y;
+      players[u.id].emote=u.emote; players[u.id].digging=u.digging;
+      if (u.digging) players[u.id].digPhase=(players[u.id].digPhase||0)+1;
     });
   });
   socket.on('chat', addChatMsg);
-  socket.on('emote', ({id,emote}) => { if (players[id]) players[id].emote = emote; });
+  socket.on('emote', ({id,emote}) => { if (players[id]) players[id].emote=emote; });
   socket.on('playerDig', ({id,digging}) => {
-    if (players[id]) { players[id].digging = digging; if (!digging) players[id].digPhase = 0; }
+    if (players[id]) { players[id].digging=digging; if (!digging) players[id].digPhase=0; }
   });
   socket.on('digFind', handleDigFind);
   socket.on('digStopped', endDig);
-
-  // Profile
   socket.on('profileData', showProfileModal);
-
-  // Trade signals
   socket.on('privateMsg', handlePrivateMsg);
-  socket.on('tradeOpen',  openTradeModal);
+  socket.on('tradeOpen', openTradeModal);
   socket.on('tradeState', updateTradeState);
   socket.on('tradeComplete', handleTradeComplete);
   socket.on('tradeClosed', ({reason}) => closeTrade(reason));
 }
 
 // ══════════════════════════════════════════════════════════════
-//  PRIVATE MESSAGES (trade notifications in chat)
+//  PRIVATE MESSAGES
 // ══════════════════════════════════════════════════════════════
 function handlePrivateMsg(msg) {
-  if (msg.type === 'trade_sent') {
-    // Show in chat: "Trade request sent to X."
-    appendPrivateChatLine(msg.text, 'sent');
-  } else if (msg.type === 'trade_incoming') {
-    // Show inline accept/decline notification
-    appendTradeIncomingNotif(msg);
-  } else if (msg.type === 'trade_declined') {
-    appendPrivateChatLine(msg.text, 'declined');
-  } else if (msg.type === 'trade_error') {
-    appendPrivateChatLine(msg.text, 'declined');
-  }
+  if (msg.type==='trade_sent')     appendPrivateLine(msg.text, 'sent');
+  else if (msg.type==='trade_incoming') appendTradeIncoming(msg);
+  else if (msg.type==='trade_declined') appendPrivateLine(msg.text, 'declined');
+  else if (msg.type==='trade_error')    appendPrivateLine(msg.text, 'declined');
 }
-
-function appendPrivateChatLine(text, style) {
-  const div = document.createElement('div');
-  div.className = `chat-trade-notif ${style}`;
-  div.innerHTML = `<div class="trade-notif-text">${esc(text)}</div>`;
-  chatMessages.appendChild(div);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+function appendPrivateLine(text, style) {
+  const d=document.createElement('div'); d.className=`chat-trade-notif ${style}`;
+  d.innerHTML=`<div class="trade-notif-text">${esc(text)}</div>`;
+  chatMessages.appendChild(d); chatMessages.scrollTop=chatMessages.scrollHeight;
 }
-
-function appendTradeIncomingNotif(msg) {
-  const div = document.createElement('div');
-  div.className = 'chat-trade-notif incoming';
-  div.innerHTML = `<div class="trade-notif-text">🤝 <span>${esc(msg.fromName)}</span> wants to trade with you!</div>
+function appendTradeIncoming(msg) {
+  const d=document.createElement('div'); d.className='chat-trade-notif incoming';
+  d.innerHTML=`<div class="trade-notif-text">🤝 <span>${esc(msg.fromName)}</span> wants to trade with you!</div>
     <div class="trade-notif-btns">
-      <button class="btn-accept">✓ Accept</button>
-      <button class="btn-decline-small">✕ Decline</button>
+      <button class="btn-accept-sm">✓ Accept</button>
+      <button class="btn-decline-sm">✕ Decline</button>
     </div>`;
-  div.querySelector('.btn-accept').addEventListener('click', () => {
+  d.querySelector('.btn-accept-sm').addEventListener('click', () => {
     socket.emit('tradeAccept', msg.tradeId);
-    div.querySelector('.trade-notif-btns').innerHTML = '<span style="font-size:11px;color:var(--success)">✓ Accepted!</span>';
+    d.querySelector('.trade-notif-btns').innerHTML='<span style="font-size:11px;color:var(--success)">✓ Accepted!</span>';
   });
-  div.querySelector('.btn-decline-small').addEventListener('click', () => {
+  d.querySelector('.btn-decline-sm').addEventListener('click', () => {
     socket.emit('tradeDecline', msg.tradeId);
-    div.querySelector('.trade-notif-btns').innerHTML = '<span style="font-size:11px;color:var(--muted)">Declined.</span>';
+    d.querySelector('.trade-notif-btns').innerHTML='<span style="font-size:11px;color:var(--muted)">Declined.</span>';
   });
-  chatMessages.appendChild(div);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  chatMessages.appendChild(d); chatMessages.scrollTop=chatMessages.scrollHeight;
 }
 
 // ══════════════════════════════════════════════════════════════
 //  CONTEXT MENU
 // ══════════════════════════════════════════════════════════════
 const ctxMenu = document.getElementById('ctxMenu');
-
 canvas.addEventListener('contextmenu', e => {
-  e.preventDefault();
-  if (!joined || !socket) return;
-  const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-  // Hit-test other players
-  const hit = Object.values(players).find(p => p.id !== myId && Math.hypot(p.x - mx, p.y - my) < 22);
+  e.preventDefault(); if (!joined||!socket) return;
+  const rect=canvas.getBoundingClientRect();
+  const hit=Object.values(players).find(p=>p.id!==myId&&Math.hypot(p.x-(e.clientX-rect.left),p.y-(e.clientY-rect.top))<22);
   if (!hit) { hideCtx(); return; }
-  ctxTargetId = hit.id;
-  ctxTargetName = hit.name;
-  document.getElementById('ctxPlayerName').textContent = hit.name;
-  // Position
-  let px = e.clientX, py = e.clientY;
-  if (px + 160 > window.innerWidth)  px -= 160;
-  if (py + 100 > window.innerHeight) py -= 100;
-  ctxMenu.style.left = px + 'px';
-  ctxMenu.style.top  = py + 'px';
-  ctxMenu.style.display = 'block';
+  ctxTargetId=hit.id;
+  document.getElementById('ctxPlayerName').textContent=hit.name;
+  let px=e.clientX,py=e.clientY;
+  if(px+160>window.innerWidth) px-=160; if(py+100>window.innerHeight) py-=100;
+  ctxMenu.style.left=px+'px'; ctxMenu.style.top=py+'px'; ctxMenu.style.display='block';
 });
-
 document.getElementById('ctxViewProfile').addEventListener('click', () => {
-  const tid = ctxTargetId;
-  hideCtx();
-  if (!tid || !socket) return;
-  socket.emit('requestProfile', tid);
+  const t=ctxTargetId; hideCtx(); if (!t||!socket) return;
+  socket.emit('requestProfile', t);
 });
-
 document.getElementById('ctxSendTrade').addEventListener('click', () => {
-  const tid = ctxTargetId;
-  hideCtx();
-  if (!tid || !socket) return;
-  socket.emit('tradeRequest', tid);
+  const t=ctxTargetId; hideCtx(); if (!t||!socket) return;
+  socket.emit('tradeRequest', t);
 });
-
 document.addEventListener('click', e => { if (!ctxMenu.contains(e.target)) hideCtx(); });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { hideCtx(); closeProfileModal(); closeTradeModalUI(); }
+  if (e.key==='Escape') { hideCtx(); closeProfileModal(); closeTradeModalUI(); authModal.style.display='none'; }
 });
-function hideCtx(){ ctxMenu.style.display = 'none'; ctxTargetId = null; }
+function hideCtx() { ctxMenu.style.display='none'; ctxTargetId=null; }
 
 // ══════════════════════════════════════════════════════════════
 //  PROFILE MODAL
 // ══════════════════════════════════════════════════════════════
-let profileViewId = null;
-
 function showProfileModal(data) {
-  profileViewId = data.id;
-  const isMe = data.id === myId;
-
-  document.getElementById('profileName').textContent = data.name;
-  document.getElementById('profileSub').textContent = isMe ? 'This is you! 🐱' : 'Player';
-  document.getElementById('profileCoins').textContent = data.coins;
-  document.getElementById('profileItemCount').textContent = (data.inventory||[]).reduce((s,i)=>s+i.qty,0);
-
-  // Mini cat canvas
-  const mc = document.getElementById('profileMiniCat');
-  const mc2 = mc.getContext('2d');
+  profileViewId=data.id;
+  const isMe=data.id===myId;
+  document.getElementById('profileName').textContent=data.name;
+  document.getElementById('profileSub').textContent=isMe?'This is you! 🐱':(data.isGuest?'Guest Player':'Player');
+  document.getElementById('profileCoins').textContent=data.coins;
+  document.getElementById('profileItemCount').textContent=(data.inventory||[]).reduce((s,i)=>s+i.qty,0);
+  const mc=document.getElementById('profileMiniCat'),mc2=mc.getContext('2d');
   mc2.clearRect(0,0,mc.width,mc.height);
-  drawCat(mc2, 23, 38, CAT_COLORS[data.colorIndex]||CAT_COLORS[0], '', false, null, false, 0);
-
-  // Inventory grid
-  const grid = document.getElementById('profileInvGrid');
-  const inv = data.inventory||[];
-  if (!inv.length) {
-    grid.innerHTML = '<div style="color:var(--muted);font-size:11px;grid-column:span 5">Nothing yet!</div>';
-  } else {
-    const sorted = [...inv].sort((a,b)=>(RARITY_ORDER[a.rarity]||3)-(RARITY_ORDER[b.rarity]||3));
-    grid.innerHTML = sorted.map(it=>`<div class="pi-item rarity-${it.rarity}" title="${esc(it.label)}">
-      <span class="emoji">${it.emoji}</span>${it.qty>1?`<span class="qty">x${it.qty}</span>`:''}
-    </div>`).join('');
+  drawCat(mc2,23,38,CAT_COLORS[data.colorIndex]||CAT_COLORS[0],'',false,null,false,0);
+  const grid=document.getElementById('profileInvGrid');
+  const inv=data.inventory||[];
+  if (!inv.length) { grid.innerHTML='<div style="color:var(--muted);font-size:11px;grid-column:span 5">Nothing yet!</div>'; }
+  else {
+    const sorted=[...inv].sort((a,b)=>(RARITY_ORDER[a.rarity]||3)-(RARITY_ORDER[b.rarity]||3));
+    grid.innerHTML=sorted.map(it=>`<div class="pi-item rarity-${it.rarity}" title="${esc(it.label)}"><span class="emoji">${it.emoji}</span>${it.qty>1?`<span class="qty">x${it.qty}</span>`:''}</div>`).join('');
   }
-
-  // Footer — show/hide the static trade button
-  const tradeBtn = document.getElementById('profileTradeBtn');
-  if (isMe) {
-    tradeBtn.style.display = 'none';
-  } else {
-    tradeBtn.style.display = '';
-  }
-
-  document.getElementById('profileModal').style.display = 'flex';
+  document.getElementById('profileTradeBtn').style.display=isMe?'none':'';
+  document.getElementById('profileModal').style.display='flex';
 }
-
 document.getElementById('profileCloseX').addEventListener('click', closeProfileModal);
 document.getElementById('profileCloseBtn').addEventListener('click', closeProfileModal);
 document.getElementById('profileTradeBtn').addEventListener('click', () => {
-  const targetId = profileViewId;   // capture before closeProfileModal nulls it
-  closeProfileModal();
-  if (targetId && socket) socket.emit('tradeRequest', targetId);
+  const t=profileViewId; closeProfileModal();
+  if (t&&socket) socket.emit('tradeRequest', t);
 });
 document.getElementById('profileModal').addEventListener('click', e => {
-  if (e.target === document.getElementById('profileModal')) closeProfileModal();
+  if (e.target===document.getElementById('profileModal')) closeProfileModal();
 });
-function closeProfileModal(){
-  document.getElementById('profileModal').style.display = 'none';
-  profileViewId = null;
-}
+function closeProfileModal() { document.getElementById('profileModal').style.display='none'; profileViewId=null; }
 
 // ══════════════════════════════════════════════════════════════
 //  TRADE MODAL
 // ══════════════════════════════════════════════════════════════
 function openTradeModal(data) {
   closeProfileModal();
-  trade = {
-    tradeId:        data.tradeId,
-    partnerId:      data.partnerId,
-    partnerName:    data.partnerName,
-    partnerColorIdx: data.partnerColorIndex,
-    myOffer:        { items: [], coins: 0 },
-    partnerOffer:   { items: [], coins: 0 },
-    myAccepted:     false,
-    partnerAccepted: false,
-  };
-  document.getElementById('tradeTitle').textContent = `🤝 Trading with ${data.partnerName}`;
-  document.getElementById('myTradeName').textContent = 'You';
-  document.getElementById('partnerTradeName').textContent = data.partnerName;
-  document.getElementById('myCoinsInput').max = myCoins;
-  document.getElementById('myCoinsInput').value = 0;
-  document.getElementById('myCoinsAvail').textContent = `have: ${myCoins}`;
+  trade={tradeId:data.tradeId,partnerId:data.partnerId,partnerName:data.partnerName,
+    partnerColorIdx:data.partnerColorIndex,myOffer:{items:[],coins:0},
+    partnerOffer:{items:[],coins:0},myAccepted:false,partnerAccepted:false};
+  document.getElementById('tradeTitle').textContent=`🤝 Trading with ${data.partnerName}`;
+  document.getElementById('myTradeName').textContent='You';
+  document.getElementById('partnerTradeName').textContent=data.partnerName;
+  document.getElementById('myCoinsInput').max=myCoins; document.getElementById('myCoinsInput').value=0;
+  document.getElementById('myCoinsAvail').textContent=`have: ${myCoins}`;
   renderTradeModal();
-  document.getElementById('tradeModal').style.display = 'flex';
+  document.getElementById('tradeModal').style.display='flex';
 }
-
 function renderTradeModal() {
   if (!trade) return;
-
-  // ── My offer zone ──
-  const myZone = document.getElementById('myOfferZone');
-  if (!trade.myOffer.items.length) {
-    myZone.innerHTML = '<span class="offer-empty-label">Click items below to add them</span>';
-  } else {
-    myZone.innerHTML = trade.myOffer.items.map(it => `
-      <div class="offer-chip mine rarity-${it.rarity}" data-id="${it.id}" title="Click to remove">
-        <span class="oc-emoji">${it.emoji}</span>
-        <span class="oc-name">${esc(it.label)}</span>
-        ${it.qty > 1 ? `<span class="oc-qty">x${it.qty}</span>` : ''}
-      </div>`).join('');
-    myZone.querySelectorAll('.offer-chip.mine').forEach(el => {
-      el.addEventListener('click', () => { if (!trade.myAccepted) removeFromMyOffer(el.dataset.id); });
-    });
+  const myZone=document.getElementById('myOfferZone');
+  if (!trade.myOffer.items.length) { myZone.innerHTML='<span class="offer-empty-label">Click items below to add them</span>'; }
+  else {
+    myZone.innerHTML=trade.myOffer.items.map(it=>`<div class="offer-chip mine rarity-${it.rarity}" data-id="${it.id}" title="Click to remove"><span class="oc-emoji">${it.emoji}</span><span class="oc-name">${esc(it.label)}</span>${it.qty>1?`<span class="oc-qty">x${it.qty}</span>`:''}</div>`).join('');
+    myZone.querySelectorAll('.offer-chip.mine').forEach(el=>el.addEventListener('click',()=>{ if(!trade.myAccepted) removeFromMyOffer(el.dataset.id); }));
   }
-
-  // ── My available grid ──
-  const avail = document.getElementById('myAvailGrid');
-  if (!myInventory.length) {
-    avail.innerHTML = '<div style="color:var(--muted);font-size:11px;grid-column:span 4">Nothing to trade!</div>';
-  } else {
-    avail.innerHTML = myInventory.map(inv => {
-      const offered = trade.myOffer.items.find(o => o.id === inv.id);
-      const remaining = inv.qty - (offered ? offered.qty : 0);
-      const depleted = remaining <= 0;
-      return `<div class="avail-item rarity-${inv.rarity} ${depleted?'used-up':''}" data-id="${inv.id}" title="${esc(inv.label)}">
-        <span class="a-emoji">${inv.emoji}</span>
-        <span class="a-name">${esc(inv.label)}</span>
-        ${inv.qty > 1 ? `<span class="a-qty">${remaining}/${inv.qty}</span>` : ''}
-      </div>`;
-    }).join('');
-    if (!trade.myAccepted) {
-      avail.querySelectorAll('.avail-item:not(.used-up)').forEach(el => {
-        el.addEventListener('click', () => addToMyOffer(el.dataset.id));
-      });
-    }
+  const avail=document.getElementById('myAvailGrid');
+  if (!myInventory.length) { avail.innerHTML='<div style="color:var(--muted);font-size:11px;grid-column:span 4">Nothing to trade!</div>'; }
+  else {
+    avail.innerHTML=myInventory.map(inv=>{const off=trade.myOffer.items.find(o=>o.id===inv.id);const rem=inv.qty-(off?off.qty:0);const dep=rem<=0;return `<div class="avail-item rarity-${inv.rarity} ${dep?'used-up':''}" data-id="${inv.id}" title="${esc(inv.label)}"><span class="a-emoji">${inv.emoji}</span><span class="a-name">${esc(inv.label)}</span>${inv.qty>1?`<span class="a-qty">${rem}/${inv.qty}</span>`:''}</div>`;}).join('');
+    if (!trade.myAccepted) avail.querySelectorAll('.avail-item:not(.used-up)').forEach(el=>el.addEventListener('click',()=>addToMyOffer(el.dataset.id)));
   }
-
-  // ── Partner offer zone (read-only) ──
-  const partnerZone = document.getElementById('partnerOfferZone');
-  if (!trade.partnerOffer.items.length) {
-    partnerZone.innerHTML = '<span class="offer-empty-label">Waiting for their offer…</span>';
-  } else {
-    partnerZone.innerHTML = trade.partnerOffer.items.map(it => `
-      <div class="offer-chip rarity-${it.rarity}" title="${esc(it.label)}" style="cursor:default">
-        <span class="oc-emoji">${it.emoji}</span>
-        <span class="oc-name">${esc(it.label)}</span>
-        ${it.qty > 1 ? `<span class="oc-qty">x${it.qty}</span>` : ''}
-      </div>`).join('');
-  }
-
-  // Partner coins
-  document.getElementById('partnerCoinsDisplay').textContent = trade.partnerOffer.coins || '0';
-
-  // Status
+  const pz=document.getElementById('partnerOfferZone');
+  if (!trade.partnerOffer.items.length) { pz.innerHTML='<span class="offer-empty-label">Waiting for their offer…</span>'; }
+  else { pz.innerHTML=trade.partnerOffer.items.map(it=>`<div class="offer-chip rarity-${it.rarity}" style="cursor:default" title="${esc(it.label)}"><span class="oc-emoji">${it.emoji}</span><span class="oc-name">${esc(it.label)}</span>${it.qty>1?`<span class="oc-qty">x${it.qty}</span>`:''}</div>`).join(''); }
+  document.getElementById('partnerCoinsDisplay').textContent=trade.partnerOffer.coins||'0';
   updateTradeFooter();
 }
-
-function addToMyOffer(itemId) {
-  if (!trade || trade.myAccepted) return;
-  const inv = myInventory.find(i => i.id === itemId);
-  if (!inv) return;
-  const offered = trade.myOffer.items.find(o => o.id === itemId);
-  if (offered) {
-    if (offered.qty < inv.qty) offered.qty++;
-    else return;
-  } else {
-    trade.myOffer.items.push({id:inv.id, label:inv.label, emoji:inv.emoji, rarity:inv.rarity, qty:1});
-  }
-  // Reset accepted
-  if (trade.myAccepted) { trade.myAccepted = false; }
-  pushOffer();
-  renderTradeModal();
+function addToMyOffer(id) {
+  if (!trade||trade.myAccepted) return;
+  const inv=myInventory.find(i=>i.id===id); if (!inv) return;
+  const off=trade.myOffer.items.find(o=>o.id===id);
+  if (off) { if(off.qty<inv.qty) off.qty++; else return; }
+  else trade.myOffer.items.push({id:inv.id,label:inv.label,emoji:inv.emoji,rarity:inv.rarity,qty:1});
+  pushOffer(); renderTradeModal();
 }
-
-function removeFromMyOffer(itemId) {
-  if (!trade || trade.myAccepted) return;
-  const idx = trade.myOffer.items.findIndex(o => o.id === itemId);
-  if (idx === -1) return;
+function removeFromMyOffer(id) {
+  if (!trade||trade.myAccepted) return;
+  const idx=trade.myOffer.items.findIndex(o=>o.id===id); if(idx===-1) return;
   trade.myOffer.items[idx].qty--;
-  if (trade.myOffer.items[idx].qty <= 0) trade.myOffer.items.splice(idx, 1);
-  pushOffer();
-  renderTradeModal();
+  if (trade.myOffer.items[idx].qty<=0) trade.myOffer.items.splice(idx,1);
+  pushOffer(); renderTradeModal();
 }
-
 document.getElementById('myCoinsInput').addEventListener('input', () => {
-  if (!trade || trade.myAccepted) return;
-  let v = parseInt(document.getElementById('myCoinsInput').value) || 0;
-  v = Math.max(0, Math.min(v, myCoins));
-  document.getElementById('myCoinsInput').value = v;
-  trade.myOffer.coins = v;
-  pushOffer();
+  if (!trade||trade.myAccepted) return;
+  let v=Math.max(0,Math.min(parseInt(document.getElementById('myCoinsInput').value)||0,myCoins));
+  document.getElementById('myCoinsInput').value=v; trade.myOffer.coins=v; pushOffer();
 });
-
-function pushOffer() {
-  if (!socket || !trade) return;
-  socket.emit('tradeUpdateOffer', { tradeId: trade.tradeId, items: trade.myOffer.items, coins: trade.myOffer.coins });
-}
-
+function pushOffer() { if (socket&&trade) socket.emit('tradeUpdateOffer',{tradeId:trade.tradeId,items:trade.myOffer.items,coins:trade.myOffer.coins}); }
 function updateTradeState(state) {
-  if (!trade || state.tradeId !== trade.tradeId) return;
-  trade.myOffer        = state.myOffer;
-  trade.partnerOffer   = state.partnerOffer;
-  trade.myAccepted     = state.myAccepted;
-  trade.partnerAccepted = state.partnerAccepted;
-  // Sync coins input to server-corrected value
-  document.getElementById('myCoinsInput').value = trade.myOffer.coins;
+  if (!trade||state.tradeId!==trade.tradeId) return;
+  trade.myOffer=state.myOffer; trade.partnerOffer=state.partnerOffer;
+  trade.myAccepted=state.myAccepted; trade.partnerAccepted=state.partnerAccepted;
+  document.getElementById('myCoinsInput').value=trade.myOffer.coins;
   renderTradeModal();
 }
-
 function updateTradeFooter() {
   if (!trade) return;
-  const acceptBtn  = document.getElementById('tradeAcceptBtn');
-  const statusEl   = document.getElementById('tradeStatusText');
-
-  if (trade.myAccepted && trade.partnerAccepted) {
-    statusEl.innerHTML = '<span class="status-chip chip-ready">✓ Both accepted — completing…</span>';
-    acceptBtn.disabled = true;
-  } else if (trade.myAccepted) {
-    statusEl.innerHTML = '<span class="status-chip chip-ready">✓ You accepted</span> — waiting for partner…';
-    acceptBtn.textContent = '↩ Undo Accept';
-    acceptBtn.className = 'btn btn-secondary';
-  } else if (trade.partnerAccepted) {
-    statusEl.innerHTML = 'Partner <span class="status-chip chip-ready">✓ accepted</span> — your turn!';
-    acceptBtn.textContent = '✓ Accept Trade';
-    acceptBtn.className = 'btn btn-success';
-    acceptBtn.disabled = false;
-  } else {
-    statusEl.textContent = 'Add items to your offer, then click Accept.';
-    acceptBtn.textContent = '✓ Accept Trade';
-    acceptBtn.className = 'btn btn-success';
-    acceptBtn.disabled = false;
-  }
+  const ab=document.getElementById('tradeAcceptBtn'), st=document.getElementById('tradeStatusText');
+  if (trade.myAccepted&&trade.partnerAccepted) { st.innerHTML='<span class="status-chip chip-ready">✓ Both accepted — completing…</span>'; ab.disabled=true; }
+  else if (trade.myAccepted) { st.innerHTML='<span class="status-chip chip-ready">✓ You accepted</span> — waiting for partner…'; ab.textContent='↩ Undo Accept'; ab.className='btn btn-secondary'; ab.disabled=false; }
+  else if (trade.partnerAccepted) { st.innerHTML='Partner <span class="status-chip chip-ready">✓ accepted</span> — your turn!'; ab.textContent='✓ Accept Trade'; ab.className='btn btn-success'; ab.disabled=false; }
+  else { st.textContent='Add items to your offer, then click Accept.'; ab.textContent='✓ Accept Trade'; ab.className='btn btn-success'; ab.disabled=false; }
 }
-
 document.getElementById('tradeAcceptBtn').addEventListener('click', () => {
-  if (!trade || !socket) return;
-  if (trade.myAccepted) {
-    // Undo — we treat it as a re-push of offer with accepted=false
-    trade.myAccepted = false;
-    // Push offer update to reset server accepted state
-    socket.emit('tradeUpdateOffer', { tradeId: trade.tradeId, items: trade.myOffer.items, coins: trade.myOffer.coins });
-    renderTradeModal();
-  } else {
-    socket.emit('tradeAcceptTrade', trade.tradeId);
-    trade.myAccepted = true;
-    renderTradeModal();
-  }
+  if (!trade||!socket) return;
+  if (trade.myAccepted) { trade.myAccepted=false; socket.emit('tradeUpdateOffer',{tradeId:trade.tradeId,items:trade.myOffer.items,coins:trade.myOffer.coins}); renderTradeModal(); }
+  else { socket.emit('tradeAcceptTrade',trade.tradeId); trade.myAccepted=true; renderTradeModal(); }
 });
-
 document.getElementById('tradeDeclineBtn').addEventListener('click', () => {
-  if (!trade || !socket) return;
-  socket.emit('tradeDeclineTrade', trade.tradeId);
-  closeTrade('You declined the trade.');
+  if (!trade||!socket) return; socket.emit('tradeDeclineTrade',trade.tradeId); closeTrade('You declined the trade.');
 });
-
 document.getElementById('tradeCloseX').addEventListener('click', () => {
-  if (!trade || !socket) return;
-  socket.emit('tradeDeclineTrade', trade.tradeId);
-  closeTrade('You declined the trade.');
+  if (!trade||!socket) return; socket.emit('tradeDeclineTrade',trade.tradeId); closeTrade('You declined the trade.');
 });
-
-document.getElementById('tradeModal').addEventListener('click', e => {
-  // Don't close on backdrop click — accidental closes are annoying for trades
-});
-
 function closeTrade(reason) {
-  trade = null;
-  closeTradeModalUI();
-  if (reason) appendPrivateChatLine(reason, reason.toLowerCase().includes('complete') ? 'sent' : 'declined');
+  trade=null; closeTradeModalUI();
+  if (reason) appendPrivateLine(reason, reason.includes('complete')?'sent':'declined');
 }
-function closeTradeModalUI() { document.getElementById('tradeModal').style.display = 'none'; }
-
+function closeTradeModalUI() { document.getElementById('tradeModal').style.display='none'; }
 function handleTradeComplete(data) {
-  myInventory = data.inventory;
-  myCoins     = data.coins;
-  document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
-  renderInventory();
-  trade = null;
-  closeTradeModalUI();
-  showToast('🤝', 'Trade complete!', 'Items transferred', 'uncommon');
-  appendPrivateChatLine('✓ Trade completed successfully!', 'sent');
+  myInventory=data.inventory; myCoins=data.coins;
+  document.getElementById('coinHud').textContent=`🪙 ${myCoins}`;
+  if (loggedInUser) loggedInUser.coins=myCoins;
+  renderInventory(); trade=null; closeTradeModalUI();
+  showToast('🤝','Trade complete!','Items transferred','uncommon');
+  appendPrivateLine('✓ Trade completed successfully!','sent');
 }
 
 // ══════════════════════════════════════════════════════════════
 //  DIG
 // ══════════════════════════════════════════════════════════════
-const digBtn = document.getElementById('digBtn');
-const digProgWrap = document.getElementById('digProgressWrap');
-const digProgBar  = document.getElementById('digProgress');
-
-digBtn.addEventListener('click', () => {
-  if (!joined || !socket) return;
-  if (isDigging) { socket.emit('stopDig'); endDig(); }
-  else startDig();
-});
-
+const digBtn=document.getElementById('digBtn');
+const digProgWrap=document.getElementById('digProgressWrap');
+const digProgBar=document.getElementById('digProgress');
+digBtn.addEventListener('click', () => { if (!joined||!socket) return; if (isDigging){socket.emit('stopDig');endDig();}else startDig(); });
 function startDig() {
-  if (trade) return; // can't dig during trade
-  isDigging = true; digStart = Date.now();
-  digBtn.textContent = '✋ Stop'; digBtn.classList.add('digging');
-  digProgWrap.classList.add('active'); digProgBar.style.width = '100%';
+  if (trade) return;
+  isDigging=true; digStart=Date.now();
+  digBtn.textContent='✋ Stop'; digBtn.classList.add('digging');
+  digProgWrap.classList.add('active'); digProgBar.style.width='100%';
   socket.emit('startDig');
-  digInterval = setInterval(() => {
-    const pct = Math.max(0, 100 - ((Date.now()-digStart)/DIG_DUR)*100);
-    digProgBar.style.width = pct + '%';
-    if (pct <= 0) endDig();
-  }, 100);
+  digInterval=setInterval(()=>{ const p=Math.max(0,100-((Date.now()-digStart)/DIG_DUR)*100); digProgBar.style.width=p+'%'; if(p<=0) endDig(); },100);
 }
 function endDig() {
-  if (!isDigging) return;
-  isDigging = false; clearInterval(digInterval);
-  digBtn.textContent = '⛏️ Dig'; digBtn.classList.remove('digging');
-  digProgWrap.classList.remove('active'); digProgBar.style.width = '100%';
+  if (!isDigging) return; isDigging=false; clearInterval(digInterval);
+  digBtn.textContent='⛏️ Dig'; digBtn.classList.remove('digging');
+  digProgWrap.classList.remove('active'); digProgBar.style.width='100%';
 }
 function handleDigFind(find) {
-  if (find.type === 'coin') {
-    myCoins = find.totalCoins;
-    document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
-    showToast(find.emoji, `+${find.value} Coin${find.value>1?'s':''}`, 'Found coins!', 'coin');
-  } else if (find.type === 'item') {
-    myInventory = find.inventory;
-    renderInventory();
-    showToast(find.emoji, find.label, find.rarity.charAt(0).toUpperCase()+find.rarity.slice(1), find.rarity);
-    newItemCount++;
-    const b = document.getElementById('invBadge');
-    b.textContent = newItemCount > 9 ? '!' : newItemCount;
-    b.classList.add('show');
-  } else {
-    showToast(find.emoji, find.label, 'Keep digging…', 'nothing');
-  }
+  if (find.type==='coin') { myCoins=find.totalCoins; document.getElementById('coinHud').textContent=`🪙 ${myCoins}`; showToast(find.emoji,`+${find.value} Coin${find.value>1?'s':''}`, 'Found coins!','coin'); }
+  else if (find.type==='item') { myInventory=find.inventory; renderInventory(); showToast(find.emoji,find.label,find.rarity.charAt(0).toUpperCase()+find.rarity.slice(1),find.rarity); newItemCount++; const b=document.getElementById('invBadge'); b.textContent=newItemCount>9?'!':newItemCount; b.classList.add('show'); }
+  else showToast(find.emoji,find.label,'Keep digging…','nothing');
 }
 
 // ══════════════════════════════════════════════════════════════
-//  INVENTORY RENDER
+//  INVENTORY
 // ══════════════════════════════════════════════════════════════
 function renderInventory() {
-  const pane = document.getElementById('inventoryPane');
-  if (!myInventory.length) {
-    pane.innerHTML = '<div class="inv-empty"><span class="big">🎒</span>Go dig something up!</div>'; return;
-  }
-  const sorted = [...myInventory].sort((a,b)=>(RARITY_ORDER[a.rarity]||3)-(RARITY_ORDER[b.rarity]||3));
-  const groups = {};
-  sorted.forEach(i => { const r = i.rarity||'common'; (groups[r]=groups[r]||[]).push(i); });
-  let html = '';
-  ['legendary','rare','uncommon','common'].forEach(r => {
+  const pane=document.getElementById('inventoryPane');
+  if (!myInventory.length) { pane.innerHTML='<div class="inv-empty"><span class="big">🎒</span>Go dig something up!</div>'; return; }
+  const sorted=[...myInventory].sort((a,b)=>(RARITY_ORDER[a.rarity]||3)-(RARITY_ORDER[b.rarity]||3));
+  const groups={};sorted.forEach(i=>{const r=i.rarity||'common';(groups[r]=groups[r]||[]).push(i);});
+  let html='';
+  ['legendary','rare','uncommon','common'].forEach(r=>{
     if (!groups[r]) return;
-    html += `<div class="inv-section-title">${r}</div><div class="inv-grid">`;
-    groups[r].forEach(it => {
-      html += `<div class="inv-item rarity-${it.rarity}" title="${esc(it.label)}">
-        <span class="emoji">${it.emoji}</span>
-        <span class="item-name">${esc(it.label)}</span>
-        <span class="item-rarity rarity-${it.rarity}">${it.rarity}</span>
-        ${it.qty>1?`<span class="item-qty">x${it.qty}</span>`:''}
-      </div>`;
-    });
-    html += '</div>';
+    html+=`<div class="inv-section-title">${r}</div><div class="inv-grid">`;
+    groups[r].forEach(it=>{ html+=`<div class="inv-item rarity-${it.rarity}" title="${esc(it.label)}"><span class="emoji">${it.emoji}</span><span class="item-name">${esc(it.label)}</span><span class="item-rarity rarity-${it.rarity}">${it.rarity}</span>${it.qty>1?`<span class="item-qty">x${it.qty}</span>`:''}</div>`; });
+    html+='</div>';
   });
-  pane.innerHTML = html;
+  pane.innerHTML=html;
 }
 
 // ══════════════════════════════════════════════════════════════
 //  CHAT
 // ══════════════════════════════════════════════════════════════
-const chatMessages = document.getElementById('chatMessages');
-
+const chatMessages=document.getElementById('chatMessages');
 function addChatMsg(entry) {
-  const color = CAT_COLORS[entry.colorIndex] || CAT_COLORS[0];
-  const div = document.createElement('div');
-  div.className = 'chat-msg';
-  const time = new Date(entry.time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-  div.innerHTML = `
-    <div class="chat-meta">
-      <div class="chat-dot" style="background:${color.body};border:1.5px solid ${color.ear}"></div>
-      <span class="chat-name" style="color:${color.body}">${esc(entry.name)}</span>
-      <span class="chat-time">${time}</span>
-    </div>
-    <div class="chat-text">${esc(entry.msg)}</div>`;
-  // Click name → view profile
-  div.querySelector('.chat-name').addEventListener('click', () => {
-    if (!socket) return;
-    socket.emit('requestProfile', entry.id);
-  });
-  chatMessages.appendChild(div);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  const color=CAT_COLORS[entry.colorIndex]||CAT_COLORS[0];
+  const div=document.createElement('div'); div.className='chat-msg';
+  const time=new Date(entry.time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  div.innerHTML=`<div class="chat-meta"><div class="chat-dot" style="background:${color.body};border:1.5px solid ${color.ear}"></div><span class="chat-name" style="color:${color.body}">${esc(entry.name)}</span><span class="chat-time">${time}</span></div><div class="chat-text">${esc(entry.msg)}</div>`;
+  div.querySelector('.chat-name').addEventListener('click', () => { if (socket) socket.emit('requestProfile', entry.id); });
+  chatMessages.appendChild(div); chatMessages.scrollTop=chatMessages.scrollHeight;
 }
-
-function addSystemMsg(text) {
-  const d = document.createElement('div');
-  d.className = 'chat-system';
-  d.textContent = text;
-  chatMessages.appendChild(d);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function updateOnlineCount() {
-  const n = Object.keys(players).length;
-  document.getElementById('playerCount').textContent = `🐱 ${n} cat${n===1?'':'s'} online`;
-}
-
-function sendChat() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg || !socket) return;
-  socket.emit('chat', msg);
-  input.value = '';
-}
+function addSystemMsg(text) { const d=document.createElement('div'); d.className='chat-system'; d.textContent=text; chatMessages.appendChild(d); chatMessages.scrollTop=chatMessages.scrollHeight; }
+function updateOnlineCount() { const n=Object.keys(players).length; document.getElementById('playerCount').textContent=`🐱 ${n} cat${n===1?'':'s'} online`; }
+function sendChat() { const i=document.getElementById('chatInput'); const m=i.value.trim(); if(!m||!socket) return; socket.emit('chat',m); i.value=''; }
 document.getElementById('sendBtn').addEventListener('click', sendChat);
-document.getElementById('chatInput').addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
 
 // ══════════════════════════════════════════════════════════════
 //  TABS
 // ══════════════════════════════════════════════════════════════
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const tab = btn.dataset.tab;
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(`pane-${tab}`).classList.add('active');
-    if (tab === 'inventory') { newItemCount = 0; document.getElementById('invBadge').classList.remove('show'); }
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const tab=btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active'); document.getElementById(`pane-${tab}`).classList.add('active');
+    if (tab==='inventory') { newItemCount=0; document.getElementById('invBadge').classList.remove('show'); }
   });
 });
 
 // ══════════════════════════════════════════════════════════════
 //  TOASTS
 // ══════════════════════════════════════════════════════════════
-function showToast(emoji, label, sub, type) {
-  const c = document.getElementById('toastContainer');
-  const d = document.createElement('div');
-  d.className = `find-toast ${type}`;
-  d.innerHTML = `<span class="t-emoji">${emoji}</span><div><div class="t-label">${label}</div><div class="t-sub">${sub}</div></div>`;
-  c.appendChild(d);
-  setTimeout(() => { d.classList.add('remove'); setTimeout(() => d.remove(), 320); }, 2700);
+function showToast(emoji,label,sub,type) {
+  const c=document.getElementById('toastContainer'); const d=document.createElement('div');
+  d.className=`find-toast ${type}`;
+  d.innerHTML=`<span class="t-emoji">${emoji}</span><div><div class="t-label">${label}</div><div class="t-sub">${sub}</div></div>`;
+  c.appendChild(d); setTimeout(()=>{ d.classList.add('remove'); setTimeout(()=>d.remove(),320); },2700);
 }
 
 // ══════════════════════════════════════════════════════════════
 //  INPUT
 // ══════════════════════════════════════════════════════════════
-window.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT') return;
+window.addEventListener('keydown', e=>{
+  if (e.target.tagName==='INPUT') return;
   if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' '].includes(e.key)) e.preventDefault();
-  if (e.key === ' ' && joined && socket) { if (isDigging) { socket.emit('stopDig'); endDig(); } else startDig(); return; }
-  handleKey(e.key, true);
+  if (e.key===' '&&joined&&socket) { if(isDigging){socket.emit('stopDig');endDig();}else startDig(); return; }
+  handleKey(e.key,true);
 });
-window.addEventListener('keyup', e => handleKey(e.key, false));
-
-function handleKey(key, down) {
+window.addEventListener('keyup', e=>handleKey(e.key,false));
+function handleKey(key,down) {
   if (!joined) return;
-  const m = {ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right',ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down'};
-  const k = m[key]; if (!k) return;
-  if (keys[k] !== down) { keys[k] = down; if (socket) socket.emit('keys', keys); }
+  const m={ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right',ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down'};
+  const k=m[key]; if(!k) return;
+  if (keys[k]!==down) { keys[k]=down; if(socket) socket.emit('keys',keys); }
 }
-
-document.querySelectorAll('.emote-btn').forEach(btn => {
-  btn.addEventListener('click', () => { if (socket && joined) socket.emit('emote', btn.dataset.emote); });
-});
+document.querySelectorAll('.emote-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ if(socket&&joined) socket.emit('emote',btn.dataset.emote); }); });
 
 // ══════════════════════════════════════════════════════════════
-//  JOIN
+//  UTILS
 // ══════════════════════════════════════════════════════════════
-document.getElementById('joinBtn').addEventListener('click', doJoin);
-document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') doJoin(); });
-
-function doJoin() {
-  const name = document.getElementById('nameInput').value.trim() || 'Cat';
-  joined = true;
-  initSocket();
-  setTimeout(() => {
-    socket.emit('setName', name);
-    document.getElementById('nameOverlay').style.display = 'none';
-  }, 200);
-}
-
-// ══════════════════════════════════════════════════════════════
-//  UTILITIES
-// ══════════════════════════════════════════════════════════════
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ══════════════════════════════════════════════════════════════
 //  RENDER LOOP
 // ══════════════════════════════════════════════════════════════
 function render() {
-  ctx.clearRect(0, 0, W, H);
-  drawWorld();
+  ctx.clearRect(0,0,W,H); drawWorld();
   if (isDigging) digPhase++;
-  Object.values(players).sort((a,b) => a.y - b.y).forEach(p => {
-    const isMe = p.id === myId;
-    drawCat(ctx, p.x, p.y, p.color, p.name, isMe, p.emote, p.digging, isMe ? digPhase : (p.digPhase||0));
+  Object.values(players).sort((a,b)=>a.y-b.y).forEach(p=>{
+    drawCat(ctx,p.x,p.y,p.color,p.name,p.id===myId,p.emote,p.digging,p.id===myId?digPhase:(p.digPhase||0));
   });
   requestAnimationFrame(render);
 }
