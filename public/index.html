@@ -15,13 +15,11 @@
   --success:#66bb6a;--danger:#ef5350;
 }
 body{background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;user-select:none}
-
-/* ══ LAYOUT ══ */
 #app{display:flex;width:1160px;height:620px;border-radius:20px;overflow:hidden;box-shadow:0 0 60px rgba(199,125,255,.25),0 0 0 1px var(--border)}
 #gameWrap{position:relative;flex:0 0 780px;height:620px;background:#0d0818;overflow:hidden}
 canvas{display:block}
 
-/* ══ RIGHT PANEL ══ */
+/* RIGHT PANEL */
 #rightPanel{flex:1;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;height:620px;overflow:hidden}
 #tabBar{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
 .tab-btn{flex:1;background:none;border:none;padding:11px 4px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;letter-spacing:.4px;text-transform:uppercase;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;position:relative}
@@ -30,23 +28,20 @@ canvas{display:block}
 .tab-pane{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
 .tab-pane.active{display:flex}
 
-/* ══ GUEST BANNER ══ */
-#guestBanner{flex-shrink:0;background:linear-gradient(135deg,rgba(199,125,255,.12),rgba(255,157,226,.08));border-bottom:1px solid rgba(199,125,255,.25);padding:10px 14px;display:flex;flex-direction:column;gap:6px}
-#guestBanner.hidden{display:none}
-.gb-title{font-size:11px;font-weight:900;color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
-.gb-text{font-size:11px;color:var(--muted);line-height:1.4}
-.gb-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer;align-self:flex-start;transition:transform .1s}
-.gb-btn:hover{transform:scale(1.03)}
-
-/* ══ LOGGED-IN HUD ══ */
+/* ACCOUNT / GUEST BARS */
 #accountBar{flex-shrink:0;background:rgba(42,25,69,.5);border-bottom:1px solid var(--border);padding:7px 14px;display:flex;align-items:center;gap:8px}
 #accountBar.hidden{display:none}
 .ab-name{font-size:12px;font-weight:800;color:var(--accent);flex:1}
 .ab-email{font-size:10px;color:var(--muted)}
-.ab-logout{background:none;border:1px solid var(--border);border-radius:7px;padding:3px 10px;font-size:11px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--muted);cursor:pointer;transition:color .1s,border-color .1s}
+.ab-logout{background:none;border:1px solid var(--border);border-radius:7px;padding:3px 10px;font-size:11px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--muted);cursor:pointer}
 .ab-logout:hover{color:var(--danger);border-color:var(--danger)}
+#guestBanner{flex-shrink:0;background:linear-gradient(135deg,rgba(199,125,255,.12),rgba(255,157,226,.08));border-bottom:1px solid rgba(199,125,255,.25);padding:10px 14px;display:flex;flex-direction:column;gap:6px}
+#guestBanner.hidden{display:none}
+.gb-title{font-size:11px;font-weight:900;color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
+.gb-text{font-size:11px;color:var(--muted);line-height:1.4}
+.gb-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer;align-self:flex-start}
 
-/* ══ CHAT ══ */
+/* CHAT */
 #chatMessages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:7px;background:var(--chat-bg)}
 #chatMessages::-webkit-scrollbar{width:4px}
 #chatMessages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
@@ -54,7 +49,7 @@ canvas{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .chat-meta{display:flex;align-items:center;gap:6px}
 .chat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.chat-name{font-size:11px;font-weight:800;cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px}
+.chat-name{font-size:11px;font-weight:800;cursor:pointer;text-decoration:underline dotted}
 .chat-name:hover{opacity:.75}
 .chat-time{font-size:10px;color:var(--muted);margin-left:auto}
 .chat-text{font-size:13px;color:#d9cce8;padding-left:14px;line-height:1.45;word-break:break-word}
@@ -76,18 +71,21 @@ canvas{display:block}
 #sendBtn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:transform .1s;flex-shrink:0}
 #sendBtn:hover{transform:scale(1.07)}
 
-/* ══ INVENTORY ══ */
+/* INVENTORY */
 #inventoryPane{flex:1;overflow-y:auto;padding:12px;background:var(--chat-bg)}
 #inventoryPane::-webkit-scrollbar{width:4px}
 #inventoryPane::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
 .inv-section-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:10px 0 6px}
 .inv-section-title:first-child{margin-top:0}
-.inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.inv-item{background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:8px 6px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative}
+.inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:4px}
+.inv-item{background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:8px 6px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;cursor:default}
+.inv-item.placeable{cursor:pointer;transition:border-color .15s,background .1s}
+.inv-item.placeable:hover{background:rgba(199,125,255,.1);border-color:var(--accent)}
 .inv-item .emoji{font-size:22px;line-height:1}
 .inv-item .item-name{font-size:9px;font-weight:700;text-align:center;line-height:1.2}
 .inv-item .item-qty{position:absolute;top:4px;right:6px;font-size:10px;font-weight:900;color:var(--muted)}
 .inv-item .item-rarity{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.inv-place-badge{position:absolute;bottom:3px;right:4px;font-size:8px;color:var(--accent);font-weight:900}
 .rarity-common{color:var(--rc)}.rarity-uncommon{color:var(--ru)}.rarity-rare{color:var(--rr)}.rarity-legendary{color:var(--rl)}
 .inv-item.rarity-uncommon{border-color:rgba(105,240,174,.3)}
 .inv-item.rarity-rare{border-color:rgba(64,196,255,.3)}
@@ -97,13 +95,18 @@ canvas{display:block}
 #invBadge{display:none;position:absolute;top:-4px;right:-4px;background:var(--accent2);color:#1a0030;font-size:9px;font-weight:900;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center}
 #invBadge.show{display:flex}
 
-/* ══ HUD ══ */
+/* HUD */
 #hud{position:absolute;top:10px;left:10px;display:flex;gap:8px;align-items:center;pointer-events:none;z-index:2}
 .hud-pill{background:rgba(35,21,51,.88);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;backdrop-filter:blur(8px)}
 #playerCount{color:var(--accent)}
 #coinHud{border-color:#c9a227;color:#ffd740;display:none}
+#locationHud{color:var(--muted);font-size:11px;display:none;pointer-events:auto}
 
-/* ══ BOTTOM BAR ══ */
+/* WORLD MAP BUTTON */
+#worldMapBtn{position:absolute;top:10px;right:10px;background:rgba(35,21,51,.88);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--accent);cursor:pointer;backdrop-filter:blur(8px);z-index:3;transition:background .15s}
+#worldMapBtn:hover{background:rgba(199,125,255,.18)}
+
+/* BOTTOM BAR */
 #bottomBar{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2}
 #emoteBar{display:flex;gap:6px;background:rgba(35,21,51,.88);border:1px solid var(--border);border-radius:30px;padding:5px 10px;backdrop-filter:blur(8px)}
 .emote-btn{background:none;border:none;font-size:19px;cursor:pointer;padding:2px 4px;border-radius:8px;transition:transform .1s,background .1s;line-height:1}
@@ -118,7 +121,15 @@ canvas{display:block}
 #digProgressWrap.active{display:block}
 #controls{position:absolute;bottom:10px;left:10px;background:rgba(35,21,51,.75);border:1px solid var(--border);border-radius:12px;padding:5px 10px;font-size:10px;color:var(--muted);backdrop-filter:blur(6px);pointer-events:none;z-index:2}
 
-/* ══ TOASTS ══ */
+/* ROOM CONTROLS BAR */
+#roomBar{position:absolute;top:48px;right:10px;display:none;flex-direction:column;gap:6px;z-index:3}
+#roomBar.visible{display:flex}
+.room-bar-btn{background:rgba(35,21,51,.92);border:1px solid var(--border);border-radius:12px;padding:6px 14px;font-size:11px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer;backdrop-filter:blur(8px);transition:background .15s}
+.room-bar-btn:hover{background:rgba(199,125,255,.18);color:var(--accent)}
+.room-bar-btn.danger{color:var(--danger)}
+.room-bar-btn.danger:hover{border-color:var(--danger)}
+
+/* TOASTS */
 #toastContainer{position:absolute;top:54px;left:10px;display:flex;flex-direction:column;gap:6px;pointer-events:none;width:210px;z-index:5}
 .find-toast{background:rgba(22,14,34,.94);border:1px solid var(--border);border-radius:12px;padding:7px 11px;display:flex;align-items:center;gap:9px;animation:toastIn .22s ease;backdrop-filter:blur(8px)}
 .find-toast.remove{animation:toastOut .28s ease forwards}
@@ -131,7 +142,7 @@ canvas{display:block}
 .find-toast.legendary{border-color:var(--rl);box-shadow:0 0 10px rgba(255,215,64,.25)}
 .find-toast.rare{border-color:var(--rr)}.find-toast.uncommon{border-color:var(--ru)}.find-toast.nothing{opacity:.55}
 
-/* ══ CONTEXT MENU ══ */
+/* CONTEXT MENU */
 #ctxMenu{position:fixed;background:rgba(20,11,32,.97);border:1px solid var(--border);border-radius:12px;padding:5px;min-width:148px;z-index:500;box-shadow:0 8px 32px rgba(0,0,0,.6);backdrop-filter:blur(12px);display:none}
 .ctx-head{padding:5px 10px 7px;border-bottom:1px solid var(--border);margin-bottom:3px}
 .ctx-player-name{font-size:13px;font-weight:900;color:var(--accent)}
@@ -139,7 +150,7 @@ canvas{display:block}
 .ctx-row:hover{background:rgba(199,125,255,.13)}
 .ctx-icon{font-size:14px;width:18px;text-align:center}
 
-/* ══ MODAL BASE ══ */
+/* MODAL BASE */
 .modal-back{position:fixed;inset:0;background:rgba(8,4,18,.75);backdrop-filter:blur(4px);z-index:300;display:flex;align-items:center;justify-content:center;animation:mfadeIn .15s ease}
 @keyframes mfadeIn{from{opacity:0}to{opacity:1}}
 .modal-box{background:var(--panel);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);animation:mslide .18s ease}
@@ -149,7 +160,7 @@ canvas{display:block}
 .modal-close-btn{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;padding:2px 4px;border-radius:6px}
 .modal-close-btn:hover{color:var(--text);background:rgba(255,255,255,.06)}
 .modal-foot{padding:11px 18px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.btn{border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:opacity .1s,transform .1s}
+.btn{border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:opacity .1s}
 .btn:hover{opacity:.88}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#1a0030}
@@ -158,29 +169,20 @@ canvas{display:block}
 .btn-danger{background:rgba(239,83,80,.18);border:1px solid rgba(239,83,80,.4);color:var(--danger)}
 .btn-success{background:linear-gradient(135deg,#388e3c,#66bb6a);color:#fff}
 
-/* ══ FORM FIELDS ══ */
+/* FORM */
 .form-group{display:flex;flex-direction:column;gap:5px}
 .form-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
 .form-input{background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:9px 13px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;transition:border-color .2s;width:100%}
 .form-input:focus{border-color:var(--accent)}
 .form-input::placeholder{color:var(--muted)}
-.form-input.error{border-color:var(--danger)}
 .form-error{font-size:11px;color:var(--danger);font-weight:700;min-height:16px}
 .form-success{font-size:11px;color:var(--success);font-weight:700;min-height:16px}
-.form-link{font-size:12px;color:var(--accent);cursor:pointer;font-weight:700;background:none;border:none;padding:0;text-decoration:underline dotted;text-underline-offset:2px}
-.form-link:hover{opacity:.8}
+.form-link{font-size:12px;color:var(--accent);cursor:pointer;font-weight:700;background:none;border:none;padding:0;text-decoration:underline dotted}
 
-/* ══ AUTH MODAL ══ */
-#authModal .modal-box{width:360px}
-.auth-body{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
-.auth-divider{text-align:center;color:var(--muted);font-size:11px;position:relative}
-.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
-.auth-divider::before{left:0}.auth-divider::after{right:0}
-
-/* ══ ENTRY OVERLAY ══ */
-#entryOverlay{position:absolute;inset:0;background:rgba(10,5,20,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;backdrop-filter:blur(8px);z-index:20}
+/* ENTRY OVERLAY */
+#entryOverlay{position:absolute;inset:0;background:rgba(10,5,20,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(8px);z-index:20}
 .entry-card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:36px 40px;width:340px;display:flex;flex-direction:column;align-items:center;gap:18px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.entry-logo{font-size:48px;line-height:1}
+.entry-logo{font-size:48px}
 .entry-title{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center}
 .entry-sub{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
 .entry-sep{width:100%;height:1px;background:var(--border)}
@@ -189,16 +191,62 @@ canvas{display:block}
 .entry-name-input{flex:1;background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;transition:border-color .2s}
 .entry-name-input:focus{border-color:var(--accent)}
 .entry-name-input::placeholder{color:var(--muted)}
-.entry-guest-btn{background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer;white-space:nowrap;transition:border-color .15s}
+.entry-guest-btn{background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer;white-space:nowrap}
 .entry-guest-btn:hover{border-color:var(--accent)}
 .entry-divider-text{font-size:12px;color:var(--muted)}
 .entry-auth-btns{display:flex;gap:10px;width:100%}
-.entry-signin-btn{flex:1;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;padding:11px;font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer;transition:transform .1s}
-.entry-signin-btn:hover{transform:scale(1.03)}
-.entry-signup-btn{flex:1;background:var(--input-bg);border:1.5px solid var(--border);border-radius:12px;padding:11px;font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer;transition:border-color .15s}
+.entry-signin-btn{flex:1;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;padding:11px;font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer}
+.entry-signup-btn{flex:1;background:var(--input-bg);border:1.5px solid var(--border);border-radius:12px;padding:11px;font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer}
 .entry-signup-btn:hover{border-color:var(--accent)}
 
-/* ══ PROFILE MODAL ══ */
+/* AUTH MODAL */
+#authModal .modal-box{width:360px}
+.auth-body{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.auth-divider{text-align:center;color:var(--muted);font-size:11px;position:relative}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
+.auth-divider::before{left:0}.auth-divider::after{right:0}
+
+/* WORLD MAP OVERLAY */
+#worldMapOverlay{position:absolute;inset:0;background:rgba(10,5,20,.96);display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(8px);z-index:15}
+#worldMapOverlay.visible{display:flex}
+.wm-title{font-size:24px;font-weight:900;margin-bottom:4px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wm-sub{font-size:12px;color:var(--muted);margin-bottom:28px}
+.wm-locations{display:flex;gap:20px;align-items:flex-end}
+.wm-loc{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:transform .15s}
+.wm-loc:hover{transform:translateY(-4px)}
+.wm-loc-card{background:var(--panel);border:2px solid var(--border);border-radius:16px;padding:20px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;width:150px;transition:border-color .15s,box-shadow .15s}
+.wm-loc:hover .wm-loc-card{border-color:var(--accent);box-shadow:0 0 24px rgba(199,125,255,.2)}
+.wm-loc.active .wm-loc-card{border-color:var(--accent2);background:rgba(255,157,226,.06)}
+.wm-loc-icon{font-size:44px;line-height:1}
+.wm-loc-name{font-size:14px;font-weight:900}
+.wm-loc-desc{font-size:10px;color:var(--muted);text-align:center;line-height:1.4}
+.wm-loc-count{font-size:10px;font-weight:800;color:var(--accent);margin-top:2px}
+.wm-close{position:absolute;top:20px;right:24px;background:none;border:1px solid var(--border);border-radius:10px;padding:6px 14px;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--muted);cursor:pointer}
+.wm-close:hover{color:var(--text);border-color:var(--text)}
+
+/* HOUSE DIRECTORY MODAL */
+#houseDirModal .modal-box{width:560px;max-height:80vh;display:flex;flex-direction:column}
+.house-dir-body{padding:16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px}
+.hd-my-room{background:linear-gradient(135deg,rgba(199,125,255,.1),rgba(255,157,226,.06));border:1px solid rgba(199,125,255,.3);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.hd-my-room-info{flex:1}
+.hd-my-room-title{font-size:14px;font-weight:900}
+.hd-my-room-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.hd-section-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.hd-table{display:flex;flex-direction:column;gap:6px}
+.hd-row{background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.hd-row:hover{border-color:var(--border)}
+.hd-cat-mini{width:32px;height:40px;flex-shrink:0}
+.hd-player-name{font-size:13px;font-weight:800;flex:1}
+.hd-player-sub{font-size:10px;color:var(--muted)}
+.hd-online-dot{width:7px;height:7px;border-radius:50%;background:#4caf50;flex-shrink:0}
+.hd-offline-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0}
+.hd-visitor-count{font-size:10px;color:var(--accent);font-weight:800;margin-right:8px}
+.hd-enter-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:8px;padding:5px 14px;font-size:11px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer}
+.hd-enter-btn:hover{opacity:.88}
+.hd-empty{text-align:center;color:var(--muted);font-size:12px;padding:20px;font-style:italic}
+.hd-guest-notice{background:rgba(239,83,80,.08);border:1px solid rgba(239,83,80,.3);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--danger);font-weight:700}
+
+/* PROFILE MODAL */
 #profileModal .modal-box{width:310px}
 .profile-cat-wrap{flex-shrink:0}
 .profile-name-text{font-size:17px;font-weight:900}
@@ -218,7 +266,7 @@ canvas{display:block}
 .pi-item.rarity-rare{border-color:rgba(64,196,255,.3)}
 .pi-item.rarity-legendary{border-color:rgba(255,215,64,.4);box-shadow:0 0 6px rgba(255,215,64,.12)}
 
-/* ══ TRADE MODAL ══ */
+/* TRADE MODAL */
 #tradeModal .modal-box{width:700px;max-height:88vh;display:flex;flex-direction:column}
 .trade-body{display:flex;flex:1;overflow:hidden;min-height:0}
 .trade-col{flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;min-width:0}
@@ -228,7 +276,7 @@ canvas{display:block}
 .trade-col-name{font-size:15px;font-weight:900}
 .trade-divider{width:1px;background:var(--border);flex-shrink:0;margin:14px 0}
 .section-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
-.offer-zone{min-height:80px;background:rgba(42,25,69,.35);border:1.5px dashed rgba(61,32,96,.8);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;transition:border-color .2s}
+.offer-zone{min-height:80px;background:rgba(42,25,69,.35);border:1.5px dashed rgba(61,32,96,.8);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start}
 .offer-zone.mine:hover{border-color:var(--accent)}
 .offer-empty-label{font-size:11px;color:var(--muted);font-style:italic;padding:6px 2px;width:100%}
 .offer-chip{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:6px 5px 5px;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;min-width:52px;max-width:60px}
@@ -248,7 +296,7 @@ canvas{display:block}
 .coins-offer-row input:focus{border-color:#ffd740}
 .coins-offer-row .coins-display{font-size:14px;font-weight:900;color:#ffd740}
 .avail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-.avail-item{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:6px 4px 5px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;transition:border-color .15s,background .1s}
+.avail-item{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:6px 4px 5px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative}
 .avail-item:hover{background:rgba(199,125,255,.1);border-color:var(--accent)}
 .avail-item.rarity-uncommon{border-color:rgba(105,240,174,.3)}
 .avail-item.rarity-rare{border-color:rgba(64,196,255,.3)}
@@ -261,18 +309,27 @@ canvas{display:block}
 .trade-status-text{flex:1;font-size:11px;color:var(--muted)}
 .status-chip{display:inline-block;border-radius:20px;padding:1px 9px;font-size:10px;font-weight:800;font-style:normal}
 .chip-ready{background:rgba(102,187,106,.15);border:1px solid var(--success);color:var(--success)}
+
+/* PLACE ITEM CURSOR */
+#placeCursor{position:absolute;pointer-events:none;z-index:10;display:none;font-size:28px;transform:translate(-50%,-50%);filter:drop-shadow(0 0 8px rgba(199,125,255,.8))}
 </style>
 </head>
 <body>
-
 <div id="app">
-  <!-- GAME CANVAS -->
   <div id="gameWrap">
     <canvas id="canvas" width="780" height="620"></canvas>
     <div id="hud">
       <div class="hud-pill" id="playerCount">🐱 0 online</div>
       <div class="hud-pill" id="coinHud">🪙 0</div>
+      <div class="hud-pill" id="locationHud">🏠 Room</div>
     </div>
+    <button id="worldMapBtn">🗺️ World Map</button>
+    <div id="roomBar">
+      <button class="room-bar-btn" id="editRoomBtn">✏️ Edit Room</button>
+      <button class="room-bar-btn" id="saveRoomBtn" style="display:none">💾 Save Room</button>
+      <button class="room-bar-btn danger" id="leaveRoomBtn">← Leave Room</button>
+    </div>
+    <div id="placeCursor"></div>
     <div id="toastContainer"></div>
     <div id="bottomBar">
       <div id="emoteBar">
@@ -291,27 +348,55 @@ canvas{display:block}
     </div>
     <div id="controls">WASD · Space to dig · Right-click player to interact</div>
 
-    <!-- ENTRY OVERLAY (shown before joining) -->
+    <!-- ENTRY OVERLAY -->
     <div id="entryOverlay">
       <div class="entry-card">
         <div class="entry-logo">🐱</div>
         <div class="entry-title">Cat Lobby</div>
-        <div class="entry-sub">Dig for treasures, trade with friends,<br>and keep your collection forever.</div>
+        <div class="entry-sub">Dig for treasures, decorate your room,<br>and trade with friends!</div>
         <div class="entry-sep"></div>
-
-        <!-- Guest join -->
         <div class="entry-section-label">Play as Guest</div>
         <div class="entry-name-row">
           <input class="entry-name-input" id="guestNameInput" type="text" maxlength="16" placeholder="Choose a username..." autocomplete="off">
           <button class="entry-guest-btn" id="guestJoinBtn">Play →</button>
         </div>
-
         <div class="entry-divider-text">— or save your progress —</div>
-
-        <!-- Auth buttons -->
         <div class="entry-auth-btns">
           <button class="entry-signin-btn" id="entrySignInBtn">🔑 Sign In</button>
           <button class="entry-signup-btn" id="entrySignUpBtn">✨ Sign Up</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORLD MAP OVERLAY -->
+    <div id="worldMapOverlay">
+      <button class="wm-close" id="wmCloseBtn">✕ Close</button>
+      <div class="wm-title">🗺️ World Map</div>
+      <div class="wm-sub">Where would you like to go?</div>
+      <div class="wm-locations">
+        <div class="wm-loc" id="wmLobby">
+          <div class="wm-loc-card">
+            <div class="wm-loc-icon">🌳</div>
+            <div class="wm-loc-name">The Lobby</div>
+            <div class="wm-loc-desc">Hang out, dig, and trade with other cats</div>
+            <div class="wm-loc-count" id="wmLobbyCount"></div>
+          </div>
+        </div>
+        <div class="wm-loc" id="wmHouses">
+          <div class="wm-loc-card">
+            <div class="wm-loc-icon">🏠</div>
+            <div class="wm-loc-name">House District</div>
+            <div class="wm-loc-desc">Visit player rooms and decorate your own</div>
+            <div class="wm-loc-count" id="wmHouseCount"></div>
+          </div>
+        </div>
+        <div class="wm-loc" style="opacity:.45;cursor:not-allowed">
+          <div class="wm-loc-card" style="pointer-events:none">
+            <div class="wm-loc-icon">⚒️</div>
+            <div class="wm-loc-name">Mine Caves</div>
+            <div class="wm-loc-desc">Deeper digging coming soon!</div>
+            <div class="wm-loc-count" style="color:var(--muted)">Coming Soon</div>
+          </div>
         </div>
       </div>
     </div>
@@ -323,8 +408,6 @@ canvas{display:block}
       <button class="tab-btn active" data-tab="chat">💬 Chat</button>
       <button class="tab-btn" data-tab="inventory" id="invTabBtn">🎒 Bag<span id="invBadge">!</span></button>
     </div>
-
-    <!-- ACCOUNT BAR (shown when logged in) -->
     <div id="accountBar" class="hidden">
       <div style="display:flex;flex-direction:column;flex:1;min-width:0">
         <div class="ab-name" id="abName">Cat</div>
@@ -332,14 +415,11 @@ canvas{display:block}
       </div>
       <button class="ab-logout" id="abLogoutBtn">Sign Out</button>
     </div>
-
-    <!-- GUEST BANNER (shown when guest, top of chat) -->
     <div id="guestBanner" class="hidden">
       <div class="gb-title">🔒 Guest Account</div>
       <div class="gb-text">Your items won't be saved when you leave. Sign up to keep your progress!</div>
       <button class="gb-btn" id="gbSignUpBtn">Login / Sign Up</button>
     </div>
-
     <div class="tab-pane active" id="pane-chat">
       <div id="chatMessages"></div>
       <div id="chatInputWrap">
@@ -358,17 +438,29 @@ canvas{display:block}
   <div class="ctx-head"><div class="ctx-player-name" id="ctxPlayerName">Player</div></div>
   <div class="ctx-row" id="ctxViewProfile"><span class="ctx-icon">👤</span> View Profile</div>
   <div class="ctx-row" id="ctxSendTrade"><span class="ctx-icon">🤝</span> Send Trade Request</div>
+  <div class="ctx-row" id="ctxVisitRoom"><span class="ctx-icon">🏠</span> Visit Room</div>
 </div>
 
-<!-- AUTH MODAL (sign in / sign up / claim guest) -->
+<!-- AUTH MODAL -->
 <div id="authModal" class="modal-back" style="display:none">
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-title" id="authModalTitle">🐱 Sign In</div>
       <button class="modal-close-btn" id="authModalClose">✕</button>
     </div>
-    <div class="auth-body" id="authModalBody">
-      <!-- content injected by JS -->
+    <div class="auth-body" id="authModalBody"></div>
+  </div>
+</div>
+
+<!-- HOUSE DIRECTORY MODAL -->
+<div id="houseDirModal" class="modal-back" style="display:none">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">🏠 House District</div>
+      <button class="modal-close-btn" id="hdClose">✕</button>
+    </div>
+    <div class="house-dir-body" id="houseDirBody">
+      <div class="hd-empty">Loading…</div>
     </div>
   </div>
 </div>
@@ -405,11 +497,8 @@ canvas{display:block}
       <button class="modal-close-btn" id="tradeCloseX">✕</button>
     </div>
     <div class="trade-body">
-      <div class="trade-col" id="myTradeCol">
-        <div>
-          <div class="trade-col-title">Your Offer</div>
-          <div class="trade-col-name" id="myTradeName">You</div>
-        </div>
+      <div class="trade-col">
+        <div><div class="trade-col-title">Your Offer</div><div class="trade-col-name" id="myTradeName">You</div></div>
         <div class="section-label">Items you're offering</div>
         <div class="offer-zone mine" id="myOfferZone"></div>
         <div class="coins-offer-row">
@@ -421,11 +510,8 @@ canvas{display:block}
         <div class="avail-grid" id="myAvailGrid"></div>
       </div>
       <div class="trade-divider"></div>
-      <div class="trade-col" id="partnerTradeCol">
-        <div>
-          <div class="trade-col-title">Their Offer</div>
-          <div class="trade-col-name" id="partnerTradeName">Partner</div>
-        </div>
+      <div class="trade-col">
+        <div><div class="trade-col-title">Their Offer</div><div class="trade-col-name" id="partnerTradeName">Partner</div></div>
         <div class="section-label">Items they're offering</div>
         <div class="offer-zone" id="partnerOfferZone"></div>
         <div class="coins-offer-row" style="opacity:.65">
@@ -444,12 +530,11 @@ canvas{display:block}
 
 <script>
 'use strict';
-
 // ══════════════════════════════════════════════════════════════
 //  CONSTANTS
 // ══════════════════════════════════════════════════════════════
-const W = 780, H = 620;
-const CAT_COLORS = [
+const W=780,H=620;
+const CAT_COLORS=[
   {body:'#f4a261',ear:'#e07a2f',stripe:'#d4813f'},
   {body:'#a8dadc',ear:'#6cbfc3',stripe:'#89c8ca'},
   {body:'#c9b1ff',ear:'#a07dff',stripe:'#b396ff'},
@@ -459,42 +544,38 @@ const CAT_COLORS = [
   {body:'#9d8ca1',ear:'#6d6875',stripe:'#8a7a8e'},
   {body:'#e9c46a',ear:'#c9a227',stripe:'#d4ad47'},
 ];
-const RARITY_ORDER = {legendary:0,rare:1,uncommon:2,common:3};
-const DIG_DUR = 15000;
-const TOKEN_KEY = 'catlobby_token';
+const RARITY_ORDER={legendary:0,rare:1,uncommon:2,common:3};
+const DIG_DUR=15000, TOKEN_KEY='catlobby_token';
+let ITEMS_META={};  // filled from server on init
 
 // ══════════════════════════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════════════════════════
-let socket = null;
-let myId = null;
-let players = {};
-let keys = {};
-let joined = false;
-let myCoins = 0;
-let myInventory = [];
-let isGuest = true;
-let loggedInUser = null;  // { id, username, email, colorIndex }
-let isDigging = false, digStart = 0, digPhase = 0, digInterval = null;
-let newItemCount = 0;
-let trade = null;
-let ctxTargetId = null;
-let profileViewId = null;
+let socket=null, myId=null, players={}, keys={}, joined=false;
+let myCoins=0, myInventory=[], isGuest=true, loggedInUser=null;
+let isDigging=false, digStart=0, digPhase=0, digInterval=null;
+let newItemCount=0, trade=null, ctxTargetId=null, profileViewId=null;
+let scene='lobby';           // 'lobby' | 'room'
+let roomState=null;          // { ownerId, ownerName, isOwner, roomName, wallpaper, flooring, placedItems, players:{} }
+let editMode=false;          // true when owner is in room edit mode
+let placingItemId=null;      // itemId being placed (edit mode)
+let ctxTargetDbId=null;      // DB userId of right-click target (for visiting room)
 
 // ══════════════════════════════════════════════════════════════
-//  TOKEN STORAGE
+//  TOKEN
 // ══════════════════════════════════════════════════════════════
-function getToken()       { return localStorage.getItem(TOKEN_KEY); }
-function setToken(t)      { localStorage.setItem(TOKEN_KEY, t); }
-function clearToken()     { localStorage.removeItem(TOKEN_KEY); }
+function getToken(){return localStorage.getItem(TOKEN_KEY);}
+function setToken(t){localStorage.setItem(TOKEN_KEY,t);}
+function clearToken(){localStorage.removeItem(TOKEN_KEY);}
 
 // ══════════════════════════════════════════════════════════════
-//  CANVAS & WORLD
+//  CANVAS
 // ══════════════════════════════════════════════════════════════
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d');
 
-const DECS = (()=>{
+// ── World decorations ──────────────────────────────────────
+const DECS=(()=>{
   const d=[];
   [[60,60],[150,80],[700,65],[720,160],[50,220],[70,440],[710,400],[730,520],[160,540],[350,55],[430,565],[600,540],[80,340],[680,290],[340,560],[450,60]]
     .forEach(([x,y])=>d.push({t:'tree',x,y}));
@@ -521,6 +602,76 @@ function drawDec(d){
   else if(d.t==='bench'){ctx.save();ctx.fillStyle='#5d4037';ctx.fillRect(d.x-14,d.y-2,5,12);ctx.fillRect(d.x+9,d.y-2,5,12);ctx.fillStyle='#8d6e63';ctx.fillRect(d.x-18,d.y-6,36,7);ctx.fillRect(d.x-18,d.y-16,36,5);ctx.restore();}
   else if(d.t==='well'){ctx.save();ctx.fillStyle='#9e9e9e';ctx.beginPath();ctx.ellipse(d.x,d.y+6,18,10,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#bdbdbd';ctx.fillRect(d.x-18,d.y-14,36,20);ctx.fillStyle='#9e9e9e';ctx.beginPath();ctx.ellipse(d.x,d.y-14,18,10,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#4fc3f7';ctx.beginPath();ctx.ellipse(d.x,d.y-14,14,7,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5d4037';ctx.fillRect(d.x-22,d.y-36,5,26);ctx.fillRect(d.x+17,d.y-36,5,26);ctx.fillStyle='#bf360c';ctx.beginPath();ctx.moveTo(d.x-28,d.y-34);ctx.lineTo(d.x,d.y-52);ctx.lineTo(d.x+28,d.y-34);ctx.closePath();ctx.fill();ctx.restore();}
 }
+
+// ── Room drawing ────────────────────────────────────────────
+const WALLPAPERS={
+  default:{wall:'#8b7355',floor:'#c8a47a',trim:'#6d5a3f'},
+  pastel: {wall:'#d4b8e0',floor:'#f0e6ff',trim:'#c77dff'},
+  ocean:  {wall:'#1a6b8a',floor:'#a8d8e0',trim:'#42a5f5'},
+  forest: {wall:'#2d5a27',floor:'#6d9e5a',trim:'#4caf50'},
+  sunset: {wall:'#c0392b',floor:'#f39c12',trim:'#e74c3c'},
+  night:  {wall:'#1a1a2e',floor:'#16213e',trim:'#0f3460'},
+};
+
+function drawRoom(){
+  if (!roomState) return;
+  const wp=WALLPAPERS[roomState.wallpaper]||WALLPAPERS.default;
+  // Floor
+  ctx.fillStyle=wp.floor; ctx.fillRect(0,0,W,H);
+  // Floor pattern
+  ctx.globalAlpha=.12;
+  for(let x=0;x<W;x+=60) for(let y=0;y<H;y+=60){
+    ctx.strokeStyle=wp.trim; ctx.lineWidth=1;
+    ctx.strokeRect(x,y,60,60);
+  }
+  ctx.globalAlpha=1;
+  // Wall at top
+  ctx.fillStyle=wp.wall; ctx.fillRect(0,0,W,160);
+  // Trim
+  ctx.fillStyle=wp.trim; ctx.fillRect(0,158,W,4);
+  // Window
+  ctx.fillStyle='#87ceeb'; ctx.fillRect(W/2-60,30,120,90);
+  ctx.fillStyle=wp.trim; ctx.lineWidth=4; ctx.strokeStyle=wp.trim;
+  ctx.strokeRect(W/2-60,30,120,90);
+  ctx.beginPath(); ctx.moveTo(W/2,30); ctx.lineTo(W/2,120); ctx.moveTo(W/2-60,75); ctx.lineTo(W/2+60,75); ctx.stroke();
+  // Room border
+  ctx.strokeStyle=wp.trim; ctx.lineWidth=6; ctx.strokeRect(3,3,W-6,H-6);
+  // Door at bottom
+  ctx.fillStyle=wp.trim; ctx.fillRect(W/2-30,H-80,60,80);
+  ctx.fillStyle='rgba(0,0,0,.3)'; ctx.fillRect(W/2-30,H-80,60,80);
+  ctx.fillStyle='#c9a227'; ctx.beginPath(); ctx.arc(W/2+18,H-40,4,0,Math.PI*2); ctx.fill();
+
+  // Edit mode grid overlay
+  if (editMode) {
+    ctx.globalAlpha=.08;
+    for(let x=0;x<W;x+=40) {ctx.strokeStyle='#c77dff';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40) {ctx.strokeStyle='#c77dff';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.globalAlpha=1;
+    // Edit mode label
+    ctx.fillStyle='rgba(199,125,255,.15)'; ctx.fillRect(0,0,W,28);
+    ctx.fillStyle='#c77dff'; ctx.font='bold 12px Nunito,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('✏️ Edit Mode — Click inventory items to place · Right-click placed items to pick up', W/2, 14);
+  }
+
+  // Placed items
+  if (roomState.placedItems) {
+    for (const item of roomState.placedItems) {
+      const iw=item.w||40, ih=item.h||40;
+      ctx.save();
+      if (editMode) {
+        ctx.fillStyle='rgba(199,125,255,.1)';
+        ctx.strokeStyle='rgba(199,125,255,.4)'; ctx.lineWidth=1;
+        rr(ctx,item.x-iw/2,item.y-ih/2,iw,ih,6); ctx.fill(); ctx.stroke();
+      }
+      ctx.font=`${Math.min(iw,ih)*.7}px serif`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(item.emoji, item.x, item.y);
+      // Label on hover handled by cursor proximity check
+      ctx.restore();
+    }
+  }
+}
+
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();}
 
 function drawCat(c,x,y,color,name,isMe,emote,digging,phase){
@@ -547,655 +698,637 @@ function drawCat(c,x,y,color,name,isMe,emote,digging,phase){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  API HELPERS
+//  RENDER LOOP
 // ══════════════════════════════════════════════════════════════
-async function apiPost(url, body) {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  return res.json();
+function render(){
+  ctx.clearRect(0,0,W,H);
+  if (scene==='lobby') {
+    drawWorld();
+    if(isDigging) digPhase++;
+    Object.values(players).filter(p=>!p.inRoomId).sort((a,b)=>a.y-b.y).forEach(p=>{
+      drawCat(ctx,p.x,p.y,p.color,p.name,p.id===myId,p.emote,p.digging,p.id===myId?digPhase:(p.digPhase||0));
+    });
+  } else if (scene==='room' && roomState) {
+    drawRoom();
+    const rPlayers = Object.values(roomState.players||{});
+    rPlayers.sort((a,b)=>a.y-b.y).forEach(p=>{
+      drawCat(ctx,p.x,p.y,p.color,p.name,p.id===myId,p.emote,false,0);
+    });
+  }
+  requestAnimationFrame(render);
+}
+render();
+
+// ══════════════════════════════════════════════════════════════
+//  API
+// ══════════════════════════════════════════════════════════════
+async function apiPost(url,body){
+  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  return r.json();
 }
 
 // ══════════════════════════════════════════════════════════════
 //  AUTH MODAL
 // ══════════════════════════════════════════════════════════════
-const authModal      = document.getElementById('authModal');
-const authModalTitle = document.getElementById('authModalTitle');
-const authModalBody  = document.getElementById('authModalBody');
-const authModalClose = document.getElementById('authModalClose');
-let authModalMode = 'signin'; // 'signin' | 'signup' | 'claim'
-let authModalOnSuccess = null; // callback after login
+const authModal=document.getElementById('authModal');
+const authModalTitle=document.getElementById('authModalTitle');
+const authModalBody=document.getElementById('authModalBody');
+document.getElementById('authModalClose').addEventListener('click',()=>authModal.style.display='none');
+authModal.addEventListener('click',e=>{if(e.target===authModal)authModal.style.display='none';});
+let authMode='signin', authOnSuccess=null;
 
-authModalClose.addEventListener('click', () => { authModal.style.display = 'none'; });
-authModal.addEventListener('click', e => { if (e.target === authModal) authModal.style.display = 'none'; });
-
-function openAuthModal(mode, onSuccess) {
-  authModalMode = mode;
-  authModalOnSuccess = onSuccess || null;
-  authModal.style.display = 'flex';
-  renderAuthModal();
+function openAuthModal(mode,onSuccess){
+  authMode=mode; authOnSuccess=onSuccess||null;
+  authModal.style.display='flex';
+  mode==='signup'||mode==='claim'?renderSignUp():renderSignIn();
 }
-
-function renderAuthModal() {
-  if (authModalMode === 'signup' || authModalMode === 'claim') {
-    renderSignUpForm();
-  } else {
-    renderSignInForm();
-  }
-}
-
-function renderSignInForm(prefillEmail) {
-  authModalMode = 'signin';
-  authModalTitle.textContent = '🔑 Sign In to Cat Lobby';
-  authModalBody.innerHTML = `
-    <div class="form-group">
-      <label class="form-label">Email</label>
-      <input class="form-input" id="siEmail" type="email" placeholder="your@email.com" value="${esc(prefillEmail||'')}">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Password</label>
-      <input class="form-input" id="siPassword" type="password" placeholder="Your password">
-    </div>
+function renderSignIn(email){
+  authMode='signin'; authModalTitle.textContent='🔑 Sign In to Cat Lobby';
+  authModalBody.innerHTML=`
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="siEmail" type="email" placeholder="your@email.com" value="${esc(email||'')}"></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="siPassword" type="password" placeholder="Your password"></div>
     <div id="siError" class="form-error"></div>
     <button class="btn btn-primary" id="siSubmit" style="width:100%">Sign In →</button>
     <div class="auth-divider">or</div>
-    <div style="text-align:center">
-      <span style="font-size:12px;color:var(--muted)">Don't have an account? </span>
-      <button class="form-link" id="siToSignUp">Sign up here</button>
-    </div>`;
-
-  document.getElementById('siToSignUp').addEventListener('click', () => { authModalMode='signup'; renderSignUpForm(); });
-  document.getElementById('siSubmit').addEventListener('click', doSignIn);
-  document.getElementById('siPassword').addEventListener('keydown', e => { if (e.key==='Enter') doSignIn(); });
+    <div style="text-align:center"><span style="font-size:12px;color:var(--muted)">Don't have an account? </span><button class="form-link" id="siToUp">Sign up here</button></div>`;
+  document.getElementById('siToUp').addEventListener('click',()=>{authMode='signup';renderSignUp();});
+  document.getElementById('siSubmit').addEventListener('click',doSignIn);
+  document.getElementById('siPassword').addEventListener('keydown',e=>{if(e.key==='Enter')doSignIn();});
 }
-
-function renderSignUpForm(prefillEmail) {
-  const isClaim = authModalMode === 'claim';
-  authModalTitle.textContent = isClaim ? '✨ Save Your Progress' : '✨ Create an Account';
-  authModalBody.innerHTML = `
-    ${isClaim ? `<div style="background:rgba(199,125,255,.1);border:1px solid rgba(199,125,255,.3);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted)">
-      🎒 Your current coins and items will be saved to your new account!
-    </div>` : ''}
-    <div class="form-group">
-      <label class="form-label">Username</label>
-      <input class="form-input" id="suUsername" type="text" maxlength="16" placeholder="Your cat's name" value="${esc(isClaim && joined ? (players[myId]?.name||'') : '')}">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Email</label>
-      <input class="form-input" id="suEmail" type="email" placeholder="your@email.com" value="${esc(prefillEmail||'')}">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Password <span style="font-weight:400;font-size:10px">(min 6 chars)</span></label>
-      <input class="form-input" id="suPassword" type="password" placeholder="Choose a password">
-    </div>
-    <div id="suError" class="form-error"></div>
-    <div id="suSuccess" class="form-success"></div>
-    <button class="btn btn-primary" id="suSubmit" style="width:100%">${isClaim ? '🎒 Save & Sign Up' : 'Create Account →'}</button>
+function renderSignUp(email){
+  const isClaim=authMode==='claim';
+  authModalTitle.textContent=isClaim?'✨ Save Your Progress':'✨ Create an Account';
+  authModalBody.innerHTML=`
+    ${isClaim?`<div style="background:rgba(199,125,255,.1);border:1px solid rgba(199,125,255,.3);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted)">🎒 Your current coins and items will be saved to your new account!</div>`:''}
+    <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="suUsername" type="text" maxlength="16" placeholder="Your cat's name" value="${esc(isClaim&&joined?(players[myId]?.name||''):'')}"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="suEmail" type="email" placeholder="your@email.com" value="${esc(email||'')}"></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="suPassword" type="password" placeholder="Min 6 characters"></div>
+    <div id="suError" class="form-error"></div><div id="suSuccess" class="form-success"></div>
+    <button class="btn btn-primary" id="suSubmit" style="width:100%">${isClaim?'🎒 Save & Sign Up':'Create Account →'}</button>
     <div class="auth-divider">or</div>
-    <div style="text-align:center">
-      <span style="font-size:12px;color:var(--muted)">Already have an account? </span>
-      <button class="form-link" id="suToSignIn">Click here to Log In</button>
-    </div>`;
-
-  document.getElementById('suToSignIn').addEventListener('click', () => { authModalMode='signin'; renderSignInForm(); });
-  document.getElementById('suSubmit').addEventListener('click', doSignUp);
-  document.getElementById('suPassword').addEventListener('keydown', e => { if (e.key==='Enter') doSignUp(); });
+    <div style="text-align:center"><span style="font-size:12px;color:var(--muted)">Already have an account? </span><button class="form-link" id="suToIn">Click here to Log In</button></div>`;
+  document.getElementById('suToIn').addEventListener('click',()=>{authMode='signin';renderSignIn();});
+  document.getElementById('suSubmit').addEventListener('click',doSignUp);
 }
-
-async function doSignIn() {
-  const email    = document.getElementById('siEmail').value.trim();
-  const password = document.getElementById('siPassword').value;
-  const errEl    = document.getElementById('siError');
-  const btn      = document.getElementById('siSubmit');
-  errEl.textContent = '';
-  if (!email || !password) { errEl.textContent = 'Please fill in all fields.'; return; }
-
-  btn.disabled = true; btn.textContent = 'Signing in…';
-  const res = await apiPost('/auth/login', { email, password });
-  btn.disabled = false; btn.textContent = 'Sign In →';
-
-  if (!res.ok) {
-    errEl.textContent = res.error || 'Sign in failed.';
-    if (res.needsVerification) {
-      errEl.innerHTML = res.error + ' <button class="form-link" id="resendVerify">Resend email</button>';
-      document.getElementById('resendVerify').addEventListener('click', async () => {
-        await apiPost('/auth/resend-verification', { email });
-        errEl.textContent = 'Verification email resent!';
-      });
-    }
-    return;
-  }
-
-  setToken(res.token);
-  authModal.style.display = 'none';
-  onAuthSuccess(res.user);
-  if (authModalOnSuccess) authModalOnSuccess(res.user);
+async function doSignIn(){
+  const email=document.getElementById('siEmail').value.trim(), pw=document.getElementById('siPassword').value;
+  const err=document.getElementById('siError'), btn=document.getElementById('siSubmit');
+  err.textContent=''; if(!email||!pw){err.textContent='Please fill in all fields.';return;}
+  btn.disabled=true; btn.textContent='Signing in…';
+  const res=await apiPost('/auth/login',{email,password:pw});
+  btn.disabled=false; btn.textContent='Sign In →';
+  if(!res.ok){err.textContent=res.error||'Sign in failed.';return;}
+  setToken(res.token); authModal.style.display='none'; onAuthSuccess(res.user);
+  if(authOnSuccess) authOnSuccess(res.user);
 }
-
-async function doSignUp() {
-  const username = document.getElementById('suUsername').value.trim();
-  const email    = document.getElementById('suEmail').value.trim();
-  const password = document.getElementById('suPassword').value;
-  const errEl    = document.getElementById('suError');
-  const succEl   = document.getElementById('suSuccess');
-  const btn      = document.getElementById('suSubmit');
-  errEl.textContent = ''; succEl.textContent = '';
-  if (!username || !email || !password) { errEl.textContent = 'Please fill in all fields.'; return; }
-
-  const isClaim = authModalMode === 'claim';
-  btn.disabled = true; btn.textContent = 'Creating account…';
-
-  const body = { username, email, password };
-  if (isClaim && joined) {
-    body.guestCoins     = myCoins;
-    body.guestInventory = JSON.stringify(myInventory);
-  }
-
-  const res = await apiPost('/auth/signup', body);
-  btn.disabled = false; btn.textContent = isClaim ? '🎒 Save & Sign Up' : 'Create Account →';
-
-  if (!res.ok) { errEl.textContent = res.error || 'Sign up failed.'; return; }
-
-  succEl.textContent = '✓ Account created! Check your email to verify, then sign in.';
-  btn.style.display = 'none';
-  // Show sign-in shortcut
-  setTimeout(() => { authModalMode = 'signin'; renderSignInForm(email); }, 3000);
+async function doSignUp(){
+  const un=document.getElementById('suUsername').value.trim(), email=document.getElementById('suEmail').value.trim(), pw=document.getElementById('suPassword').value;
+  const err=document.getElementById('suError'), succ=document.getElementById('suSuccess'), btn=document.getElementById('suSubmit');
+  err.textContent=''; succ.textContent='';
+  if(!un||!email||!pw){err.textContent='Please fill in all fields.';return;}
+  const isClaim=authMode==='claim';
+  btn.disabled=true; btn.textContent='Creating…';
+  const body={username:un,email,password:pw};
+  if(isClaim&&joined){body.guestCoins=myCoins;body.guestInventory=JSON.stringify(myInventory);}
+  const res=await apiPost('/auth/signup',body);
+  btn.disabled=false; btn.textContent=isClaim?'🎒 Save & Sign Up':'Create Account →';
+  if(!res.ok){err.textContent=res.error||'Sign up failed.';return;}
+  succ.textContent='✓ Account created! Check your email to verify, then sign in.';
+  btn.style.display='none';
+  setTimeout(()=>{authMode='signin';renderSignIn(email);},3000);
 }
-
-function onAuthSuccess(user) {
-  loggedInUser = user;
-  isGuest = false;
-  myCoins     = user.coins;
-  myInventory = user.inventory || [];
-
-  // Update in-game state if already in lobby
-  if (joined && socket) {
-    socket.emit('authLogin', getToken());
-    // Don't need to wait for response — server will push playerUpdate
-  }
-
-  // Update UI
-  updateAccountUI();
-  renderInventory();
-  document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
+function onAuthSuccess(user){
+  loggedInUser=user; isGuest=false; myCoins=user.coins; myInventory=user.inventory||[];
+  if(joined&&socket) socket.emit('authLogin',getToken());
+  updateAccountUI(); renderInventory();
+  document.getElementById('coinHud').textContent=`🪙 ${myCoins}`;
 }
-
-function updateAccountUI() {
-  const guestBanner = document.getElementById('guestBanner');
-  const accountBar  = document.getElementById('accountBar');
-
-  if (loggedInUser) {
-    guestBanner.classList.add('hidden');
-    accountBar.classList.remove('hidden');
-    document.getElementById('abName').textContent  = loggedInUser.username;
-    document.getElementById('abEmail').textContent = loggedInUser.email;
-  } else if (joined) {
-    guestBanner.classList.remove('hidden');
-    accountBar.classList.add('hidden');
-  } else {
-    guestBanner.classList.add('hidden');
-    accountBar.classList.add('hidden');
-  }
+function updateAccountUI(){
+  const gb=document.getElementById('guestBanner'), ab=document.getElementById('accountBar');
+  if(loggedInUser){gb.classList.add('hidden');ab.classList.remove('hidden');document.getElementById('abName').textContent=loggedInUser.username;document.getElementById('abEmail').textContent=loggedInUser.email;}
+  else if(joined){gb.classList.remove('hidden');ab.classList.add('hidden');}
+  else{gb.classList.add('hidden');ab.classList.add('hidden');}
 }
-
-// Sign out
-document.getElementById('abLogoutBtn').addEventListener('click', async () => {
-  clearToken();
-  loggedInUser = null;
-  isGuest = true;
-  await fetch('/auth/logout', { method: 'POST' });
-  // Reload to reset everything cleanly
-  window.location.reload();
-});
-
-// Guest banner → sign up
-document.getElementById('gbSignUpBtn').addEventListener('click', () => {
-  openAuthModal('claim');
-});
+document.getElementById('abLogoutBtn').addEventListener('click',async()=>{clearToken();await fetch('/auth/logout',{method:'POST'});window.location.reload();});
+document.getElementById('gbSignUpBtn').addEventListener('click',()=>openAuthModal('claim'));
 
 // ══════════════════════════════════════════════════════════════
 //  ENTRY OVERLAY
 // ══════════════════════════════════════════════════════════════
-const entryOverlay = document.getElementById('entryOverlay');
-
-// Check for existing session on load
-(async () => {
-  const token = getToken();
-  if (token) {
-    const res = await fetch('/auth/me', { headers: { Authorization: `Bearer ${token}` } });
-    const data = await res.json();
-    if (data.user) {
-      loggedInUser = data.user;
-      isGuest = false;
-      myCoins     = data.user.coins;
-      myInventory = data.user.inventory || [];
-      // Auto-join with saved account
-      doJoin(data.user.username);
-      return;
-    } else {
-      clearToken();
-    }
+(async()=>{
+  const token=getToken();
+  if(token){
+    const res=await fetch('/auth/me',{headers:{Authorization:`Bearer ${token}`}});
+    const data=await res.json();
+    if(data.user){loggedInUser=data.user;isGuest=false;myCoins=data.user.coins;myInventory=data.user.inventory||[];doJoin(data.user.username);return;}
+    else clearToken();
   }
 })();
+document.getElementById('guestJoinBtn').addEventListener('click',()=>{const n=document.getElementById('guestNameInput').value.trim()||'Cat';doJoin(n,true);});
+document.getElementById('guestNameInput').addEventListener('keydown',e=>{if(e.key==='Enter'){const n=document.getElementById('guestNameInput').value.trim()||'Cat';doJoin(n,true);}});
+document.getElementById('entrySignInBtn').addEventListener('click',()=>openAuthModal('signin',user=>{if(!joined)doJoin(user.username);}));
+document.getElementById('entrySignUpBtn').addEventListener('click',()=>openAuthModal('signup'));
+function doJoin(name,asGuest){
+  if(joined)return; isGuest=asGuest!==false&&!loggedInUser; joined=true;
+  document.getElementById('entryOverlay').style.display='none';
+  initSocket(name); updateAccountUI();
+}
 
-// Guest join
-document.getElementById('guestJoinBtn').addEventListener('click', () => {
-  const name = document.getElementById('guestNameInput').value.trim() || 'Cat';
-  doJoin(name, true);
+// ══════════════════════════════════════════════════════════════
+//  WORLD MAP
+// ══════════════════════════════════════════════════════════════
+const worldMapOverlay=document.getElementById('worldMapOverlay');
+document.getElementById('worldMapBtn').addEventListener('click',()=>{if(!joined)return;openWorldMap();});
+document.getElementById('wmCloseBtn').addEventListener('click',()=>worldMapOverlay.classList.remove('visible'));
+document.getElementById('wmLobby').addEventListener('click',()=>{
+  worldMapOverlay.classList.remove('visible');
+  if(scene==='room') goBackToLobby();
 });
-document.getElementById('guestNameInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    const name = document.getElementById('guestNameInput').value.trim() || 'Cat';
-    doJoin(name, true);
+document.getElementById('wmHouses').addEventListener('click',()=>{
+  worldMapOverlay.classList.remove('visible');
+  openHouseDirectory();
+});
+
+function openWorldMap(){
+  // Mark active location
+  document.getElementById('wmLobby').classList.toggle('active', scene==='lobby');
+  document.getElementById('wmHouses').classList.toggle('active', scene==='room');
+  // Update counts
+  const lobbyCount=Object.values(players).filter(p=>!p.inRoomId).length;
+  document.getElementById('wmLobbyCount').textContent=lobbyCount>0?`${lobbyCount} cat${lobbyCount===1?'':'s'} here`:'';
+  worldMapOverlay.classList.add('visible');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  HOUSE DIRECTORY
+// ══════════════════════════════════════════════════════════════
+async function openHouseDirectory(){
+  document.getElementById('houseDirModal').style.display='flex';
+  const body=document.getElementById('houseDirBody');
+  body.innerHTML='<div class="hd-empty">Loading…</div>';
+
+  const [dirRes, onlineRes]=await Promise.all([
+    fetch('/api/room-directory').then(r=>r.json()),
+    fetch('/api/rooms-online').then(r=>r.json()),
+  ]);
+
+  const onlineMap=onlineRes.online||{};
+  const users=dirRes.users||[];
+  let html='';
+
+  // My room section (logged-in only)
+  if(loggedInUser){
+    const visitors=onlineMap[loggedInUser.id]||[];
+    const vCount=visitors.filter(p=>p.id!==myId).length;
+    html+=`<div class="hd-my-room">
+      <div class="hd-my-room-info">
+        <div class="hd-my-room-title">🏠 Your Room</div>
+        <div class="hd-my-room-sub">${vCount>0?`${vCount} visitor${vCount===1?'':'s'} currently inside`:'No visitors right now'}</div>
+      </div>
+      <button class="btn btn-primary" id="hdEnterMyRoom">Enter My Room</button>
+    </div>`;
+  } else {
+    html+=`<div class="hd-guest-notice">🔒 Sign up to get your own room that saves your furniture and decorations!</div>`;
+  }
+
+  // Other players' rooms
+  const others=users.filter(u=>!loggedInUser||u.id!==loggedInUser.id);
+  if(others.length){
+    html+=`<div class="hd-section-label">All Player Rooms (${others.length})</div><div class="hd-table">`;
+    others.forEach(u=>{
+      const online=onlineMap[u.id]&&onlineMap[u.id].length>0;
+      const vCount=(onlineMap[u.id]||[]).length;
+      const color=CAT_COLORS[u.colorIndex||0];
+      html+=`<div class="hd-row">
+        <canvas class="hd-cat-mini" id="hdcat_${u.id}" width="32" height="40"></canvas>
+        <div style="flex:1"><div class="hd-player-name">${esc(u.username)}</div>
+          <div class="hd-player-sub">${online?`${vCount} cat${vCount===1?'':'s'} inside`:'Room is empty'}</div></div>
+        ${online?`<div class="hd-online-dot" title="Active now"></div>`:`<div class="hd-offline-dot"></div>`}
+        ${vCount>0?`<span class="hd-visitor-count">${vCount} 🐱</span>`:''}
+        <button class="btn hd-enter-btn" data-uid="${u.id}">Visit</button>
+      </div>`;
+    });
+    html+='</div>';
+  } else if(loggedInUser){
+    html+=`<div class="hd-section-label">Other Players</div><div class="hd-empty">No other registered players yet!</div>`;
+  }
+
+  body.innerHTML=html;
+
+  // Draw mini cats
+  others.forEach(u=>{
+    const mc=document.getElementById(`hdcat_${u.id}`); if(!mc) return;
+    const mc2=mc.getContext('2d'); mc2.clearRect(0,0,32,40);
+    drawCat(mc2,16,28,CAT_COLORS[u.colorIndex||0],'',false,null,false,0);
+  });
+
+  if(loggedInUser) document.getElementById('hdEnterMyRoom')?.addEventListener('click',()=>{document.getElementById('houseDirModal').style.display='none';enterRoom(loggedInUser.id);});
+  body.querySelectorAll('.hd-enter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{const uid=btn.dataset.uid;document.getElementById('houseDirModal').style.display='none';enterRoom(uid);});
+  });
+}
+document.getElementById('hdClose').addEventListener('click',()=>document.getElementById('houseDirModal').style.display='none');
+document.getElementById('houseDirModal').addEventListener('click',e=>{if(e.target===document.getElementById('houseDirModal'))document.getElementById('houseDirModal').style.display='none';});
+
+// ══════════════════════════════════════════════════════════════
+//  ROOM SYSTEM
+// ══════════════════════════════════════════════════════════════
+function enterRoom(ownerId){
+  if(!socket) return;
+  socket.emit('enterRoom',{ownerId});
+}
+function goBackToLobby(){
+  if(!socket) return;
+  socket.emit('leaveRoom');
+  exitRoomUI();
+}
+function exitRoomUI(){
+  scene='lobby'; roomState=null; editMode=false; placingItemId=null;
+  document.getElementById('roomBar').classList.remove('visible');
+  document.getElementById('locationHud').style.display='none';
+  document.getElementById('digBtn').disabled=false;
+  document.getElementById('digRow').style.display='flex';
+  document.getElementById('controls').textContent='WASD · Space to dig · Right-click player to interact';
+  updateChatHeader('Lobby Chat');
+  renderInventory();
+}
+function enterRoomUI(data){
+  scene='room';
+  roomState={
+    ownerId:data.ownerId, ownerName:data.ownerName,
+    isOwner:data.isOwner, roomName:data.roomName,
+    wallpaper:data.wallpaper||'default', flooring:data.flooring||'default',
+    placedItems:data.placedItems||[], players:{},
+  };
+  data.players.forEach(p=>{roomState.players[p.id]={...p,digPhase:0};});
+  document.getElementById('roomBar').classList.add('visible');
+  document.getElementById('editRoomBtn').style.display=data.isOwner?'':'none';
+  document.getElementById('locationHud').style.display='flex';
+  document.getElementById('locationHud').textContent=`🏠 ${data.roomName||data.ownerName+"'s Room"}`;
+  document.getElementById('digBtn').disabled=true;
+  document.getElementById('controls').textContent='WASD to move · Right-click items to pick up (owner only)';
+  updateChatHeader(`${data.roomName||data.ownerName+"'s Room"} Chat`);
+  data.chatHistory.forEach(m=>addChatMsg(m, true));
+  renderInventory();
+}
+
+function updateChatHeader(label){
+  // patch placeholder in chat input
+  document.getElementById('chatInput').placeholder=`Chat in ${label}…`;
+}
+
+// Room edit mode
+document.getElementById('editRoomBtn').addEventListener('click',()=>{
+  if(!roomState?.isOwner) return;
+  editMode=!editMode;
+  document.getElementById('editRoomBtn').textContent=editMode?'🏠 Stop Editing':'✏️ Edit Room';
+  document.getElementById('saveRoomBtn').style.display=editMode?'':'none';
+  if(!editMode){placingItemId=null;document.getElementById('placeCursor').style.display='none';}
+  renderInventory();
+});
+document.getElementById('saveRoomBtn').addEventListener('click',()=>{
+  if(!socket||!roomState?.isOwner) return;
+  socket.emit('saveRoom',{roomName:roomState.roomName,wallpaper:roomState.wallpaper,flooring:roomState.flooring,placedItems:roomState.placedItems});
+});
+document.getElementById('leaveRoomBtn').addEventListener('click',goBackToLobby);
+
+// Place cursor follows mouse in edit mode
+canvas.addEventListener('mousemove',e=>{
+  if(!editMode||!placingItemId) return;
+  const rect=canvas.getBoundingClientRect();
+  const pc=document.getElementById('placeCursor');
+  pc.style.left=(e.clientX-rect.left)+'px'; pc.style.top=(e.clientY-rect.top)+'px';
+});
+canvas.addEventListener('mouseleave',()=>{if(placingItemId) document.getElementById('placeCursor').style.display='none';});
+canvas.addEventListener('mouseenter',()=>{if(placingItemId&&editMode) document.getElementById('placeCursor').style.display='block';});
+
+// Click canvas to place item or pick up
+canvas.addEventListener('click',e=>{
+  if(!editMode||!roomState?.isOwner) return;
+  const rect=canvas.getBoundingClientRect();
+  const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+  if(placingItemId){
+    socket.emit('placeItem',{itemId:placingItemId,x:Math.round(mx),y:Math.round(my)});
+    // If no more of this item, clear cursor
+    const inv=myInventory.find(i=>i.id===placingItemId);
+    if(!inv||inv.qty<=1){placingItemId=null;document.getElementById('placeCursor').style.display='none';}
   }
 });
+canvas.addEventListener('contextmenu',e=>{
+  e.preventDefault();
+  if(!joined||!socket) return;
+  const rect=canvas.getBoundingClientRect();
+  const mx=e.clientX-rect.left, my=e.clientY-rect.top;
 
-// Entry sign in / sign up
-document.getElementById('entrySignInBtn').addEventListener('click', () => {
-  openAuthModal('signin', (user) => {
-    // After successful login from entry screen, join the lobby
-    if (!joined) doJoin(user.username);
-  });
-});
-document.getElementById('entrySignUpBtn').addEventListener('click', () => {
-  openAuthModal('signup');
+  if(scene==='room'){
+    // Pick up item in edit mode
+    if(editMode&&roomState?.isOwner&&roomState.placedItems){
+      const hit=roomState.placedItems.find(it=>Math.hypot(it.x-mx,it.y-my)<28);
+      if(hit){socket.emit('pickupItem',{instanceId:hit.instanceId});return;}
+    }
+    // Right-click player in room
+    const hit=Object.values(roomState?.players||{}).find(p=>p.id!==myId&&Math.hypot(p.x-mx,p.y-my)<22);
+    if(hit){showCtxMenu(e,hit);} return;
+  }
+
+  // Lobby right-click
+  const hit=Object.values(players).find(p=>p.id!==myId&&Math.hypot(p.x-mx,p.y-my)<22);
+  if(!hit){hideCtx();return;}
+  ctxTargetId=hit.id; ctxTargetDbId=null; // unknown dbId from lobby player
+  // Check if hit player has a dbUserId (they showed up in online list)
+  // We'll enable/disable Visit Room based on whether they're a non-guest
+  document.getElementById('ctxVisitRoom').style.display=hit.isGuest===false?'':'none';
+  showCtxMenu(e,hit);
 });
 
-function doJoin(name, asGuest) {
-  if (joined) return;
-  isGuest = asGuest !== false && !loggedInUser;
-  joined = true;
-  entryOverlay.style.display = 'none';
-  initSocket(name);
-  updateAccountUI();
+function showCtxMenu(e,hit){
+  ctxTargetId=hit.id;
+  document.getElementById('ctxPlayerName').textContent=hit.name;
+  let px=e.clientX,py=e.clientY;
+  if(px+160>window.innerWidth) px-=160; if(py+120>window.innerHeight) py-=120;
+  ctxMenu.style.left=px+'px'; ctxMenu.style.top=py+'px'; ctxMenu.style.display='block';
 }
 
 // ══════════════════════════════════════════════════════════════
 //  SOCKET
 // ══════════════════════════════════════════════════════════════
-function initSocket(name) {
-  socket = io();
-
-  socket.on('init', data => {
-    myId = data.id;
-    players = {};
-    data.players.forEach(p => { players[p.id] = {...p, digPhase:0}; });
-    data.chatHistory.forEach(addChatMsg);
-    document.getElementById('chatInput').disabled = false;
-    document.getElementById('coinHud').style.display = 'flex';
-    document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
+function initSocket(name){
+  socket=io();
+  socket.on('init',data=>{
+    myId=data.id; players={};
+    data.players.forEach(p=>{players[p.id]={...p,digPhase:0};});
+    data.chatHistory.forEach(m=>addChatMsg(m));
+    document.getElementById('chatInput').disabled=false;
+    document.getElementById('coinHud').style.display='flex';
+    document.getElementById('coinHud').textContent=`🪙 ${myCoins}`;
+    // Build items meta
+    (data.items||[]).forEach(it=>{ITEMS_META[it.id]=it;});
     updateOnlineCount();
-
-    // Set name
-    socket.emit('setName', loggedInUser ? loggedInUser.username : name);
-
-    // If logged in, authenticate with server to load saved data
-    if (loggedInUser && getToken()) {
-      socket.emit('authLogin', getToken());
-    }
+    socket.emit('setName',loggedInUser?loggedInUser.username:name);
+    if(loggedInUser&&getToken()) socket.emit('authLogin',getToken());
   });
 
-  socket.on('authResult', data => {
-    if (data.ok) {
-      loggedInUser   = data.user;
-      isGuest        = false;
-      myCoins        = data.user.coins;
-      myInventory    = data.user.inventory || [];
-      document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
-      renderInventory();
-      updateAccountUI();
-    }
+  socket.on('authResult',data=>{
+    if(data.ok){loggedInUser=data.user;isGuest=false;myCoins=data.user.coins;myInventory=data.user.inventory||[];
+      document.getElementById('coinHud').textContent=`🪙 ${myCoins}`;renderInventory();updateAccountUI();}
   });
 
-  socket.on('playerJoined', p => {
-    players[p.id] = {...p, digPhase:0};
-    updateOnlineCount();
-    addSystemMsg(`🐱 ${p.name} joined`);
+  socket.on('playerJoined',p=>{players[p.id]={...p,digPhase:0};updateOnlineCount();addSystemMsg(`🐱 ${p.name} joined`);});
+  socket.on('playerLeft',id=>{if(players[id])addSystemMsg(`👋 ${players[id].name} left`);delete players[id];updateOnlineCount();if(trade&&trade.partnerId===id)closeTrade('Partner disconnected.');});
+  socket.on('playerUpdate',p=>{if(players[p.id])Object.assign(players[p.id],p);});
+  socket.on('tick',updates=>{updates.forEach(u=>{if(!players[u.id])return;players[u.id].x=u.x;players[u.id].y=u.y;players[u.id].emote=u.emote;players[u.id].digging=u.digging;if(u.digging)players[u.id].digPhase=(players[u.id].digPhase||0)+1;});});
+  socket.on('chat',m=>addChatMsg(m));
+  socket.on('emote',({id,emote})=>{if(players[id])players[id].emote=emote;});
+  socket.on('playerDig',({id,digging})=>{if(players[id]){players[id].digging=digging;if(!digging)players[id].digPhase=0;}});
+  socket.on('digFind',handleDigFind);
+  socket.on('digStopped',endDig);
+  socket.on('profileData',showProfileModal);
+  socket.on('privateMsg',handlePrivateMsg);
+  socket.on('tradeOpen',openTradeModal);
+  socket.on('tradeState',updateTradeState);
+  socket.on('tradeComplete',handleTradeComplete);
+  socket.on('tradeClosed',({reason})=>closeTrade(reason));
+  socket.on('inventoryUpdate',({inventory,coins})=>{myInventory=inventory;myCoins=coins;document.getElementById('coinHud').textContent=`🪙 ${myCoins}`;renderInventory();});
+
+  // Room events
+  socket.on('roomInit',data=>{enterRoomUI(data);});
+  socket.on('roomError',msg=>showToast('⚠️',msg,'Room error','nothing'));
+  socket.on('backToLobby',()=>exitRoomUI());
+  socket.on('roomPlayerJoined',p=>{
+    if(!roomState)return; roomState.players[p.id]={...p,digPhase:0};
+    addChatMsg({id:'__sys',name:'',colorIndex:0,msg:`🐱 ${p.name} entered the room`,time:Date.now(),system:true},true);
   });
-  socket.on('playerLeft', id => {
-    if (players[id]) addSystemMsg(`👋 ${players[id].name} left`);
-    delete players[id];
-    updateOnlineCount();
-    if (trade && trade.partnerId === id) closeTrade('Partner disconnected.');
+  socket.on('roomPlayerLeft',id=>{
+    if(!roomState)return; const p=roomState.players[id];
+    if(p) addChatMsg({id:'__sys',name:'',colorIndex:0,msg:`👋 ${p.name} left the room`,time:Date.now(),system:true},true);
+    delete roomState.players[id];
   });
-  socket.on('playerUpdate', p => { if (players[p.id]) Object.assign(players[p.id], p); });
-  socket.on('tick', updates => {
-    updates.forEach(u => {
-      if (!players[u.id]) return;
-      players[u.id].x=u.x; players[u.id].y=u.y;
-      players[u.id].emote=u.emote; players[u.id].digging=u.digging;
-      if (u.digging) players[u.id].digPhase=(players[u.id].digPhase||0)+1;
-    });
+  socket.on('roomTick',updates=>{
+    if(!roomState)return;
+    updates.forEach(u=>{if(!roomState.players[u.id])return;roomState.players[u.id].x=u.x;roomState.players[u.id].y=u.y;roomState.players[u.id].emote=u.emote;});
   });
-  socket.on('chat', addChatMsg);
-  socket.on('emote', ({id,emote}) => { if (players[id]) players[id].emote=emote; });
-  socket.on('playerDig', ({id,digging}) => {
-    if (players[id]) { players[id].digging=digging; if (!digging) players[id].digPhase=0; }
-  });
-  socket.on('digFind', handleDigFind);
-  socket.on('digStopped', endDig);
-  socket.on('profileData', showProfileModal);
-  socket.on('privateMsg', handlePrivateMsg);
-  socket.on('tradeOpen', openTradeModal);
-  socket.on('tradeState', updateTradeState);
-  socket.on('tradeComplete', handleTradeComplete);
-  socket.on('tradeClosed', ({reason}) => closeTrade(reason));
+  socket.on('roomChat',m=>{if(scene==='room')addChatMsg(m,true);});
+  socket.on('roomUpdated',data=>{if(!roomState)return;Object.assign(roomState,{wallpaper:data.wallpaper,flooring:data.flooring,placedItems:data.placedItems,roomName:data.roomName});document.getElementById('locationHud').textContent=`🏠 ${data.roomName||roomState.ownerName+"'s Room"}`;});
+  socket.on('roomSaved',()=>showToast('💾','Room saved!','Your layout is saved','uncommon'));
 }
+
+// ══════════════════════════════════════════════════════════════
+//  CHAT (handles both lobby & room)
+// ══════════════════════════════════════════════════════════════
+const chatMessages=document.getElementById('chatMessages');
+function addChatMsg(entry, isRoom){
+  if(entry.system||entry.id==='__sys'){const d=document.createElement('div');d.className='chat-system';d.textContent=entry.msg;chatMessages.appendChild(d);chatMessages.scrollTop=chatMessages.scrollHeight;return;}
+  const color=CAT_COLORS[entry.colorIndex]||CAT_COLORS[0];
+  const div=document.createElement('div');div.className='chat-msg';
+  const time=new Date(entry.time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  div.innerHTML=`<div class="chat-meta"><div class="chat-dot" style="background:${color.body};border:1.5px solid ${color.ear}"></div><span class="chat-name" style="color:${color.body}">${esc(entry.name)}</span><span class="chat-time">${time}</span></div><div class="chat-text">${esc(entry.msg)}</div>`;
+  div.querySelector('.chat-name').addEventListener('click',()=>{if(socket)socket.emit('requestProfile',entry.id);});
+  chatMessages.appendChild(div);chatMessages.scrollTop=chatMessages.scrollHeight;
+}
+function addSystemMsg(text){const d=document.createElement('div');d.className='chat-system';d.textContent=text;chatMessages.appendChild(d);chatMessages.scrollTop=chatMessages.scrollHeight;}
+function sendChat(){
+  const i=document.getElementById('chatInput'),m=i.value.trim();if(!m||!socket)return;
+  if(scene==='room') socket.emit('roomChat',m); else socket.emit('chat',m);
+  i.value='';
+}
+document.getElementById('sendBtn').addEventListener('click',sendChat);
+document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
+function updateOnlineCount(){const n=Object.keys(players).length;document.getElementById('playerCount').textContent=`🐱 ${n} cat${n===1?'':'s'} online`;}
 
 // ══════════════════════════════════════════════════════════════
 //  PRIVATE MESSAGES
 // ══════════════════════════════════════════════════════════════
-function handlePrivateMsg(msg) {
-  if (msg.type==='trade_sent')     appendPrivateLine(msg.text, 'sent');
-  else if (msg.type==='trade_incoming') appendTradeIncoming(msg);
-  else if (msg.type==='trade_declined') appendPrivateLine(msg.text, 'declined');
-  else if (msg.type==='trade_error')    appendPrivateLine(msg.text, 'declined');
+function handlePrivateMsg(msg){
+  if(msg.type==='trade_sent')appendPrivateLine(msg.text,'sent');
+  else if(msg.type==='trade_incoming')appendTradeIncoming(msg);
+  else if(msg.type==='trade_declined'||msg.type==='trade_error')appendPrivateLine(msg.text,'declined');
 }
-function appendPrivateLine(text, style) {
-  const d=document.createElement('div'); d.className=`chat-trade-notif ${style}`;
-  d.innerHTML=`<div class="trade-notif-text">${esc(text)}</div>`;
-  chatMessages.appendChild(d); chatMessages.scrollTop=chatMessages.scrollHeight;
-}
-function appendTradeIncoming(msg) {
-  const d=document.createElement('div'); d.className='chat-trade-notif incoming';
-  d.innerHTML=`<div class="trade-notif-text">🤝 <span>${esc(msg.fromName)}</span> wants to trade with you!</div>
-    <div class="trade-notif-btns">
-      <button class="btn-accept-sm">✓ Accept</button>
-      <button class="btn-decline-sm">✕ Decline</button>
-    </div>`;
-  d.querySelector('.btn-accept-sm').addEventListener('click', () => {
-    socket.emit('tradeAccept', msg.tradeId);
-    d.querySelector('.trade-notif-btns').innerHTML='<span style="font-size:11px;color:var(--success)">✓ Accepted!</span>';
-  });
-  d.querySelector('.btn-decline-sm').addEventListener('click', () => {
-    socket.emit('tradeDecline', msg.tradeId);
-    d.querySelector('.trade-notif-btns').innerHTML='<span style="font-size:11px;color:var(--muted)">Declined.</span>';
-  });
-  chatMessages.appendChild(d); chatMessages.scrollTop=chatMessages.scrollHeight;
+function appendPrivateLine(text,style){const d=document.createElement('div');d.className=`chat-trade-notif ${style}`;d.innerHTML=`<div class="trade-notif-text">${esc(text)}</div>`;chatMessages.appendChild(d);chatMessages.scrollTop=chatMessages.scrollHeight;}
+function appendTradeIncoming(msg){
+  const d=document.createElement('div');d.className='chat-trade-notif incoming';
+  d.innerHTML=`<div class="trade-notif-text">🤝 <span>${esc(msg.fromName)}</span> wants to trade!</div><div class="trade-notif-btns"><button class="btn-accept-sm">✓ Accept</button><button class="btn-decline-sm">✕ Decline</button></div>`;
+  d.querySelector('.btn-accept-sm').addEventListener('click',()=>{socket.emit('tradeAccept',msg.tradeId);d.querySelector('.trade-notif-btns').innerHTML='<span style="font-size:11px;color:var(--success)">✓ Accepted!</span>';});
+  d.querySelector('.btn-decline-sm').addEventListener('click',()=>{socket.emit('tradeDecline',msg.tradeId);d.querySelector('.trade-notif-btns').innerHTML='<span style="font-size:11px;color:var(--muted)">Declined.</span>';});
+  chatMessages.appendChild(d);chatMessages.scrollTop=chatMessages.scrollHeight;
 }
 
 // ══════════════════════════════════════════════════════════════
 //  CONTEXT MENU
 // ══════════════════════════════════════════════════════════════
-const ctxMenu = document.getElementById('ctxMenu');
-canvas.addEventListener('contextmenu', e => {
-  e.preventDefault(); if (!joined||!socket) return;
-  const rect=canvas.getBoundingClientRect();
-  const hit=Object.values(players).find(p=>p.id!==myId&&Math.hypot(p.x-(e.clientX-rect.left),p.y-(e.clientY-rect.top))<22);
-  if (!hit) { hideCtx(); return; }
-  ctxTargetId=hit.id;
-  document.getElementById('ctxPlayerName').textContent=hit.name;
-  let px=e.clientX,py=e.clientY;
-  if(px+160>window.innerWidth) px-=160; if(py+100>window.innerHeight) py-=100;
-  ctxMenu.style.left=px+'px'; ctxMenu.style.top=py+'px'; ctxMenu.style.display='block';
+const ctxMenu=document.getElementById('ctxMenu');
+document.getElementById('ctxViewProfile').addEventListener('click',()=>{const t=ctxTargetId;hideCtx();if(!t||!socket)return;socket.emit('requestProfile',t);});
+document.getElementById('ctxSendTrade').addEventListener('click',()=>{const t=ctxTargetId;hideCtx();if(!t||!socket)return;socket.emit('tradeRequest',t);});
+document.getElementById('ctxVisitRoom').addEventListener('click',()=>{
+  // We need the DB userId of the target — fetch it via profile
+  const t=ctxTargetId; hideCtx(); if(!t||!socket) return;
+  // Request profile to get dbUserId, then enter room
+  socket.once('profileData',data=>{if(data.isGuest)return;enterRoom(data.dbUserId||data.id);});
+  socket.emit('requestProfile',t);
 });
-document.getElementById('ctxViewProfile').addEventListener('click', () => {
-  const t=ctxTargetId; hideCtx(); if (!t||!socket) return;
-  socket.emit('requestProfile', t);
-});
-document.getElementById('ctxSendTrade').addEventListener('click', () => {
-  const t=ctxTargetId; hideCtx(); if (!t||!socket) return;
-  socket.emit('tradeRequest', t);
-});
-document.addEventListener('click', e => { if (!ctxMenu.contains(e.target)) hideCtx(); });
-document.addEventListener('keydown', e => {
-  if (e.key==='Escape') { hideCtx(); closeProfileModal(); closeTradeModalUI(); authModal.style.display='none'; }
-});
-function hideCtx() { ctxMenu.style.display='none'; ctxTargetId=null; }
+document.addEventListener('click',e=>{if(!ctxMenu.contains(e.target))hideCtx();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideCtx();closeProfileModal();closeTradeModalUI();document.getElementById('authModal').style.display='none';worldMapOverlay.classList.remove('visible');}});
+function hideCtx(){ctxMenu.style.display='none';ctxTargetId=null;}
 
 // ══════════════════════════════════════════════════════════════
 //  PROFILE MODAL
 // ══════════════════════════════════════════════════════════════
-function showProfileModal(data) {
-  profileViewId=data.id;
-  const isMe=data.id===myId;
+function showProfileModal(data){
+  profileViewId=data.id; const isMe=data.id===myId;
   document.getElementById('profileName').textContent=data.name;
   document.getElementById('profileSub').textContent=isMe?'This is you! 🐱':(data.isGuest?'Guest Player':'Player');
   document.getElementById('profileCoins').textContent=data.coins;
   document.getElementById('profileItemCount').textContent=(data.inventory||[]).reduce((s,i)=>s+i.qty,0);
-  const mc=document.getElementById('profileMiniCat'),mc2=mc.getContext('2d');
-  mc2.clearRect(0,0,mc.width,mc.height);
+  const mc=document.getElementById('profileMiniCat'),mc2=mc.getContext('2d');mc2.clearRect(0,0,mc.width,mc.height);
   drawCat(mc2,23,38,CAT_COLORS[data.colorIndex]||CAT_COLORS[0],'',false,null,false,0);
-  const grid=document.getElementById('profileInvGrid');
-  const inv=data.inventory||[];
-  if (!inv.length) { grid.innerHTML='<div style="color:var(--muted);font-size:11px;grid-column:span 5">Nothing yet!</div>'; }
-  else {
-    const sorted=[...inv].sort((a,b)=>(RARITY_ORDER[a.rarity]||3)-(RARITY_ORDER[b.rarity]||3));
-    grid.innerHTML=sorted.map(it=>`<div class="pi-item rarity-${it.rarity}" title="${esc(it.label)}"><span class="emoji">${it.emoji}</span>${it.qty>1?`<span class="qty">x${it.qty}</span>`:''}</div>`).join('');
-  }
+  const grid=document.getElementById('profileInvGrid');const inv=data.inventory||[];
+  if(!inv.length)grid.innerHTML='<div style="color:var(--muted);font-size:11px;grid-column:span 5">Nothing yet!</div>';
+  else{const sorted=[...inv].sort((a,b)=>(RARITY_ORDER[a.rarity]||3)-(RARITY_ORDER[b.rarity]||3));grid.innerHTML=sorted.map(it=>`<div class="pi-item rarity-${it.rarity}" title="${esc(it.label)}"><span class="emoji">${it.emoji}</span>${it.qty>1?`<span class="qty">x${it.qty}</span>`:''}</div>`).join('');}
   document.getElementById('profileTradeBtn').style.display=isMe?'none':'';
   document.getElementById('profileModal').style.display='flex';
 }
-document.getElementById('profileCloseX').addEventListener('click', closeProfileModal);
-document.getElementById('profileCloseBtn').addEventListener('click', closeProfileModal);
-document.getElementById('profileTradeBtn').addEventListener('click', () => {
-  const t=profileViewId; closeProfileModal();
-  if (t&&socket) socket.emit('tradeRequest', t);
-});
-document.getElementById('profileModal').addEventListener('click', e => {
-  if (e.target===document.getElementById('profileModal')) closeProfileModal();
-});
-function closeProfileModal() { document.getElementById('profileModal').style.display='none'; profileViewId=null; }
+document.getElementById('profileCloseX').addEventListener('click',closeProfileModal);
+document.getElementById('profileCloseBtn').addEventListener('click',closeProfileModal);
+document.getElementById('profileTradeBtn').addEventListener('click',()=>{const t=profileViewId;closeProfileModal();if(t&&socket)socket.emit('tradeRequest',t);});
+document.getElementById('profileModal').addEventListener('click',e=>{if(e.target===document.getElementById('profileModal'))closeProfileModal();});
+function closeProfileModal(){document.getElementById('profileModal').style.display='none';profileViewId=null;}
 
-// ══════════════════════════════════════════════════════════════
-//  TRADE MODAL
-// ══════════════════════════════════════════════════════════════
-function openTradeModal(data) {
-  closeProfileModal();
-  trade={tradeId:data.tradeId,partnerId:data.partnerId,partnerName:data.partnerName,
-    partnerColorIdx:data.partnerColorIndex,myOffer:{items:[],coins:0},
-    partnerOffer:{items:[],coins:0},myAccepted:false,partnerAccepted:false};
-  document.getElementById('tradeTitle').textContent=`🤝 Trading with ${data.partnerName}`;
-  document.getElementById('myTradeName').textContent='You';
-  document.getElementById('partnerTradeName').textContent=data.partnerName;
-  document.getElementById('myCoinsInput').max=myCoins; document.getElementById('myCoinsInput').value=0;
-  document.getElementById('myCoinsAvail').textContent=`have: ${myCoins}`;
-  renderTradeModal();
-  document.getElementById('tradeModal').style.display='flex';
-}
-function renderTradeModal() {
-  if (!trade) return;
-  const myZone=document.getElementById('myOfferZone');
-  if (!trade.myOffer.items.length) { myZone.innerHTML='<span class="offer-empty-label">Click items below to add them</span>'; }
-  else {
-    myZone.innerHTML=trade.myOffer.items.map(it=>`<div class="offer-chip mine rarity-${it.rarity}" data-id="${it.id}" title="Click to remove"><span class="oc-emoji">${it.emoji}</span><span class="oc-name">${esc(it.label)}</span>${it.qty>1?`<span class="oc-qty">x${it.qty}</span>`:''}</div>`).join('');
-    myZone.querySelectorAll('.offer-chip.mine').forEach(el=>el.addEventListener('click',()=>{ if(!trade.myAccepted) removeFromMyOffer(el.dataset.id); }));
-  }
-  const avail=document.getElementById('myAvailGrid');
-  if (!myInventory.length) { avail.innerHTML='<div style="color:var(--muted);font-size:11px;grid-column:span 4">Nothing to trade!</div>'; }
-  else {
-    avail.innerHTML=myInventory.map(inv=>{const off=trade.myOffer.items.find(o=>o.id===inv.id);const rem=inv.qty-(off?off.qty:0);const dep=rem<=0;return `<div class="avail-item rarity-${inv.rarity} ${dep?'used-up':''}" data-id="${inv.id}" title="${esc(inv.label)}"><span class="a-emoji">${inv.emoji}</span><span class="a-name">${esc(inv.label)}</span>${inv.qty>1?`<span class="a-qty">${rem}/${inv.qty}</span>`:''}</div>`;}).join('');
-    if (!trade.myAccepted) avail.querySelectorAll('.avail-item:not(.used-up)').forEach(el=>el.addEventListener('click',()=>addToMyOffer(el.dataset.id)));
-  }
-  const pz=document.getElementById('partnerOfferZone');
-  if (!trade.partnerOffer.items.length) { pz.innerHTML='<span class="offer-empty-label">Waiting for their offer…</span>'; }
-  else { pz.innerHTML=trade.partnerOffer.items.map(it=>`<div class="offer-chip rarity-${it.rarity}" style="cursor:default" title="${esc(it.label)}"><span class="oc-emoji">${it.emoji}</span><span class="oc-name">${esc(it.label)}</span>${it.qty>1?`<span class="oc-qty">x${it.qty}</span>`:''}</div>`).join(''); }
-  document.getElementById('partnerCoinsDisplay').textContent=trade.partnerOffer.coins||'0';
-  updateTradeFooter();
-}
-function addToMyOffer(id) {
-  if (!trade||trade.myAccepted) return;
-  const inv=myInventory.find(i=>i.id===id); if (!inv) return;
-  const off=trade.myOffer.items.find(o=>o.id===id);
-  if (off) { if(off.qty<inv.qty) off.qty++; else return; }
-  else trade.myOffer.items.push({id:inv.id,label:inv.label,emoji:inv.emoji,rarity:inv.rarity,qty:1});
-  pushOffer(); renderTradeModal();
-}
-function removeFromMyOffer(id) {
-  if (!trade||trade.myAccepted) return;
-  const idx=trade.myOffer.items.findIndex(o=>o.id===id); if(idx===-1) return;
-  trade.myOffer.items[idx].qty--;
-  if (trade.myOffer.items[idx].qty<=0) trade.myOffer.items.splice(idx,1);
-  pushOffer(); renderTradeModal();
-}
-document.getElementById('myCoinsInput').addEventListener('input', () => {
-  if (!trade||trade.myAccepted) return;
-  let v=Math.max(0,Math.min(parseInt(document.getElementById('myCoinsInput').value)||0,myCoins));
-  document.getElementById('myCoinsInput').value=v; trade.myOffer.coins=v; pushOffer();
-});
-function pushOffer() { if (socket&&trade) socket.emit('tradeUpdateOffer',{tradeId:trade.tradeId,items:trade.myOffer.items,coins:trade.myOffer.coins}); }
-function updateTradeState(state) {
-  if (!trade||state.tradeId!==trade.tradeId) return;
-  trade.myOffer=state.myOffer; trade.partnerOffer=state.partnerOffer;
-  trade.myAccepted=state.myAccepted; trade.partnerAccepted=state.partnerAccepted;
-  document.getElementById('myCoinsInput').value=trade.myOffer.coins;
-  renderTradeModal();
-}
-function updateTradeFooter() {
-  if (!trade) return;
-  const ab=document.getElementById('tradeAcceptBtn'), st=document.getElementById('tradeStatusText');
-  if (trade.myAccepted&&trade.partnerAccepted) { st.innerHTML='<span class="status-chip chip-ready">✓ Both accepted — completing…</span>'; ab.disabled=true; }
-  else if (trade.myAccepted) { st.innerHTML='<span class="status-chip chip-ready">✓ You accepted</span> — waiting for partner…'; ab.textContent='↩ Undo Accept'; ab.className='btn btn-secondary'; ab.disabled=false; }
-  else if (trade.partnerAccepted) { st.innerHTML='Partner <span class="status-chip chip-ready">✓ accepted</span> — your turn!'; ab.textContent='✓ Accept Trade'; ab.className='btn btn-success'; ab.disabled=false; }
-  else { st.textContent='Add items to your offer, then click Accept.'; ab.textContent='✓ Accept Trade'; ab.className='btn btn-success'; ab.disabled=false; }
-}
-document.getElementById('tradeAcceptBtn').addEventListener('click', () => {
-  if (!trade||!socket) return;
-  if (trade.myAccepted) { trade.myAccepted=false; socket.emit('tradeUpdateOffer',{tradeId:trade.tradeId,items:trade.myOffer.items,coins:trade.myOffer.coins}); renderTradeModal(); }
-  else { socket.emit('tradeAcceptTrade',trade.tradeId); trade.myAccepted=true; renderTradeModal(); }
-});
-document.getElementById('tradeDeclineBtn').addEventListener('click', () => {
-  if (!trade||!socket) return; socket.emit('tradeDeclineTrade',trade.tradeId); closeTrade('You declined the trade.');
-});
-document.getElementById('tradeCloseX').addEventListener('click', () => {
-  if (!trade||!socket) return; socket.emit('tradeDeclineTrade',trade.tradeId); closeTrade('You declined the trade.');
-});
-function closeTrade(reason) {
-  trade=null; closeTradeModalUI();
-  if (reason) appendPrivateLine(reason, reason.includes('complete')?'sent':'declined');
-}
-function closeTradeModalUI() { document.getElementById('tradeModal').style.display='none'; }
-function handleTradeComplete(data) {
-  myInventory=data.inventory; myCoins=data.coins;
-  document.getElementById('coinHud').textContent=`🪙 ${myCoins}`;
-  if (loggedInUser) loggedInUser.coins=myCoins;
-  renderInventory(); trade=null; closeTradeModalUI();
-  showToast('🤝','Trade complete!','Items transferred','uncommon');
-  appendPrivateLine('✓ Trade completed successfully!','sent');
-}
+// Also expose dbUserId in profileData so ctxVisitRoom works
+// Server sends it for non-guests - handled server-side already
 
 // ══════════════════════════════════════════════════════════════
 //  DIG
 // ══════════════════════════════════════════════════════════════
 const digBtn=document.getElementById('digBtn');
-const digProgWrap=document.getElementById('digProgressWrap');
-const digProgBar=document.getElementById('digProgress');
-digBtn.addEventListener('click', () => { if (!joined||!socket) return; if (isDigging){socket.emit('stopDig');endDig();}else startDig(); });
-function startDig() {
-  if (trade) return;
-  isDigging=true; digStart=Date.now();
-  digBtn.textContent='✋ Stop'; digBtn.classList.add('digging');
-  digProgWrap.classList.add('active'); digProgBar.style.width='100%';
+const digPW=document.getElementById('digProgressWrap'), digPB=document.getElementById('digProgress');
+digBtn.addEventListener('click',()=>{if(!joined||!socket||scene==='room')return;if(isDigging){socket.emit('stopDig');endDig();}else startDig();});
+function startDig(){
+  if(trade)return; isDigging=true;digStart=Date.now();
+  digBtn.textContent='✋ Stop';digBtn.classList.add('digging');digPW.classList.add('active');digPB.style.width='100%';
   socket.emit('startDig');
-  digInterval=setInterval(()=>{ const p=Math.max(0,100-((Date.now()-digStart)/DIG_DUR)*100); digProgBar.style.width=p+'%'; if(p<=0) endDig(); },100);
+  digInterval=setInterval(()=>{const p=Math.max(0,100-((Date.now()-digStart)/DIG_DUR)*100);digPB.style.width=p+'%';if(p<=0)endDig();},100);
 }
-function endDig() {
-  if (!isDigging) return; isDigging=false; clearInterval(digInterval);
-  digBtn.textContent='⛏️ Dig'; digBtn.classList.remove('digging');
-  digProgWrap.classList.remove('active'); digProgBar.style.width='100%';
+function endDig(){
+  if(!isDigging)return;isDigging=false;clearInterval(digInterval);
+  digBtn.textContent='⛏️ Dig';digBtn.classList.remove('digging');digPW.classList.remove('active');digPB.style.width='100%';
 }
-function handleDigFind(find) {
-  if (find.type==='coin') { myCoins=find.totalCoins; document.getElementById('coinHud').textContent=`🪙 ${myCoins}`; showToast(find.emoji,`+${find.value} Coin${find.value>1?'s':''}`, 'Found coins!','coin'); }
-  else if (find.type==='item') { myInventory=find.inventory; renderInventory(); showToast(find.emoji,find.label,find.rarity.charAt(0).toUpperCase()+find.rarity.slice(1),find.rarity); newItemCount++; const b=document.getElementById('invBadge'); b.textContent=newItemCount>9?'!':newItemCount; b.classList.add('show'); }
+function handleDigFind(find){
+  if(find.type==='coin'){myCoins=find.totalCoins;document.getElementById('coinHud').textContent=`🪙 ${myCoins}`;showToast(find.emoji,`+${find.value} Coin${find.value>1?'s':''}`, 'Found coins!','coin');}
+  else if(find.type==='item'){myInventory=find.inventory;renderInventory();showToast(find.emoji,find.label,find.rarity.charAt(0).toUpperCase()+find.rarity.slice(1),find.rarity);newItemCount++;const b=document.getElementById('invBadge');b.textContent=newItemCount>9?'!':newItemCount;b.classList.add('show');}
   else showToast(find.emoji,find.label,'Keep digging…','nothing');
 }
 
 // ══════════════════════════════════════════════════════════════
-//  INVENTORY
+//  INVENTORY (with place mode support)
 // ══════════════════════════════════════════════════════════════
-function renderInventory() {
+function renderInventory(){
   const pane=document.getElementById('inventoryPane');
-  if (!myInventory.length) { pane.innerHTML='<div class="inv-empty"><span class="big">🎒</span>Go dig something up!</div>'; return; }
+  if(!myInventory.length){pane.innerHTML='<div class="inv-empty"><span class="big">🎒</span>Go dig something up!</div>';return;}
   const sorted=[...myInventory].sort((a,b)=>(RARITY_ORDER[a.rarity]||3)-(RARITY_ORDER[b.rarity]||3));
   const groups={};sorted.forEach(i=>{const r=i.rarity||'common';(groups[r]=groups[r]||[]).push(i);});
   let html='';
+  if(editMode&&scene==='room') html+=`<div style="background:rgba(199,125,255,.08);border:1px solid rgba(199,125,255,.25);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px">✏️ Click a placeable item (🏠) to place it in your room</div>`;
   ['legendary','rare','uncommon','common'].forEach(r=>{
-    if (!groups[r]) return;
+    if(!groups[r])return;
     html+=`<div class="inv-section-title">${r}</div><div class="inv-grid">`;
-    groups[r].forEach(it=>{ html+=`<div class="inv-item rarity-${it.rarity}" title="${esc(it.label)}"><span class="emoji">${it.emoji}</span><span class="item-name">${esc(it.label)}</span><span class="item-rarity rarity-${it.rarity}">${it.rarity}</span>${it.qty>1?`<span class="item-qty">x${it.qty}</span>`:''}</div>`; });
+    groups[r].forEach(it=>{
+      const meta=ITEMS_META[it.id]||{};
+      const isPlaceable=meta.placeable&&editMode&&scene==='room';
+      const isSelected=placingItemId===it.id;
+      html+=`<div class="inv-item rarity-${it.rarity}${isPlaceable?' placeable':''}${isSelected?' selected':''}${isSelected?' style="border-color:var(--accent);background:rgba(199,125,255,.15);"':''}" data-id="${it.id}" title="${esc(it.label)}">`+
+        `<span class="emoji">${it.emoji}</span>`+
+        `<span class="item-name">${esc(it.label)}</span>`+
+        `<span class="item-rarity rarity-${it.rarity}">${it.rarity}</span>`+
+        `${it.qty>1?`<span class="item-qty">x${it.qty}</span>`:''}`+
+        `${isPlaceable?`<span class="inv-place-badge">🏠</span>`:''}`+
+        `</div>`;
+    });
     html+='</div>';
   });
   pane.innerHTML=html;
+  if(editMode&&scene==='room'){
+    pane.querySelectorAll('.inv-item.placeable').forEach(el=>{
+      el.addEventListener('click',()=>{
+        placingItemId=el.dataset.id;
+        const meta=ITEMS_META[placingItemId];
+        const pc=document.getElementById('placeCursor');
+        pc.textContent=meta?.emoji||'❓'; pc.style.display='block';
+        renderInventory(); // re-render to show selection
+      });
+    });
+  }
 }
 
 // ══════════════════════════════════════════════════════════════
-//  CHAT
+//  TRADE (same as before)
 // ══════════════════════════════════════════════════════════════
-const chatMessages=document.getElementById('chatMessages');
-function addChatMsg(entry) {
-  const color=CAT_COLORS[entry.colorIndex]||CAT_COLORS[0];
-  const div=document.createElement('div'); div.className='chat-msg';
-  const time=new Date(entry.time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  div.innerHTML=`<div class="chat-meta"><div class="chat-dot" style="background:${color.body};border:1.5px solid ${color.ear}"></div><span class="chat-name" style="color:${color.body}">${esc(entry.name)}</span><span class="chat-time">${time}</span></div><div class="chat-text">${esc(entry.msg)}</div>`;
-  div.querySelector('.chat-name').addEventListener('click', () => { if (socket) socket.emit('requestProfile', entry.id); });
-  chatMessages.appendChild(div); chatMessages.scrollTop=chatMessages.scrollHeight;
+function openTradeModal(data){
+  closeProfileModal();
+  trade={tradeId:data.tradeId,partnerId:data.partnerId,partnerName:data.partnerName,partnerColorIdx:data.partnerColorIndex,myOffer:{items:[],coins:0},partnerOffer:{items:[],coins:0},myAccepted:false,partnerAccepted:false};
+  document.getElementById('tradeTitle').textContent=`🤝 Trading with ${data.partnerName}`;
+  document.getElementById('myTradeName').textContent='You'; document.getElementById('partnerTradeName').textContent=data.partnerName;
+  document.getElementById('myCoinsInput').max=myCoins; document.getElementById('myCoinsInput').value=0;
+  document.getElementById('myCoinsAvail').textContent=`have: ${myCoins}`;
+  renderTradeModal(); document.getElementById('tradeModal').style.display='flex';
 }
-function addSystemMsg(text) { const d=document.createElement('div'); d.className='chat-system'; d.textContent=text; chatMessages.appendChild(d); chatMessages.scrollTop=chatMessages.scrollHeight; }
-function updateOnlineCount() { const n=Object.keys(players).length; document.getElementById('playerCount').textContent=`🐱 ${n} cat${n===1?'':'s'} online`; }
-function sendChat() { const i=document.getElementById('chatInput'); const m=i.value.trim(); if(!m||!socket) return; socket.emit('chat',m); i.value=''; }
-document.getElementById('sendBtn').addEventListener('click', sendChat);
-document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
-
-// ══════════════════════════════════════════════════════════════
-//  TABS
-// ══════════════════════════════════════════════════════════════
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const tab=btn.dataset.tab;
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active'); document.getElementById(`pane-${tab}`).classList.add('active');
-    if (tab==='inventory') { newItemCount=0; document.getElementById('invBadge').classList.remove('show'); }
-  });
-});
+function renderTradeModal(){
+  if(!trade)return;
+  const mz=document.getElementById('myOfferZone');
+  if(!trade.myOffer.items.length)mz.innerHTML='<span class="offer-empty-label">Click items below to add them</span>';
+  else{mz.innerHTML=trade.myOffer.items.map(it=>`<div class="offer-chip mine rarity-${it.rarity}" data-id="${it.id}" title="Click to remove"><span class="oc-emoji">${it.emoji}</span><span class="oc-name">${esc(it.label)}</span>${it.qty>1?`<span class="oc-qty">x${it.qty}</span>`:''}</div>`).join('');mz.querySelectorAll('.offer-chip.mine').forEach(el=>el.addEventListener('click',()=>{if(!trade.myAccepted)removeFromMyOffer(el.dataset.id);}));}
+  const avail=document.getElementById('myAvailGrid');
+  if(!myInventory.length)avail.innerHTML='<div style="color:var(--muted);font-size:11px;grid-column:span 4">Nothing to trade!</div>';
+  else{avail.innerHTML=myInventory.map(inv=>{const off=trade.myOffer.items.find(o=>o.id===inv.id);const rem=inv.qty-(off?off.qty:0);const dep=rem<=0;return`<div class="avail-item rarity-${inv.rarity} ${dep?'used-up':''}" data-id="${inv.id}" title="${esc(inv.label)}"><span class="a-emoji">${inv.emoji}</span><span class="a-name">${esc(inv.label)}</span>${inv.qty>1?`<span class="a-qty">${rem}/${inv.qty}</span>`:''}</div>`;}).join('');if(!trade.myAccepted)avail.querySelectorAll('.avail-item:not(.used-up)').forEach(el=>el.addEventListener('click',()=>addToMyOffer(el.dataset.id)));}
+  const pz=document.getElementById('partnerOfferZone');
+  if(!trade.partnerOffer.items.length)pz.innerHTML='<span class="offer-empty-label">Waiting for their offer…</span>';
+  else pz.innerHTML=trade.partnerOffer.items.map(it=>`<div class="offer-chip rarity-${it.rarity}" style="cursor:default" title="${esc(it.label)}"><span class="oc-emoji">${it.emoji}</span><span class="oc-name">${esc(it.label)}</span>${it.qty>1?`<span class="oc-qty">x${it.qty}</span>`:''}</div>`).join('');
+  document.getElementById('partnerCoinsDisplay').textContent=trade.partnerOffer.coins||'0';
+  updateTradeFooter();
+}
+function addToMyOffer(id){if(!trade||trade.myAccepted)return;const inv=myInventory.find(i=>i.id===id);if(!inv)return;const off=trade.myOffer.items.find(o=>o.id===id);if(off){if(off.qty<inv.qty)off.qty++;else return;}else trade.myOffer.items.push({id:inv.id,label:inv.label,emoji:inv.emoji,rarity:inv.rarity,qty:1});pushOffer();renderTradeModal();}
+function removeFromMyOffer(id){if(!trade||trade.myAccepted)return;const idx=trade.myOffer.items.findIndex(o=>o.id===id);if(idx===-1)return;trade.myOffer.items[idx].qty--;if(trade.myOffer.items[idx].qty<=0)trade.myOffer.items.splice(idx,1);pushOffer();renderTradeModal();}
+document.getElementById('myCoinsInput').addEventListener('input',()=>{if(!trade||trade.myAccepted)return;let v=Math.max(0,Math.min(parseInt(document.getElementById('myCoinsInput').value)||0,myCoins));document.getElementById('myCoinsInput').value=v;trade.myOffer.coins=v;pushOffer();});
+function pushOffer(){if(socket&&trade)socket.emit('tradeUpdateOffer',{tradeId:trade.tradeId,items:trade.myOffer.items,coins:trade.myOffer.coins});}
+function updateTradeState(state){if(!trade||state.tradeId!==trade.tradeId)return;trade.myOffer=state.myOffer;trade.partnerOffer=state.partnerOffer;trade.myAccepted=state.myAccepted;trade.partnerAccepted=state.partnerAccepted;document.getElementById('myCoinsInput').value=trade.myOffer.coins;renderTradeModal();}
+function updateTradeFooter(){if(!trade)return;const ab=document.getElementById('tradeAcceptBtn'),st=document.getElementById('tradeStatusText');if(trade.myAccepted&&trade.partnerAccepted){st.innerHTML='<span class="status-chip chip-ready">✓ Both accepted</span>';ab.disabled=true;}else if(trade.myAccepted){st.innerHTML='<span class="status-chip chip-ready">✓ You accepted</span> — waiting…';ab.textContent='↩ Undo Accept';ab.className='btn btn-secondary';ab.disabled=false;}else if(trade.partnerAccepted){st.innerHTML='Partner <span class="status-chip chip-ready">✓ accepted</span> — your turn!';ab.textContent='✓ Accept Trade';ab.className='btn btn-success';ab.disabled=false;}else{st.textContent='Add items to your offer, then click Accept.';ab.textContent='✓ Accept Trade';ab.className='btn btn-success';ab.disabled=false;}}
+document.getElementById('tradeAcceptBtn').addEventListener('click',()=>{if(!trade||!socket)return;if(trade.myAccepted){trade.myAccepted=false;socket.emit('tradeUpdateOffer',{tradeId:trade.tradeId,items:trade.myOffer.items,coins:trade.myOffer.coins});renderTradeModal();}else{socket.emit('tradeAcceptTrade',trade.tradeId);trade.myAccepted=true;renderTradeModal();}});
+document.getElementById('tradeDeclineBtn').addEventListener('click',()=>{if(!trade||!socket)return;socket.emit('tradeDeclineTrade',trade.tradeId);closeTrade('You declined.');});
+document.getElementById('tradeCloseX').addEventListener('click',()=>{if(!trade||!socket)return;socket.emit('tradeDeclineTrade',trade.tradeId);closeTrade('You declined.');});
+function closeTrade(reason){trade=null;closeTradeModalUI();if(reason)appendPrivateLine(reason,'declined');}
+function closeTradeModalUI(){document.getElementById('tradeModal').style.display='none';}
+function handleTradeComplete(data){myInventory=data.inventory;myCoins=data.coins;document.getElementById('coinHud').textContent=`🪙 ${myCoins}`;renderInventory();trade=null;closeTradeModalUI();showToast('🤝','Trade complete!','Items transferred','uncommon');appendPrivateLine('✓ Trade completed!','sent');}
 
 // ══════════════════════════════════════════════════════════════
 //  TOASTS
 // ══════════════════════════════════════════════════════════════
-function showToast(emoji,label,sub,type) {
-  const c=document.getElementById('toastContainer'); const d=document.createElement('div');
-  d.className=`find-toast ${type}`;
-  d.innerHTML=`<span class="t-emoji">${emoji}</span><div><div class="t-label">${label}</div><div class="t-sub">${sub}</div></div>`;
-  c.appendChild(d); setTimeout(()=>{ d.classList.add('remove'); setTimeout(()=>d.remove(),320); },2700);
-}
+function showToast(emoji,label,sub,type){const c=document.getElementById('toastContainer');const d=document.createElement('div');d.className=`find-toast ${type}`;d.innerHTML=`<span class="t-emoji">${emoji}</span><div><div class="t-label">${label}</div><div class="t-sub">${sub}</div></div>`;c.appendChild(d);setTimeout(()=>{d.classList.add('remove');setTimeout(()=>d.remove(),320);},2700);}
+
+// ══════════════════════════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════════════════════════
+document.querySelectorAll('.tab-btn').forEach(btn=>{btn.addEventListener('click',()=>{const tab=btn.dataset.tab;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById(`pane-${tab}`).classList.add('active');if(tab==='inventory'){newItemCount=0;document.getElementById('invBadge').classList.remove('show');}});});
 
 // ══════════════════════════════════════════════════════════════
 //  INPUT
 // ══════════════════════════════════════════════════════════════
-window.addEventListener('keydown', e=>{
-  if (e.target.tagName==='INPUT') return;
-  if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' '].includes(e.key)) e.preventDefault();
-  if (e.key===' '&&joined&&socket) { if(isDigging){socket.emit('stopDig');endDig();}else startDig(); return; }
+window.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' '].includes(e.key))e.preventDefault();
+  if(e.key===' '&&joined&&socket&&scene==='lobby'){if(isDigging){socket.emit('stopDig');endDig();}else startDig();return;}
   handleKey(e.key,true);
 });
-window.addEventListener('keyup', e=>handleKey(e.key,false));
-function handleKey(key,down) {
-  if (!joined) return;
+window.addEventListener('keyup',e=>handleKey(e.key,false));
+function handleKey(key,down){
+  if(!joined)return;
   const m={ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right',ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down'};
-  const k=m[key]; if(!k) return;
-  if (keys[k]!==down) { keys[k]=down; if(socket) socket.emit('keys',keys); }
+  const k=m[key];if(!k)return;
+  if(keys[k]!==down){keys[k]=down;if(socket){if(scene==='room')socket.emit('roomKeys',keys);else socket.emit('keys',keys);}}
 }
-document.querySelectorAll('.emote-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ if(socket&&joined) socket.emit('emote',btn.dataset.emote); }); });
+document.querySelectorAll('.emote-btn').forEach(btn=>{btn.addEventListener('click',()=>{if(socket&&joined)socket.emit('emote',btn.dataset.emote);});});
 
 // ══════════════════════════════════════════════════════════════
 //  UTILS
 // ══════════════════════════════════════════════════════════════
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-// ══════════════════════════════════════════════════════════════
-//  RENDER LOOP
-// ══════════════════════════════════════════════════════════════
-function render() {
-  ctx.clearRect(0,0,W,H); drawWorld();
-  if (isDigging) digPhase++;
-  Object.values(players).sort((a,b)=>a.y-b.y).forEach(p=>{
-    drawCat(ctx,p.x,p.y,p.color,p.name,p.id===myId,p.emote,p.digging,p.id===myId?digPhase:(p.digPhase||0));
-  });
-  requestAnimationFrame(render);
-}
-render();
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 </script>
 </body>
 </html>
