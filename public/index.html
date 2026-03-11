@@ -90,6 +90,7 @@ canvas{display:block}
 .inv-item.rarity-uncommon{border-color:rgba(105,240,174,.3)}
 .inv-item.rarity-rare{border-color:rgba(64,196,255,.3)}
 .inv-item.rarity-legendary{border-color:rgba(255,215,64,.4);box-shadow:0 0 8px rgba(255,215,64,.12)}
+.inv-slot-label{font-size:10px;font-weight:800;color:var(--accent2);margin:6px 0 4px;padding-left:2px;letter-spacing:.3px}
 .inv-empty{text-align:center;color:var(--muted);font-size:12px;padding:28px 10px}
 .inv-empty .big{font-size:30px;display:block;margin-bottom:8px}
 #invBadge{display:none;position:absolute;top:-4px;right:-4px;background:var(--accent2);color:#1a0030;font-size:9px;font-weight:900;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center}
@@ -965,10 +966,16 @@ async function openHouseDirectory(){
   const body=document.getElementById('houseDirBody');
   body.innerHTML='<div class="hd-empty">Loading…</div>';
 
-  const [dirRes, onlineRes]=await Promise.all([
-    fetch('/api/room-directory').then(r=>r.json()),
-    fetch('/api/rooms-online').then(r=>r.json()),
-  ]);
+  let dirRes, onlineRes;
+  try {
+    [dirRes, onlineRes]=await Promise.all([
+      fetch('/api/room-directory').then(r=>r.json()),
+      fetch('/api/rooms-online').then(r=>r.json()),
+    ]);
+  } catch(e) {
+    body.innerHTML='<div class="hd-empty">⚠️ Could not load rooms. Please try again.</div>';
+    return;
+  }
 
   const onlineMap=onlineRes.online||{};
   const users=dirRes.users||[];
@@ -1324,27 +1331,56 @@ function handleDigFind(find){
 function renderInventory(){
   const pane=document.getElementById('inventoryPane');
   if(!myInventory.length){pane.innerHTML='<div class="inv-empty"><span class="big">🎒</span>Go dig something up!</div>';return;}
-  const sorted=[...myInventory].sort((a,b)=>(RARITY_ORDER[a.rarity]||3)-(RARITY_ORDER[b.rarity]||3));
-  const groups={};sorted.forEach(i=>{const r=i.rarity||'common';(groups[r]=groups[r]||[]).push(i);});
+
+  const wardrobe=myInventory.filter(i=>i.wearable);
+  const regular=myInventory.filter(i=>!i.wearable);
   let html='';
-  if(editMode&&scene==='room') html+=`<div style="background:rgba(199,125,255,.08);border:1px solid rgba(199,125,255,.25);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px">✏️ Click a placeable item (🏠) to place it in your room</div>`;
-  ['legendary','rare','uncommon','common'].forEach(r=>{
-    if(!groups[r])return;
-    html+=`<div class="inv-section-title">${r}</div><div class="inv-grid">`;
-    groups[r].forEach(it=>{
-      const meta=ITEMS_META[it.id]||{};
-      const isPlaceable=meta.placeable&&editMode&&scene==='room';
-      const isSelected=placingItemId===it.id;
-      html+=`<div class="inv-item rarity-${it.rarity}${isPlaceable?' placeable':''}${isSelected?' selected':''}${isSelected?' style="border-color:var(--accent);background:rgba(199,125,255,.15);"':''}" data-id="${it.id}" title="${esc(it.label)}">`+
-        `<span class="emoji">${it.emoji}</span>`+
-        `<span class="item-name">${esc(it.label)}</span>`+
-        `<span class="item-rarity rarity-${it.rarity}">${it.rarity}</span>`+
-        `${it.qty>1?`<span class="item-qty">x${it.qty}</span>`:''}`+
-        `${isPlaceable?`<span class="inv-place-badge">🏠</span>`:''}`+
-        `</div>`;
+
+  if(wardrobe.length){
+    html+=`<div class="inv-section-title" style="color:var(--accent2)">👗 Wardrobe</div>`;
+    const slotGroups=[['hat','🎩 Hats'],['shirt','👕 Shirts'],['pattern','🎨 Patterns']];
+    for(const [slot,label] of slotGroups){
+      const items=wardrobe.filter(i=>i.slot===slot);
+      if(!items.length)continue;
+      html+=`<div class="inv-slot-label">${label}</div><div class="inv-grid">`;
+      items.forEach(it=>{
+        html+=`<div class="inv-item rarity-${it.rarity||'common'}" data-id="${it.id}" title="${esc(it.label)}" style="border-color:rgba(255,157,226,.35)">` +
+          `<span class="emoji">${it.emoji}</span>` +
+          `<span class="item-name">${esc(it.label)}</span>` +
+          `<span class="item-rarity rarity-${it.rarity||'common'}">${it.rarity||'common'}</span>` +
+          `${it.qty>1?`<span class="item-qty">x${it.qty}</span>`:''}` +
+          `</div>`;
+      });
+      html+='</div>';
+    }
+    if(regular.length) html+=`<div style="border-top:1px solid var(--border);margin:10px 0 4px"></div>`;
+  }
+
+  if(regular.length){
+    if(wardrobe.length) html+=`<div class="inv-section-title">🎒 Items</div>`;
+    if(editMode&&scene==='room') html+=`<div style="background:rgba(199,125,255,.08);border:1px solid rgba(199,125,255,.25);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px">✏️ Click a placeable item (🏠) to place it in your room</div>`;
+    const sorted=[...regular].sort((a,b)=>(RARITY_ORDER[a.rarity]||3)-(RARITY_ORDER[b.rarity]||3));
+    const groups={};sorted.forEach(i=>{const r=i.rarity||'common';(groups[r]=groups[r]||[]).push(i);});
+    ['legendary','rare','uncommon','common'].forEach(r=>{
+      if(!groups[r])return;
+      html+=`<div class="inv-section-title">${r}</div><div class="inv-grid">`;
+      groups[r].forEach(it=>{
+        const meta=ITEMS_META[it.id]||{};
+        const isPlaceable=meta.placeable&&editMode&&scene==='room';
+        const isSelected=placingItemId===it.id;
+        const selStyle=isSelected?' style="border-color:var(--accent);background:rgba(199,125,255,.15);"':'';
+        html+=`<div class="inv-item rarity-${it.rarity}${isPlaceable?' placeable':''}${isSelected?' selected':''}"${selStyle} data-id="${it.id}" title="${esc(it.label)}">` +
+          `<span class="emoji">${it.emoji}</span>` +
+          `<span class="item-name">${esc(it.label)}</span>` +
+          `<span class="item-rarity rarity-${it.rarity}">${it.rarity}</span>` +
+          `${it.qty>1?`<span class="item-qty">x${it.qty}</span>`:''}` +
+          `${isPlaceable?`<span class="inv-place-badge">🏠</span>`:''}` +
+          `</div>`;
+      });
+      html+='</div>';
     });
-    html+='</div>';
-  });
+  }
+
   pane.innerHTML=html;
   if(editMode&&scene==='room'){
     pane.querySelectorAll('.inv-item.placeable').forEach(el=>{
@@ -1353,12 +1389,11 @@ function renderInventory(){
         const meta=ITEMS_META[placingItemId];
         const pc=document.getElementById('placeCursor');
         pc.textContent=meta?.emoji||'❓'; pc.style.display='block';
-        renderInventory(); // re-render to show selection
+        renderInventory();
       });
     });
   }
 }
-
 // ══════════════════════════════════════════════════════════════
 //  TRADE (same as before)
 // ══════════════════════════════════════════════════════════════
@@ -1532,10 +1567,6 @@ function renderShop() {
 function buildShopTable(items) {
   let rows = '';
   for (const item of items) {
-    const isClothing = item.cat === 'clothing';
-    const isEquipped = isClothing && myOutfit && myOutfit[item.slot] === item.id;
-    const btnClass = isEquipped ? 'shop-buy-btn equipped' : 'shop-buy-btn';
-    const btnText = isEquipped ? '✓ Equipped' : `Buy`;
     rows += `<tr class="shop-row">
       <td>
         <div class="shop-item-cell">
@@ -1548,7 +1579,7 @@ function buildShopTable(items) {
         </div>
       </td>
       <td style="text-align:center"><span class="shop-price-bubble">🪙 ${item.price}</span></td>
-      <td style="text-align:right"><button class="${btnClass}" data-id="${item.id}">${btnText}</button></td>
+      <td style="text-align:right"><button class="shop-buy-btn" data-id="${item.id}">Buy</button></td>
     </tr>`;
   }
   return `<table class="shop-table"><thead><tr>
@@ -1582,9 +1613,13 @@ document.getElementById('inventoryPane').addEventListener('contextmenu', e => {
   const item = myInventory.find(i => i.id === invCtxItemId);
   if (!item) return;
 
-  // Look up sell price from items meta
+  // Calculate sell price: dig items use ITEMS_META.sellPrice, clothing uses 40% of shopItems price
   const meta = ITEMS_META[invCtxItemId] || {};
-  const sellPrice = meta.sellPrice || 0;
+  let sellPrice = meta.sellPrice || 0;
+  if (!sellPrice && item.wearable && shopItems.length) {
+    const shopMeta = shopItems.find(s => s.id === invCtxItemId);
+    if (shopMeta?.price) sellPrice = Math.floor(shopMeta.price * 0.4);
+  }
 
   document.getElementById('invCtxItemName').innerHTML = `${item.emoji} ${esc(item.label)}`;
   const sellRow = document.getElementById('invCtxSell');
@@ -1596,11 +1631,8 @@ document.getElementById('inventoryPane').addEventListener('contextmenu', e => {
     sellRow.style.display = 'none';
   }
 
-  // Equip if clothing
-  const equipRow = document.getElementById('invCtxEquip');
-  equipRow.style.display = 'none';
+  document.getElementById('invCtxEquip').style.display = 'none';
 
-  // Position menu
   invCtxMenu.style.left = Math.min(e.clientX, window.innerWidth - 200) + 'px';
   invCtxMenu.style.top = Math.min(e.clientY, window.innerHeight - 120) + 'px';
   invCtxMenu.classList.add('visible');
@@ -1637,16 +1669,10 @@ function shopSocketSetup(sock) {
     document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
     document.getElementById('shopCoinDisplay').textContent = `🪙 ${myCoins}`;
     showShopToast(data.emoji, `Bought ${data.label}!`, false);
-    renderShop();
   });
 
   sock.on('sellSuccess', data => {
     myCoins = data.coins;
-    myInventory = myInventory.filter(i => {
-      if (i.id !== data.itemId) return true;
-      i.qty -= data.qty;
-      return i.qty > 0;
-    });
     document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
     document.getElementById('shopCoinDisplay').textContent = `🪙 ${myCoins}`;
     showShopToast('💰', `Sold ${data.emoji} ${data.label} for 🪙 ${data.earned}!`, false);
@@ -1656,16 +1682,6 @@ function shopSocketSetup(sock) {
   sock.on('shopError', msg => {
     showShopToast('❌', msg, true);
   });
-
-  sock.on('outfitUpdate', data => {
-    myOutfit = data.outfit || {};
-    myCoins = data.coins;
-    document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
-    document.getElementById('shopCoinDisplay').textContent = `🪙 ${myCoins}`;
-    if (shopOpen) renderShop();
-  });
-
-  sock.on('shopCatalog', items => { shopItems = items; if (shopOpen) renderShop(); });
 }
 
 </script>

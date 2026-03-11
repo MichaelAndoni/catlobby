@@ -120,7 +120,12 @@ app.get('/api/room-directory', (req, res) => {
   res.json({ ok: true, users });
 });
 
-app.get('/api/rooms-online', (req, res) => {
+// ── GAME STATE (declared early so REST routes can access it) ──
+const players      = {};
+const roomSessions = {};
+const chatHistory  = [];
+const activeTrades = {};
+
   const online = {};
   for (const [ownerId, rs] of Object.entries(roomSessions)) {
     online[ownerId] = Object.values(rs.players).map(p => ({ id: p.id, name: p.name, colorIndex: p.colorIndex }));
@@ -244,10 +249,7 @@ const SHOP_ITEMS = [
 // ────────────────────────────────────────────────────────────
 //  GAME STATE
 // ────────────────────────────────────────────────────────────
-const players      = {};
-const roomSessions = {};
-const chatHistory  = [];
-const activeTrades = {};
+// (players, roomSessions, chatHistory, activeTrades declared earlier for route access)
 
 function randomSpawn(W, H) { return { x: 40+Math.random()*(W-80), y: 40+Math.random()*(H-80) }; }
 
@@ -397,23 +399,23 @@ io.on('connection', (socket) => {
     const total = shopItem.price * qty;
     if (p.coins < total) { socket.emit('shopError', `Not enough coins! Need ${total} 🪙`); return; }
     p.coins -= total;
-    // Clothing items go into outfit, not inventory
-    if (shopItem.cat === 'clothing') {
-      if (!p.outfit) p.outfit={};
-      p.outfit[shopItem.slot] = shopItem.id;
-      if (p.dbUserId) savePlayer(p);
-      socket.emit('outfitUpdate', { outfit: p.outfit, coins: p.coins });
-      io.emit('playerUpdate', sanitize(p));
-    } else {
-      // Material / furniture item — goes to inventory
+    // All items go into inventory (clothing flagged wearable:true)
+    const ex = p.inventory.find(i=>i.id===itemId);
+    if (ex) { ex.qty += qty; }
+    else {
       const digMeta = DIG_ITEMS_MAP[itemId];
-      const label = shopItem.label, emoji = shopItem.emoji, rarity = shopItem.rarity||'common';
-      const ex = p.inventory.find(i=>i.id===itemId);
-      if (ex) ex.qty+=qty;
-      else p.inventory.push({ id:itemId, label, emoji, rarity, qty, placeable:!!(digMeta?.placeable), furniture:digMeta?.furniture });
-      if (p.dbUserId) savePlayer(p);
-      socket.emit('inventoryUpdate', { inventory: p.inventory, coins: p.coins });
+      p.inventory.push({
+        id: itemId, label: shopItem.label, emoji: shopItem.emoji,
+        rarity: shopItem.rarity||'common', qty,
+        wearable: shopItem.cat === 'clothing',
+        slot: shopItem.slot || null,
+        patternKey: shopItem.patternKey || null,
+        placeable: !!(digMeta?.placeable),
+        furniture: digMeta?.furniture || null,
+      });
     }
+    if (p.dbUserId) savePlayer(p);
+    socket.emit('inventoryUpdate', { inventory: p.inventory, coins: p.coins });
     socket.emit('shopSuccess', { itemId, label: shopItem.label, emoji: shopItem.emoji, coins: p.coins });
   });
 
@@ -421,28 +423,24 @@ io.on('connection', (socket) => {
   socket.on('sellItem', ({ itemId, qty }) => {
     const p=players[socket.id]; if(!p) return;
     qty = Math.max(1, parseInt(qty)||1);
-    // Can sell dig items (not clothing) — look up sell price
-    const digMeta = DIG_ITEMS_MAP[itemId];
-    if (!digMeta || !digMeta.sellPrice) { socket.emit('shopError', "You can't sell that item."); return; }
     const inv = p.inventory.find(i=>i.id===itemId);
     if (!inv || inv.qty < qty) { socket.emit('shopError', "You don't have enough of that item."); return; }
-    const earned = digMeta.sellPrice * qty;
+    // Determine sell price: dig items use sellPrice, clothing uses ~40% of buy price
+    const digMeta = DIG_ITEMS_MAP[itemId];
+    const shopMeta = SHOP_ITEMS.find(i=>i.id===itemId);
+    let earned = 0;
+    if (digMeta?.sellPrice) {
+      earned = digMeta.sellPrice * qty;
+    } else if (shopMeta?.price) {
+      earned = Math.floor(shopMeta.price * 0.4) * qty;
+    }
+    if (!earned) { socket.emit('shopError', "You can't sell that item."); return; }
     inv.qty -= qty;
     if (inv.qty <= 0) p.inventory.splice(p.inventory.indexOf(inv), 1);
     p.coins += earned;
     if (p.dbUserId) savePlayer(p);
     socket.emit('inventoryUpdate', { inventory: p.inventory, coins: p.coins });
-    socket.emit('sellSuccess', { itemId, qty, earned, label: digMeta.label, emoji: digMeta.emoji, coins: p.coins });
-  });
-
-  // ── UNEQUIP CLOTHING ──────────────────────────────────────
-  socket.on('unequipSlot', (slot) => {
-    const p=players[socket.id]; if(!p) return;
-    if (!p.outfit) p.outfit={};
-    delete p.outfit[slot];
-    if (p.dbUserId) savePlayer(p);
-    socket.emit('outfitUpdate', { outfit: p.outfit, coins: p.coins });
-    io.emit('playerUpdate', sanitize(p));
+    socket.emit('sellSuccess', { itemId, qty, earned, label: inv.label, emoji: inv.emoji, coins: p.coins });
   });
 
   // ── TRADE ──────────────────────────────────────────────────
