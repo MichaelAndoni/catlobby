@@ -126,6 +126,7 @@ const roomSessions = {};
 const chatHistory  = [];
 const activeTrades = {};
 
+app.get('/api/rooms-online', (req, res) => {
   const online = {};
   for (const [ownerId, rs] of Object.entries(roomSessions)) {
     online[ownerId] = Object.values(rs.players).map(p => ({ id: p.id, name: p.name, colorIndex: p.colorIndex }));
