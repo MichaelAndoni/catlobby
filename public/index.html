@@ -801,9 +801,9 @@ function drawCat(c,x,y,color,name,isMe,emote,digging,phase){
 // ══════════════════════════════════════════════════════════════
 function render(){
   ctx.clearRect(0,0,W,H);
+  if(isDigging) digPhase++;
   if (scene==='lobby') {
     drawWorld();
-    if(isDigging) digPhase++;
     Object.values(players).filter(p=>!p.inRoomId).sort((a,b)=>a.y-b.y).forEach(p=>{
       drawCat(ctx,p.x,p.y,p.color,p.name,p.id===myId,p.emote,p.digging,p.id===myId?digPhase:(p.digPhase||0));
     });
@@ -811,7 +811,7 @@ function render(){
     drawRoom();
     const rPlayers = Object.values(roomState.players||{});
     rPlayers.sort((a,b)=>a.y-b.y).forEach(p=>{
-      drawCat(ctx,p.x,p.y,p.color,p.name,p.id===myId,p.emote,false,0);
+      drawCat(ctx,p.x,p.y,p.color,p.name,p.id===myId,p.emote,p.id===myId?isDigging:p.digging,p.id===myId?digPhase:(p.digPhase||0));
     });
   }
   requestAnimationFrame(render);
