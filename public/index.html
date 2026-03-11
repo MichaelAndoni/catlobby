@@ -1077,8 +1077,8 @@ function enterRoomUI(data){
   document.getElementById('editRoomBtn').style.display=data.isOwner?'':'none';
   document.getElementById('locationHud').style.display='flex';
   document.getElementById('locationHud').textContent=`🏠 ${data.roomName||data.ownerName+"'s Room"}`;
-  document.getElementById('digBtn').disabled=true;
-  document.getElementById('controls').textContent='WASD to move · Right-click items to pick up (owner only)';
+  document.getElementById('digBtn').disabled=false;
+  document.getElementById('controls').textContent='WASD to move · Space to dig · Right-click items to pick up (owner only)';
   updateChatHeader(`${data.roomName||data.ownerName+"'s Room"} Chat`);
   data.chatHistory.forEach(m=>addChatMsg(m, true));
   renderInventory();
@@ -1219,8 +1219,9 @@ function initSocket(name){
   });
   socket.on('roomTick',updates=>{
     if(!roomState)return;
-    updates.forEach(u=>{if(!roomState.players[u.id])return;roomState.players[u.id].x=u.x;roomState.players[u.id].y=u.y;roomState.players[u.id].emote=u.emote;});
+    updates.forEach(u=>{if(!roomState.players[u.id])return;roomState.players[u.id].x=u.x;roomState.players[u.id].y=u.y;roomState.players[u.id].emote=u.emote;if(u.digging)roomState.players[u.id].digPhase=(roomState.players[u.id].digPhase||0)+1;});
   });
+  socket.on('roomPlayerDig',({id,digging})=>{if(!roomState||!roomState.players[id])return;roomState.players[id].digging=digging;if(!digging)roomState.players[id].digPhase=0;});
   socket.on('roomChat',m=>{if(scene==='room')addChatMsg(m,true);});
   socket.on('roomUpdated',data=>{if(!roomState)return;Object.assign(roomState,{wallpaper:data.wallpaper,flooring:data.flooring,placedItems:data.placedItems,roomName:data.roomName});document.getElementById('locationHud').textContent=`🏠 ${data.roomName||roomState.ownerName+"'s Room"}`;});
   socket.on('roomSaved',()=>showToast('💾','Room saved!','Your layout is saved','uncommon'));
@@ -1315,7 +1316,7 @@ function closeProfileModal(){document.getElementById('profileModal').style.displ
 // ══════════════════════════════════════════════════════════════
 const digBtn=document.getElementById('digBtn');
 const digPW=document.getElementById('digProgressWrap'), digPB=document.getElementById('digProgress');
-digBtn.addEventListener('click',()=>{if(!joined||!socket||scene==='room')return;if(isDigging){socket.emit('stopDig');endDig();}else startDig();});
+digBtn.addEventListener('click',()=>{if(!joined||!socket)return;if(isDigging){socket.emit('stopDig');endDig();}else startDig();});
 function startDig(){
   if(trade)return; isDigging=true;digStart=Date.now();
   digBtn.textContent='✋ Stop';digBtn.classList.add('digging');digPW.classList.add('active');digPB.style.width='100%';
@@ -1456,7 +1457,7 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{btn.addEventListener('click'
 window.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT')return;
   if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' '].includes(e.key))e.preventDefault();
-  if(e.key===' '&&joined&&socket&&scene==='lobby'){if(isDigging){socket.emit('stopDig');endDig();}else startDig();return;}
+  if(e.key===' '&&joined&&socket){if(isDigging){socket.emit('stopDig');endDig();}else startDig();return;}
   handleKey(e.key,true);
 });
 window.addEventListener('keyup',e=>handleKey(e.key,false));
