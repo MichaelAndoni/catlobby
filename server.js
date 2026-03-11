@@ -109,15 +109,19 @@ app.post('/auth/resend-verification', async (req, res) => {
 
 // ── ROOM REST ROUTES ─────────────────────────────────────────
 app.get('/api/room/:userId', (req, res) => {
-  const user = db.getUserById(req.params.userId);
-  if (!user || !user.verified) return res.status(404).json({ error: 'User not found.' });
-  const room = db.getRoom(req.params.userId);
-  res.json({ ok: true, room, owner: { id: user.id, username: user.username, colorIndex: user.color_index } });
+  try {
+    const user = db.getUserById(req.params.userId);
+    if (!user || !user.verified) return res.status(404).json({ error: 'User not found.' });
+    const room = db.getRoom(req.params.userId);
+    res.json({ ok: true, room, owner: { id: user.id, username: user.username, colorIndex: user.color_index } });
+  } catch(e) { console.error('[/api/room]', e); res.status(500).json({ error: e.message }); }
 });
 
 app.get('/api/room-directory', (req, res) => {
-  const users = db.getAllVerifiedUsers();
-  res.json({ ok: true, users });
+  try {
+    const users = db.getAllVerifiedUsers();
+    res.json({ ok: true, users });
+  } catch(e) { console.error('[/api/room-directory]', e); res.status(500).json({ ok: true, users: [] }); }
 });
 
 // ── GAME STATE (declared early so REST routes can access it) ──

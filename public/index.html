@@ -968,15 +968,18 @@ async function openHouseDirectory(){
 
   let dirRes, onlineRes;
   try {
-    [dirRes, onlineRes]=await Promise.all([
-      fetch('/api/room-directory').then(r=>r.json()),
-      fetch('/api/rooms-online').then(r=>r.json()),
+    const [d, o] = await Promise.all([
+      fetch('/api/room-directory').then(r=>{ if(!r.ok) throw new Error('room-directory '+r.status); return r.json(); }),
+      fetch('/api/rooms-online').then(r=>{ if(!r.ok) throw new Error('rooms-online '+r.status); return r.json(); }),
     ]);
+    dirRes = d; onlineRes = o;
   } catch(e) {
-    body.innerHTML='<div class="hd-empty">⚠️ Could not load rooms. Please try again.</div>';
+    console.error('[housedir fetch]', e);
+    body.innerHTML=`<div class="hd-empty">⚠️ Could not load rooms (${e.message}). Please try again.</div>`;
     return;
   }
 
+  try {
   const onlineMap=onlineRes.online||{};
   const users=dirRes.users||[];
   let html='';
@@ -1031,6 +1034,10 @@ async function openHouseDirectory(){
   body.querySelectorAll('.hd-enter-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{const uid=btn.dataset.uid;document.getElementById('houseDirModal').style.display='none';enterRoom(uid);});
   });
+  } catch(renderErr) {
+    console.error('[housedir render]', renderErr);
+    body.innerHTML=`<div class="hd-empty">⚠️ Error loading rooms: ${renderErr.message}</div>`;
+  }
 }
 document.getElementById('hdClose').addEventListener('click',()=>document.getElementById('houseDirModal').style.display='none');
 document.getElementById('houseDirModal').addEventListener('click',e=>{if(e.target===document.getElementById('houseDirModal'))document.getElementById('houseDirModal').style.display='none';});
