@@ -4,5 +4,7 @@ node_modules
 *.db-shm
 *.db-wal
 deploy.ps1
-.envcopy
-.envcopy2
+.env
+.env*
+*.env
+public/.env*
