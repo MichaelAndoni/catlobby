@@ -15,12 +15,13 @@
   --success:#66bb6a;--danger:#ef5350;
 }
 body{background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;user-select:none}
-#app{display:flex;width:1160px;height:620px;border-radius:20px;overflow:hidden;box-shadow:0 0 60px rgba(199,125,255,.25),0 0 0 1px var(--border)}
-#gameWrap{position:relative;flex:0 0 780px;height:620px;background:#0d0818;overflow:hidden}
+#app{transform-origin:center center;}
+#app{display:flex;width:1440px;height:820px;border-radius:20px;overflow:hidden;box-shadow:0 0 60px rgba(199,125,255,.25),0 0 0 1px var(--border)}
+#gameWrap{position:relative;flex:0 0 1060px;height:820px;background:#0d0818;overflow:hidden}
 canvas{display:block}
 
 /* RIGHT PANEL */
-#rightPanel{flex:1;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;height:620px;overflow:hidden}
+#rightPanel{flex:1;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;height:820px;overflow:hidden}
 #tabBar{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
 .tab-btn{flex:1;background:none;border:none;padding:11px 4px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;letter-spacing:.4px;text-transform:uppercase;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;position:relative}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
@@ -98,32 +99,32 @@ canvas{display:block}
 
 /* HUD */
 #hud{position:absolute;top:10px;left:10px;display:flex;gap:8px;align-items:center;pointer-events:none;z-index:2}
-.hud-pill{background:rgba(35,21,51,.88);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;backdrop-filter:blur(8px)}
+.hud-pill{background:rgba(35,21,51,.88);border:1px solid var(--border);border-radius:20px;padding:6px 16px;font-size:15px;font-weight:800;backdrop-filter:blur(8px)}
 #playerCount{color:var(--accent)}
 #coinHud{border-color:#c9a227;color:#ffd740;display:none}
 #locationHud{color:var(--muted);font-size:11px;display:none;pointer-events:auto}
 
 /* WORLD MAP BUTTON */
-#worldMapBtn{position:absolute;top:10px;right:10px;background:rgba(35,21,51,.88);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--accent);cursor:pointer;backdrop-filter:blur(8px);z-index:3;transition:background .15s}
+#worldMapBtn{position:absolute;top:10px;right:10px;background:rgba(35,21,51,.88);border:1px solid var(--border);border-radius:20px;padding:6px 18px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--accent);cursor:pointer;backdrop-filter:blur(8px);z-index:3;transition:background .15s}
 #worldMapBtn:hover{background:rgba(199,125,255,.18)}
 
 /* BOTTOM BAR */
-#bottomBar{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2}
-#emoteBar{display:flex;gap:6px;background:rgba(35,21,51,.88);border:1px solid var(--border);border-radius:30px;padding:5px 10px;backdrop-filter:blur(8px)}
-.emote-btn{background:none;border:none;font-size:19px;cursor:pointer;padding:2px 4px;border-radius:8px;transition:transform .1s,background .1s;line-height:1}
+#bottomBar{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2}
+#emoteBar{display:flex;gap:8px;background:rgba(35,21,51,.88);border:1px solid var(--border);border-radius:30px;padding:7px 14px;backdrop-filter:blur(8px)}
+.emote-btn{background:none;border:none;font-size:24px;cursor:pointer;padding:4px 7px;border-radius:8px;transition:transform .1s,background .1s;line-height:1}
 .emote-btn:hover{transform:scale(1.35);background:rgba(199,125,255,.15)}
 #digRow{display:flex;align-items:center;gap:8px}
-#digBtn{background:linear-gradient(135deg,#8b5e3c,#c8874a);border:none;border-radius:20px;padding:7px 20px;font-size:13px;font-weight:900;font-family:'Nunito',sans-serif;color:#fff3e0;cursor:pointer;box-shadow:0 3px 12px rgba(200,135,74,.4);transition:transform .1s;letter-spacing:.3px}
+#digBtn{background:linear-gradient(135deg,#8b5e3c,#c8874a);border:none;border-radius:20px;padding:9px 26px;font-size:15px;font-weight:900;font-family:'Nunito',sans-serif;color:#fff3e0;cursor:pointer;box-shadow:0 3px 12px rgba(200,135,74,.4);transition:transform .1s;letter-spacing:.3px}
 #digBtn:hover:not(:disabled){transform:scale(1.04)}
 #digBtn:disabled{opacity:.5;cursor:not-allowed}
 #digBtn.digging{background:linear-gradient(135deg,#c62828,#e53935)}
-#digProgressWrap{display:none;width:110px;height:7px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
+#digProgressWrap{display:none;width:150px;height:9px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
 #digProgress{height:100%;background:linear-gradient(90deg,#8b5e3c,#ffd740);border-radius:4px;width:100%;transition:width .15s linear}
 #digProgressWrap.active{display:block}
-#controls{position:absolute;bottom:10px;left:10px;background:rgba(35,21,51,.75);border:1px solid var(--border);border-radius:12px;padding:5px 10px;font-size:10px;color:var(--muted);backdrop-filter:blur(6px);pointer-events:none;z-index:2}
+#controls{position:absolute;bottom:10px;left:10px;background:rgba(35,21,51,.75);border:1px solid var(--border);border-radius:12px;padding:6px 12px;font-size:11px;color:var(--muted);backdrop-filter:blur(6px);pointer-events:none;z-index:2}
 
 /* SHOP BUTTON */
-#shopBtn{position:absolute;bottom:52px;left:12px;background:linear-gradient(135deg,#2a6049,#3a8060);border:1px solid #4caf7d;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:900;font-family:'Nunito',sans-serif;color:#d4f5e5;cursor:pointer;backdrop-filter:blur(8px);z-index:3;transition:background .15s,transform .1s;box-shadow:0 3px 12px rgba(76,175,80,.25);letter-spacing:.3px}
+#shopBtn{position:absolute;bottom:52px;left:12px;background:linear-gradient(135deg,#2a6049,#3a8060);border:1px solid #4caf7d;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:900;font-family:'Nunito',sans-serif;color:#d4f5e5;cursor:pointer;backdrop-filter:blur(8px);z-index:3;transition:background .15s,transform .1s;box-shadow:0 3px 12px rgba(76,175,80,.25);letter-spacing:.3px}
 #shopBtn:hover{background:linear-gradient(135deg,#357a50,#4aad70);transform:scale(1.04)}
 
 /* SHOP MODAL */
@@ -185,22 +186,22 @@ canvas{display:block}
 .shop-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(42,96,73,.95);border:1px solid #4caf7d;border-radius:14px;padding:10px 20px;font-size:13px;font-weight:800;color:#d4f5e5;z-index:300;animation:shopToastIn .2s ease;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(76,175,80,.3)}
 
 /* ROOM CONTROLS BAR */
-#roomBar{position:absolute;top:48px;right:10px;display:none;flex-direction:column;gap:6px;z-index:3}
+#roomBar{position:absolute;top:54px;right:10px;display:none;flex-direction:column;gap:6px;z-index:3}
 #roomBar.visible{display:flex}
-.room-bar-btn{background:rgba(35,21,51,.92);border:1px solid var(--border);border-radius:12px;padding:6px 14px;font-size:11px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer;backdrop-filter:blur(8px);transition:background .15s}
+.room-bar-btn{background:rgba(35,21,51,.92);border:1px solid var(--border);border-radius:12px;padding:8px 18px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer;backdrop-filter:blur(8px);transition:background .15s}
 .room-bar-btn:hover{background:rgba(199,125,255,.18);color:var(--accent)}
 .room-bar-btn.danger{color:var(--danger)}
 .room-bar-btn.danger:hover{border-color:var(--danger)}
 
 /* TOASTS */
-#toastContainer{position:absolute;top:54px;left:10px;display:flex;flex-direction:column;gap:6px;pointer-events:none;width:210px;z-index:5}
-.find-toast{background:rgba(22,14,34,.94);border:1px solid var(--border);border-radius:12px;padding:7px 11px;display:flex;align-items:center;gap:9px;animation:toastIn .22s ease;backdrop-filter:blur(8px)}
+#toastContainer{position:absolute;top:60px;left:10px;display:flex;flex-direction:column;gap:6px;pointer-events:none;width:260px;z-index:5}
+.find-toast{background:rgba(22,14,34,.94);border:1px solid var(--border);border-radius:12px;padding:9px 14px;display:flex;align-items:center;gap:11px;animation:toastIn .22s ease;backdrop-filter:blur(8px)}
 .find-toast.remove{animation:toastOut .28s ease forwards}
 @keyframes toastIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
 @keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateX(-14px)}}
-.find-toast .t-emoji{font-size:20px;flex-shrink:0}
-.find-toast .t-label{font-weight:800;font-size:12px}
-.find-toast .t-sub{font-size:10px;color:var(--muted)}
+.find-toast .t-emoji{font-size:26px;flex-shrink:0}
+.find-toast .t-label{font-weight:800;font-size:13px}
+.find-toast .t-sub{font-size:11px;color:var(--muted)}
 .find-toast.coin{border-color:#c9a227}
 .find-toast.legendary{border-color:var(--rl);box-shadow:0 0 10px rgba(255,215,64,.25)}
 .find-toast.rare{border-color:var(--rr)}.find-toast.uncommon{border-color:var(--ru)}.find-toast.nothing{opacity:.55}
@@ -298,7 +299,7 @@ canvas{display:block}
 .hd-table{display:flex;flex-direction:column;gap:6px}
 .hd-row{background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px}
 .hd-row:hover{border-color:var(--border)}
-.hd-cat-mini{width:32px;height:40px;flex-shrink:0}
+.hd-cat-mini{width:46px;height:56px;flex-shrink:0}
 .hd-player-name{font-size:13px;font-weight:800;flex:1}
 .hd-player-sub{font-size:10px;color:var(--muted)}
 .hd-online-dot{width:7px;height:7px;border-radius:50%;background:#4caf50;flex-shrink:0}
@@ -374,13 +375,22 @@ canvas{display:block}
 .chip-ready{background:rgba(102,187,106,.15);border:1px solid var(--success);color:var(--success)}
 
 /* PLACE ITEM CURSOR */
-#placeCursor{position:absolute;pointer-events:none;z-index:10;display:none;font-size:28px;transform:translate(-50%,-50%);filter:drop-shadow(0 0 8px rgba(199,125,255,.8))}
+#placeCursor{position:absolute;pointer-events:none;z-index:10;display:none;font-size:38px;transform:translate(-50%,-50%);filter:drop-shadow(0 0 8px rgba(199,125,255,.8))}
+/* ── AQUA WORLD HUD ───────────────────────────────── */
+#aquaBar{position:absolute;top:6px;left:50%;transform:translateX(-50%);display:none;align-items:center;gap:10px;background:rgba(0,40,80,.75);border:1px solid #29b6f6;border-radius:20px;padding:7px 20px;font-size:14px;font-weight:800;color:#e0f7fa;backdrop-filter:blur(6px);z-index:20}
+#aquaBar .aqua-loc{color:#80deea;font-size:13px}
+#aquaBar .aqua-coins{color:#ffd54f}
+#aquaLeaveBtn{background:linear-gradient(135deg,#0288d1,#4fc3f7);border:none;border-radius:12px;padding:6px 16px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:#fff;cursor:pointer}
+#aquaLeaveBtn:hover{opacity:.88}
+#aquaCollectHint{position:absolute;bottom:54px;left:50%;transform:translateX(-50%);background:rgba(0,60,100,.8);color:#b3e5fc;border:1px solid #29b6f6;border-radius:12px;padding:6px 18px;font-size:13px;font-weight:700;pointer-events:none;display:none;z-index:20}
+#aquaDepthBar{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:11px;height:220px;background:rgba(0,40,80,.5);border:1px solid #0288d1;border-radius:5px;display:none;z-index:20;overflow:hidden}
+#aquaDepthFill{position:absolute;bottom:0;width:100%;background:linear-gradient(to top,#0d47a1,#4fc3f7);transition:height .3s;border-radius:4px}
 </style>
 </head>
 <body>
 <div id="app">
   <div id="gameWrap">
-    <canvas id="canvas" width="780" height="620"></canvas>
+    <canvas id="canvas" width="1060" height="820"></canvas>
     <div id="hud">
       <div class="hud-pill" id="playerCount">🐱 0 online</div>
       <div class="hud-pill" id="coinHud">🪙 0</div>
@@ -394,6 +404,14 @@ canvas{display:block}
     </div>
     <div id="placeCursor"></div>
     <div id="toastContainer"></div>
+    <!-- AQUA WORLD HUD -->
+    <div id="aquaBar">
+      <span class="aqua-loc">🌊 Aqua World</span>
+      <span class="aqua-coins" id="aquaCoinsDisplay">🪙 0</span>
+      <button id="aquaLeaveBtn">← Surface</button>
+    </div>
+    <div id="aquaDepthBar"><div id="aquaDepthFill"></div></div>
+    <div id="aquaCollectHint">Press SPACE to collect</div>
     <div id="bottomBar">
       <div id="emoteBar">
         <button class="emote-btn" data-emote="👋">👋</button>
@@ -409,7 +427,7 @@ canvas{display:block}
         <div id="digProgressWrap"><div id="digProgress"></div></div>
       </div>
     </div>
-    <div id="controls">WASD · Space to dig · Right-click player to interact</div>
+    <div id="controls">WASD · Space to dig · Right-click to tail whip · Right-click player to interact</div>
     <button id="shopBtn">🛒 General Store</button>
 
     <!-- ENTRY OVERLAY -->
@@ -533,7 +551,7 @@ canvas{display:block}
 <div id="profileModal" class="modal-back" style="display:none">
   <div class="modal-box">
     <div class="modal-head">
-      <canvas id="profileMiniCat" width="46" height="58" class="profile-cat-wrap"></canvas>
+      <canvas id="profileMiniCat" width="66" height="80" class="profile-cat-wrap"></canvas>
       <div style="flex:1">
         <div class="profile-name-text" id="profileName">Cat</div>
         <div class="profile-sub" id="profileSub">Player</div>
@@ -624,6 +642,7 @@ canvas{display:block}
   </div>
   <div class="inv-ctx-row sell" id="invCtxSell">💰 Sell to Store</div>
   <div class="inv-ctx-row equip" id="invCtxEquip" style="display:none">✨ Equip</div>
+  <div class="inv-ctx-row equip" id="invCtxUnequip" style="display:none;color:#ef5350">✖ Unequip</div>
 </div>
 
 <script>
@@ -631,7 +650,7 @@ canvas{display:block}
 // ══════════════════════════════════════════════════════════════
 //  CONSTANTS
 // ══════════════════════════════════════════════════════════════
-const W=780,H=620;
+const W=1060,H=820;
 const CAT_COLORS=[
   {body:'#f4a261',ear:'#e07a2f',stripe:'#d4813f'},
   {body:'#a8dadc',ear:'#6cbfc3',stripe:'#89c8ca'},
@@ -654,11 +673,31 @@ let myCoins=0, myInventory=[], isGuest=true, loggedInUser=null;
 let myOutfit={};
 let isDigging=false, digStart=0, digPhase=0, digInterval=null;
 let newItemCount=0, trade=null, ctxTargetId=null, profileViewId=null;
-let scene='lobby';           // 'lobby' | 'room'
+let scene='lobby';           // 'lobby' | 'room' | 'aqua'
 let roomState=null;          // { ownerId, ownerName, isOwner, roomName, wallpaper, flooring, placedItems, players:{} }
 let editMode=false;          // true when owner is in room edit mode
 let placingItemId=null;      // itemId being placed (edit mode)
+// ── Aqua world state (declared here so render() can reference them) ──
+let aqua = null;             // null when not in aqua world
+let aquaFrame = 0;
+let aquaEntities = null;
+let pondSpinning = false;
+let pondSpinTimer = 0;
+let pondSpinAngle = 0;
 let ctxTargetDbId=null;      // DB userId of right-click target (for visiting room)
+
+// ── Tail whip attack state ─────────────────────────────────
+let tailWhip = {
+  active: false,   // currently animating
+  frame:  0,       // 0-1 progress through animation
+  dir:    1,       // +1 right-click right side, -1 left side
+  hits:   {},      // socketId -> true, cleared each whip
+  cooldown: 0,     // frames remaining before can whip again
+};
+const WHIP_DURATION  = 22;   // frames for full swing
+const WHIP_COOLDOWN  = 40;   // frames between whips
+const WHIP_RANGE     = 104;  // pixel radius of hit arc (scaled with R=28)
+
 
 // ══════════════════════════════════════════════════════════════
 //  TOKEN
@@ -676,30 +715,58 @@ const ctx=canvas.getContext('2d');
 // ── World decorations ──────────────────────────────────────
 const DECS=(()=>{
   const d=[];
-  [[60,60],[150,80],[700,65],[720,160],[50,220],[70,440],[710,400],[730,520],[160,540],[350,55],[430,565],[600,540],[80,340],[680,290],[340,560],[450,60]]
+  [[80,80],[200,105],[950,85],[975,215],[65,295],[90,595],[960,540],[990,705],[215,730],[475,70],[585,765],[815,730],[105,460],[920,390],[460,755],[610,75]]
     .forEach(([x,y])=>d.push({t:'tree',x,y}));
-  for(let i=0;i<30;i++) d.push({t:'flower',x:30+Math.random()*(W-60),y:30+Math.random()*(H-60),c:['#ff6b9d','#ffd166','#06d6a0','#ff9de2','#c77dff'][i%5]});
-  [[200,150],[580,200],[150,420],[650,440],[300,510],[480,130]].forEach(([x,y])=>d.push({t:'rock',x,y,s:.8+Math.random()*.5}));
-  d.push({t:'bench',x:200,y:100},{t:'bench',x:560,y:500},{t:'well',x:390,y:300},{t:'pond',x:620,y:155,rx:52,ry:32});
+  for(let i=0;i<40;i++) d.push({t:'flower',x:40+Math.random()*(W-80),y:40+Math.random()*(H-80),c:['#ff6b9d','#ffd166','#06d6a0','#ff9de2','#c77dff'][i%5]});
+  [[270,200],[790,270],[200,570],[885,600],[408,695],[650,175]].forEach(([x,y])=>d.push({t:'rock',x,y,s:.8+Math.random()*.5}));
+  d.push({t:'bench',x:270,y:135},{t:'bench',x:762,y:680},{t:'well',x:530,y:408},{t:'pond',x:843,y:210,rx:70,ry:43});
   d.sort((a,b)=>({pond:0,rock:1,flower:1,bench:2,tree:3,well:3}[a.t]||0)-({pond:0,rock:1,flower:1,bench:2,tree:3,well:3}[b.t]||0));
   return d;
 })();
 
 function drawWorld(){
   ctx.fillStyle='#2d6a4f';ctx.fillRect(0,0,W,H);
-  ctx.globalAlpha=.17;for(let i=0;i<60;i++){ctx.fillStyle=i%2?'#40916c':'#1b4332';ctx.fillRect((i*137)%W,(i*97+30)%H,40+(i%3)*20,30+(i%4)*15);}ctx.globalAlpha=1;
-  ctx.fillStyle='#8b7355';ctx.fillRect(0,H/2-22,W,44);ctx.fillRect(W/2-22,0,44,H);
+  ctx.globalAlpha=.17;for(let i=0;i<80;i++){ctx.fillStyle=i%2?'#40916c':'#1b4332';ctx.fillRect((i*137)%W,(i*97+30)%H,55+(i%3)*28,42+(i%4)*20);}ctx.globalAlpha=1;
+  ctx.fillStyle='#8b7355';ctx.fillRect(0,H/2-30,W,60);ctx.fillRect(W/2-30,0,60,H);
   ctx.globalAlpha=.4;ctx.fillStyle='#7a6444';ctx.fillRect(0,H/2-1,W,2);ctx.fillRect(W/2-1,0,2,H);ctx.globalAlpha=1;
-  ctx.strokeStyle='#1b4332';ctx.lineWidth=6;ctx.strokeRect(3,3,W-6,H-6);
+  ctx.strokeStyle='#1b4332';ctx.lineWidth=8;ctx.strokeRect(4,4,W-8,H-8);
   DECS.forEach(drawDec);
 }
 function drawDec(d){
-  if(d.t==='pond'){ctx.save();ctx.beginPath();ctx.ellipse(d.x,d.y,d.rx,d.ry,0,0,Math.PI*2);const g=ctx.createRadialGradient(d.x-10,d.y-8,4,d.x,d.y,d.rx);g.addColorStop(0,'#64b5f6');g.addColorStop(.6,'#1e88e5');g.addColorStop(1,'#0d47a1');ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='#42a5f5';ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=.33;ctx.beginPath();ctx.ellipse(d.x-14,d.y-10,18,8,-.4,0,Math.PI*2);ctx.fillStyle='white';ctx.fill();ctx.globalAlpha=1;ctx.restore();}
-  else if(d.t==='tree'){ctx.save();ctx.globalAlpha=.18;ctx.beginPath();ctx.ellipse(d.x+4,d.y+6,14,8,0,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();ctx.globalAlpha=1;ctx.fillStyle='#795548';ctx.fillRect(d.x-4,d.y-4,8,18);ctx.fillStyle='#2e7d32';ctx.beginPath();ctx.arc(d.x,d.y-18,17,0,Math.PI*2);ctx.fill();ctx.fillStyle='#388e3c';ctx.beginPath();ctx.arc(d.x-3,d.y-22,13,0,Math.PI*2);ctx.fill();ctx.fillStyle='#43a047';ctx.beginPath();ctx.arc(d.x+2,d.y-24,10,0,Math.PI*2);ctx.fill();ctx.restore();}
-  else if(d.t==='flower'){ctx.save();ctx.strokeStyle='#4caf50';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(d.x,d.y+6);ctx.lineTo(d.x,d.y);ctx.stroke();ctx.fillStyle=d.c;for(let i=0;i<5;i++){const a=(i/5)*Math.PI*2;ctx.beginPath();ctx.arc(d.x+Math.cos(a)*4,d.y+Math.sin(a)*4,3.5,0,Math.PI*2);ctx.fill();}ctx.fillStyle='#fff176';ctx.beginPath();ctx.arc(d.x,d.y,2.5,0,Math.PI*2);ctx.fill();ctx.restore();}
-  else if(d.t==='rock'){ctx.save();ctx.fillStyle='#78909c';ctx.beginPath();ctx.ellipse(d.x,d.y,10*d.s,7*d.s,.2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#90a4ae';ctx.beginPath();ctx.ellipse(d.x-2,d.y-2,6*d.s,4*d.s,.2,0,Math.PI*2);ctx.fill();ctx.restore();}
-  else if(d.t==='bench'){ctx.save();ctx.fillStyle='#5d4037';ctx.fillRect(d.x-14,d.y-2,5,12);ctx.fillRect(d.x+9,d.y-2,5,12);ctx.fillStyle='#8d6e63';ctx.fillRect(d.x-18,d.y-6,36,7);ctx.fillRect(d.x-18,d.y-16,36,5);ctx.restore();}
-  else if(d.t==='well'){ctx.save();ctx.fillStyle='#9e9e9e';ctx.beginPath();ctx.ellipse(d.x,d.y+6,18,10,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#bdbdbd';ctx.fillRect(d.x-18,d.y-14,36,20);ctx.fillStyle='#9e9e9e';ctx.beginPath();ctx.ellipse(d.x,d.y-14,18,10,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#4fc3f7';ctx.beginPath();ctx.ellipse(d.x,d.y-14,14,7,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5d4037';ctx.fillRect(d.x-22,d.y-36,5,26);ctx.fillRect(d.x+17,d.y-36,5,26);ctx.fillStyle='#bf360c';ctx.beginPath();ctx.moveTo(d.x-28,d.y-34);ctx.lineTo(d.x,d.y-52);ctx.lineTo(d.x+28,d.y-34);ctx.closePath();ctx.fill();ctx.restore();}
+  if(d.t==='pond'){
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(d.x,d.y,d.rx,d.ry,0,0,Math.PI*2);
+    const g=ctx.createRadialGradient(d.x-10,d.y-8,4,d.x,d.y,d.rx);
+    g.addColorStop(0,'#64b5f6');g.addColorStop(.6,'#1e88e5');g.addColorStop(1,'#0d47a1');
+    ctx.fillStyle=g;ctx.fill();
+    ctx.strokeStyle='#42a5f5';ctx.lineWidth=2;ctx.stroke();
+    // Shimmer
+    ctx.globalAlpha=.33;ctx.beginPath();ctx.ellipse(d.x-14,d.y-10,18,8,-.4,0,Math.PI*2);
+    ctx.fillStyle='white';ctx.fill();ctx.globalAlpha=1;
+    // Animated ripple pulse
+    const pr=(Date.now()%2000)/2000;
+    ctx.globalAlpha=0.35*(1-pr);ctx.strokeStyle='#90caf9';ctx.lineWidth=2;
+    ctx.beginPath();ctx.ellipse(d.x,d.y,d.rx+pr*22,d.ry+pr*13,0,0,Math.PI*2);ctx.stroke();
+    ctx.globalAlpha=1;
+    // Label
+    ctx.font='bold 12px Nunito,sans-serif';ctx.textAlign='center';ctx.fillStyle='#e3f2fd';
+    ctx.fillText('🌊 Aqua World',d.x,d.y+d.ry+16);
+    // Enter hint when player is near
+    const mp=players[myId];
+    if(mp&&Math.hypot(mp.x-d.x,mp.y-d.y)<100){
+      ctx.font='bold 13px Nunito,sans-serif';ctx.fillStyle='#fff';
+      ctx.globalAlpha=0.6+0.4*Math.sin(Date.now()*0.006);
+      ctx.fillText('Walk into the pond!',d.x,d.y-d.ry-12);
+      ctx.globalAlpha=1;
+    }
+    ctx.restore();
+  }
+  else if(d.t==='tree'){ctx.save();ctx.globalAlpha=.18;ctx.beginPath();ctx.ellipse(d.x+6,d.y+8,20,11,0,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();ctx.globalAlpha=1;ctx.fillStyle='#795548';ctx.fillRect(d.x-6,d.y-5,11,26);ctx.fillStyle='#2e7d32';ctx.beginPath();ctx.arc(d.x,d.y-26,24,0,Math.PI*2);ctx.fill();ctx.fillStyle='#388e3c';ctx.beginPath();ctx.arc(d.x-4,d.y-32,18,0,Math.PI*2);ctx.fill();ctx.fillStyle='#43a047';ctx.beginPath();ctx.arc(d.x+3,d.y-36,14,0,Math.PI*2);ctx.fill();ctx.restore();}
+  else if(d.t==='flower'){ctx.save();ctx.strokeStyle='#4caf50';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(d.x,d.y+8);ctx.lineTo(d.x,d.y);ctx.stroke();ctx.fillStyle=d.c;for(let i=0;i<5;i++){const a=(i/5)*Math.PI*2;ctx.beginPath();ctx.arc(d.x+Math.cos(a)*6,d.y+Math.sin(a)*6,5,0,Math.PI*2);ctx.fill();}ctx.fillStyle='#fff176';ctx.beginPath();ctx.arc(d.x,d.y,3.5,0,Math.PI*2);ctx.fill();ctx.restore();}
+  else if(d.t==='rock'){ctx.save();ctx.fillStyle='#78909c';ctx.beginPath();ctx.ellipse(d.x,d.y,14*d.s,10*d.s,.2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#90a4ae';ctx.beginPath();ctx.ellipse(d.x-3,d.y-3,9*d.s,6*d.s,.2,0,Math.PI*2);ctx.fill();ctx.restore();}
+  else if(d.t==='bench'){ctx.save();ctx.fillStyle='#5d4037';ctx.fillRect(d.x-20,d.y-3,7,17);ctx.fillRect(d.x+13,d.y-3,7,17);ctx.fillStyle='#8d6e63';ctx.fillRect(d.x-26,d.y-9,52,10);ctx.fillRect(d.x-26,d.y-23,52,8);ctx.restore();}
+  else if(d.t==='well'){ctx.save();ctx.fillStyle='#9e9e9e';ctx.beginPath();ctx.ellipse(d.x,d.y+9,26,14,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#bdbdbd';ctx.fillRect(d.x-26,d.y-20,52,29);ctx.fillStyle='#9e9e9e';ctx.beginPath();ctx.ellipse(d.x,d.y-20,26,14,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#4fc3f7';ctx.beginPath();ctx.ellipse(d.x,d.y-20,20,10,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5d4037';ctx.fillRect(d.x-32,d.y-52,7,38);ctx.fillRect(d.x+25,d.y-52,7,38);ctx.fillStyle='#bf360c';ctx.beginPath();ctx.moveTo(d.x-40,d.y-49);ctx.lineTo(d.x,d.y-75);ctx.lineTo(d.x+40,d.y-49);ctx.closePath();ctx.fill();ctx.restore();}
 }
 
 // ── Room drawing ────────────────────────────────────────────
@@ -719,32 +786,32 @@ function drawRoom(){
   ctx.fillStyle=wp.floor; ctx.fillRect(0,0,W,H);
   // Floor pattern
   ctx.globalAlpha=.12;
-  for(let x=0;x<W;x+=60) for(let y=0;y<H;y+=60){
+  for(let x=0;x<W;x+=82) for(let y=0;y<H;y+=82){
     ctx.strokeStyle=wp.trim; ctx.lineWidth=1;
-    ctx.strokeRect(x,y,60,60);
+    ctx.strokeRect(x,y,82,82);
   }
   ctx.globalAlpha=1;
   // Wall at top
-  ctx.fillStyle=wp.wall; ctx.fillRect(0,0,W,160);
+  ctx.fillStyle=wp.wall; ctx.fillRect(0,0,W,218);
   // Trim
-  ctx.fillStyle=wp.trim; ctx.fillRect(0,158,W,4);
+  ctx.fillStyle=wp.trim; ctx.fillRect(0,215,W,5);
   // Window
-  ctx.fillStyle='#87ceeb'; ctx.fillRect(W/2-60,30,120,90);
-  ctx.fillStyle=wp.trim; ctx.lineWidth=4; ctx.strokeStyle=wp.trim;
-  ctx.strokeRect(W/2-60,30,120,90);
-  ctx.beginPath(); ctx.moveTo(W/2,30); ctx.lineTo(W/2,120); ctx.moveTo(W/2-60,75); ctx.lineTo(W/2+60,75); ctx.stroke();
+  ctx.fillStyle='#87ceeb'; ctx.fillRect(W/2-82,40,164,122);
+  ctx.fillStyle=wp.trim; ctx.lineWidth=5; ctx.strokeStyle=wp.trim;
+  ctx.strokeRect(W/2-82,40,164,122);
+  ctx.beginPath(); ctx.moveTo(W/2,40); ctx.lineTo(W/2,162); ctx.moveTo(W/2-82,101); ctx.lineTo(W/2+82,101); ctx.stroke();
   // Room border
   ctx.strokeStyle=wp.trim; ctx.lineWidth=6; ctx.strokeRect(3,3,W-6,H-6);
   // Door at bottom
-  ctx.fillStyle=wp.trim; ctx.fillRect(W/2-30,H-80,60,80);
-  ctx.fillStyle='rgba(0,0,0,.3)'; ctx.fillRect(W/2-30,H-80,60,80);
-  ctx.fillStyle='#c9a227'; ctx.beginPath(); ctx.arc(W/2+18,H-40,4,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=wp.trim; ctx.fillRect(W/2-41,H-109,82,109);
+  ctx.fillStyle='rgba(0,0,0,.3)'; ctx.fillRect(W/2-41,H-109,82,109);
+  ctx.fillStyle='#c9a227'; ctx.beginPath(); ctx.arc(W/2+25,H-55,5,0,Math.PI*2); ctx.fill();
 
   // Edit mode grid overlay
   if (editMode) {
     ctx.globalAlpha=.08;
-    for(let x=0;x<W;x+=40) {ctx.strokeStyle='#c77dff';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-    for(let y=0;y<H;y+=40) {ctx.strokeStyle='#c77dff';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    for(let x=0;x<W;x+=54) {ctx.strokeStyle='#c77dff';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=54) {ctx.strokeStyle='#c77dff';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
     ctx.globalAlpha=1;
     // Edit mode label
     ctx.fillStyle='rgba(199,125,255,.15)'; ctx.fillRect(0,0,W,28);
@@ -773,26 +840,199 @@ function drawRoom(){
 
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();}
 
-function drawCat(c,x,y,color,name,isMe,emote,digging,phase){
+// ── Outfit / pattern rendering helpers ───────────────────────
+// SHOP_ITEMS_MAP built lazily after shopItems is populated
+function getShopMeta(id){ return (typeof shopItems!=='undefined'?shopItems:[]).find(s=>s.id===id)||null; }
+
+function drawPattern(c,cx,cy,R,patternKey,bodyColor){
+  if(!patternKey)return;
+  c.save();
+  c.beginPath();c.arc(cx,cy,R,0,Math.PI*2);c.clip();
+  c.globalAlpha=0.55;
+  if(patternKey==='spots'){
+    c.fillStyle='#1a0030';
+    const sp=[[0,-8,7],[11,5,6],[-11,5,6],[4,14,5],[-4,-17,4],[14,-6,4],[-14,-6,4]];
+    sp.forEach(([dx,dy,r])=>{c.beginPath();c.arc(cx+dx,cy+dy,r,0,Math.PI*2);c.fill();});
+  } else if(patternKey==='stripes'){
+    c.fillStyle='rgba(0,0,0,0.35)';
+    for(let i=-3;i<=3;i++){
+      c.beginPath();c.fillRect(cx+i*10-3,cy-R,6,R*2);c.fill();
+    }
+  } else if(patternKey==='stars'){
+    c.fillStyle='rgba(255,220,100,0.8)';
+    const starPts=[[0,-11],[13,8],[-13,8],[8,-17],[-8,-17],[0,14],[14,-3],[-14,-3]];
+    starPts.forEach(([dx,dy])=>{
+      c.font='12px serif';c.textAlign='center';c.textBaseline='middle';
+      c.fillText('★',cx+dx,cy+dy);
+    });
+  } else if(patternKey==='camo'){
+    const camoCols=['#4a5e2a','#2d3a18','#6b7c3a','#3e4f20'];
+    [[0,-11,11],[11,6,10],[-11,6,10],[0,11,8],[11,-6,7],[-11,-6,7],[0,-1,14]].forEach(([dx,dy,r],i)=>{
+      c.fillStyle=camoCols[i%camoCols.length];
+      c.beginPath();c.ellipse(cx+dx,cy+dy,r,r*0.7,(i*0.8),0,Math.PI*2);c.fill();
+    });
+  } else if(patternKey==='galaxy'){
+    const grad=c.createRadialGradient(cx,cy,2,cx,cy,R);
+    grad.addColorStop(0,'rgba(180,120,255,0.7)');
+    grad.addColorStop(0.5,'rgba(80,0,180,0.5)');
+    grad.addColorStop(1,'rgba(0,0,80,0.3)');
+    c.fillStyle=grad;c.beginPath();c.arc(cx,cy,R,0,Math.PI*2);c.fill();
+    c.fillStyle='rgba(255,255,255,0.85)';
+    [[4,-14],[-11,3],[14,8],[-6,17],[-17,-6],[11,-20],[-3,0],[20,-11]].forEach(([dx,dy])=>{
+      c.beginPath();c.arc(cx+dx,cy+dy,1.6,0,Math.PI*2);c.fill();
+    });
+  } else if(patternKey==='glitter'){
+    const gcols=['#ff69b4','#ffd700','#00cfff','#ff4dff','#7fff00'];
+    for(let i=0;i<24;i++){
+      const gx=cx+(Math.sin(i*2.3)*R*0.85);
+      const gy=cy+(Math.cos(i*1.7)*R*0.85);
+      c.fillStyle=gcols[i%gcols.length];
+      c.beginPath();c.arc(gx,gy,2.4,0,Math.PI*2);c.fill();
+    }
+  }
+  c.restore();
+}
+
+function drawShirt(c,cx,cy,R,shirtId){
+  if(!shirtId)return;
+  const meta=getShopMeta(shirtId); if(!meta)return;
+  c.save();
+  c.beginPath();c.arc(cx,cy,R,0,Math.PI*2);c.clip();
+  const rarityCol={common:'rgba(255,255,255,0.18)',uncommon:'rgba(105,240,174,0.22)',rare:'rgba(64,196,255,0.22)',legendary:'rgba(255,215,64,0.28)'}[meta.rarity]||'rgba(255,255,255,0.18)';
+  c.fillStyle=rarityCol;
+  c.fillRect(cx-R,cy+3,R*2,R*1.1);
+  c.restore();
+  c.save();
+  c.font='14px serif';c.textAlign='center';c.textBaseline='middle';
+  c.fillText(meta.emoji,cx,cy+10);
+  c.restore();
+}
+
+function drawHat(c,cx,cy,R,hatId){
+  if(!hatId)return;
+  const meta=getShopMeta(hatId); if(!meta)return;
+  c.save();
+  c.font='bold 26px serif';
+  c.textAlign='center';c.textBaseline='bottom';
+  c.shadowColor='rgba(0,0,0,0.55)';c.shadowBlur=5;c.shadowOffsetY=2;
+  c.fillText(meta.emoji,cx,cy-R-8);
+  c.restore();
+}
+
+function drawCat(c,x,y,color,name,isMe,emote,digging,phase,whipT,whipDir,outfit){
+  // outfit = { hat: itemId|null, shirt: itemId|null, pattern: patternKey|null }
+  const ot = outfit || {};
   const cc=color||CAT_COLORS[0];c.save();
-  let wx=0,wy=0;if(digging){wx=Math.sin(phase*.4)*3;wy=Math.abs(Math.sin(phase*.3))*-2;}
-  const cx=x+wx,cy=y+wy,R=14;
-  c.globalAlpha=isMe?.34:.18;c.beginPath();c.ellipse(cx+2,cy+R+4,R,5,0,0,Math.PI*2);c.fillStyle='#000';c.fill();c.globalAlpha=1;
-  if(isMe){c.beginPath();c.arc(cx,cy,R+5,0,Math.PI*2);c.strokeStyle='#c77dff';c.lineWidth=2;c.setLineDash([4,3]);c.stroke();c.setLineDash([]);}
-  if(digging){c.globalAlpha=.45;for(let i=0;i<4;i++){const a=(phase*.15+i*1.57),dr=18+Math.sin(phase*.2+i)*4;c.beginPath();c.arc(cx+Math.cos(a)*dr,cy+R+Math.abs(Math.sin(a))*8,2.5,0,Math.PI*2);c.fillStyle='#8b7355';c.fill();}c.globalAlpha=1;}
+  let wx=0,wy=0;if(digging){wx=Math.sin(phase*.4)*5;wy=Math.abs(Math.sin(phase*.3))*-4;}
+  const cx=x+wx,cy=y+wy,R=28;
+
+  // Shadow
+  c.globalAlpha=isMe?.38:.20;c.beginPath();c.ellipse(cx+4,cy+R+6,R,9,0,0,Math.PI*2);c.fillStyle='#000';c.fill();c.globalAlpha=1;
+
+  // Dig particles
+  if(digging){c.globalAlpha=.45;for(let i=0;i<4;i++){const a=(phase*.15+i*1.57),dr=34+Math.sin(phase*.2+i)*7;c.beginPath();c.arc(cx+Math.cos(a)*dr,cy+R+Math.abs(Math.sin(a))*13,4.5,0,Math.PI*2);c.fillStyle='#8b7355';c.fill();}c.globalAlpha=1;}
+
+  // Body
   c.beginPath();c.arc(cx,cy,R,0,Math.PI*2);c.fillStyle=cc.body;c.fill();
-  c.globalAlpha=.28;c.fillStyle=cc.stripe;c.beginPath();c.ellipse(cx,cy-2,6,9,0,0,Math.PI*2);c.fill();c.globalAlpha=1;
-  function ear(ex,ey,f){c.beginPath();c.moveTo(ex,ey);c.lineTo(ex+f*10,ey-14);c.lineTo(ex+f*16,ey-2);c.closePath();c.fillStyle=cc.ear;c.fill();c.beginPath();c.moveTo(ex+f*2,ey-2);c.lineTo(ex+f*10,ey-11);c.lineTo(ex+f*13,ey-3);c.closePath();c.fillStyle='#ffcdd2';c.globalAlpha=.7;c.fill();c.globalAlpha=1;}
-  ear(cx-8,cy-10,-1);ear(cx+8,cy-10,1);
-  if(digging){c.strokeStyle='#1a0030';c.lineWidth=2;c.lineCap='round';c.beginPath();c.moveTo(cx-7,cy-3);c.lineTo(cx-3,cy-3);c.stroke();c.beginPath();c.moveTo(cx+3,cy-3);c.lineTo(cx+7,cy-3);c.stroke();}
-  else{c.fillStyle='#1a0030';c.beginPath();c.ellipse(cx-5,cy-3,3,4,0,0,Math.PI*2);c.fill();c.beginPath();c.ellipse(cx+5,cy-3,3,4,0,0,Math.PI*2);c.fill();c.fillStyle='white';c.beginPath();c.arc(cx-4,cy-5,1.2,0,Math.PI*2);c.fill();c.beginPath();c.arc(cx+6,cy-5,1.2,0,Math.PI*2);c.fill();}
-  c.fillStyle='#f48fb1';c.beginPath();c.moveTo(cx,cy+1);c.lineTo(cx-2.5,cy+4);c.lineTo(cx+2.5,cy+4);c.closePath();c.fill();
-  c.strokeStyle='#1a0030';c.lineWidth=1.2;c.beginPath();c.moveTo(cx,cy+4);c.quadraticCurveTo(cx-4,cy+8,cx-6,cy+6);c.moveTo(cx,cy+4);c.quadraticCurveTo(cx+4,cy+8,cx+6,cy+6);c.stroke();
-  c.strokeStyle='rgba(255,255,255,.68)';c.lineWidth=1;for(const s of[-1,1]){c.beginPath();c.moveTo(cx+s*3,cy+3);c.lineTo(cx+s*16,cy+1);c.stroke();c.beginPath();c.moveTo(cx+s*3,cy+5);c.lineTo(cx+s*16,cy+5);c.stroke();}
-  c.strokeStyle=cc.ear;c.lineWidth=3.5;c.lineCap='round';c.beginPath();c.moveTo(cx-R+2,cy+8);c.quadraticCurveTo(cx-R-12,cy+22,cx-R-4,cy+32);c.stroke();
-  if(digging){c.save();c.translate(cx+16,cy+10);c.rotate(Math.sin(phase*.3)*.4-.3);c.fillStyle='#8d6e63';c.fillRect(-2,-16,4,14);c.fillStyle='#78909c';c.fillRect(-5,-20,10,8);c.restore();}
-  if(name){const nt=isMe?`${name} ★`:name;c.font='bold 11px Nunito,sans-serif';const tw=c.measureText(nt).width,tW=tw+10,tH=16,tX=cx-tW/2,tY=cy-R-24;c.fillStyle=isMe?'rgba(199,125,255,.92)':'rgba(22,14,34,.85)';rr(c,tX,tY,tW,tH,5);c.fill();c.fillStyle=isMe?'#1a0030':'#f0e6ff';c.textAlign='center';c.textBaseline='middle';c.fillText(nt,cx,tY+tH/2);}
-  if(emote){const bx=cx+16,by=cy-R-10;c.fillStyle='rgba(255,255,255,.93)';rr(c,bx-2,by-14,28,24,8);c.fill();c.font='16px serif';c.textAlign='center';c.textBaseline='middle';c.fillText(emote,bx+12,by-2);}
+
+  // Pattern overlay on body
+  drawPattern(c,cx,cy,R,ot.pattern||null,cc.body);
+
+  // Stripe
+  c.globalAlpha=.28;c.fillStyle=cc.stripe;c.beginPath();c.ellipse(cx,cy-4,12,18,0,0,Math.PI*2);c.fill();c.globalAlpha=1;
+
+  // Ears
+  function ear(ex,ey,f){
+    c.beginPath();c.moveTo(ex,ey);c.lineTo(ex+f*19,ey-28);c.lineTo(ex+f*30,ey-4);c.closePath();c.fillStyle=cc.ear;c.fill();
+    c.beginPath();c.moveTo(ex+f*4,ey-4);c.lineTo(ex+f*19,ey-22);c.lineTo(ex+f*25,ey-5);c.closePath();c.fillStyle='#ffcdd2';c.globalAlpha=.7;c.fill();c.globalAlpha=1;
+  }
+  ear(cx-15,cy-20,-1);ear(cx+15,cy-20,1);
+
+  // Shirt overlay
+  drawShirt(c,cx,cy,R,ot.shirt||null);
+
+  // Eyes
+  if(digging){
+    c.strokeStyle='#1a0030';c.lineWidth=3;c.lineCap='round';
+    c.beginPath();c.moveTo(cx-14,cy-5);c.lineTo(cx-6,cy-5);c.stroke();
+    c.beginPath();c.moveTo(cx+6,cy-5);c.lineTo(cx+14,cy-5);c.stroke();
+  } else {
+    c.fillStyle='#1a0030';
+    c.beginPath();c.ellipse(cx-9,cy-5,5,8,0,0,Math.PI*2);c.fill();
+    c.beginPath();c.ellipse(cx+9,cy-5,5,8,0,0,Math.PI*2);c.fill();
+    c.fillStyle='white';
+    c.beginPath();c.arc(cx-7,cy-9,2.2,0,Math.PI*2);c.fill();
+    c.beginPath();c.arc(cx+11,cy-9,2.2,0,Math.PI*2);c.fill();
+  }
+
+  // Nose
+  c.fillStyle='#f48fb1';c.beginPath();c.moveTo(cx,cy+2);c.lineTo(cx-5,cy+8);c.lineTo(cx+5,cy+8);c.closePath();c.fill();
+
+  // Mouth
+  c.strokeStyle='#1a0030';c.lineWidth=2;
+  c.beginPath();c.moveTo(cx,cy+8);c.quadraticCurveTo(cx-8,cy+15,cx-12,cy+11);c.stroke();
+  c.beginPath();c.moveTo(cx,cy+8);c.quadraticCurveTo(cx+8,cy+15,cx+12,cy+11);c.stroke();
+
+  // Whiskers
+  c.strokeStyle='rgba(255,255,255,.68)';c.lineWidth=1.4;
+  for(const s of[-1,1]){
+    c.beginPath();c.moveTo(cx+s*5,cy+5);c.lineTo(cx+s*30,cy+2);c.stroke();
+    c.beginPath();c.moveTo(cx+s*5,cy+9);c.lineTo(cx+s*30,cy+9);c.stroke();
+  }
+
+  // Hat
+  drawHat(c,cx,cy,R,ot.hat||null);
+
+  // ── TAIL ──────────────────────────────────────────────────────
+  const wt=(whipT||0);
+  if(wt>0){
+    const wd=whipDir||1;
+    const swing=wt<0.5?wt/0.5:1-(wt-0.5)/0.5;
+    const ease=Math.sin(swing*Math.PI*0.5);
+    const tailBaseX=cx-R+4,tailBaseY=cy+15;
+    const restCtrlX=tailBaseX-24,restCtrlY=cy+43;
+    const restEndX=tailBaseX+15,restEndY=cy+64;
+    const peakCtrlX=cx+wd*70*ease,peakCtrlY=cy-40*ease;
+    const peakEndX=cx+wd*104*ease,peakEndY=cy+15-56*ease;
+    const ctrlX=restCtrlX+(peakCtrlX-restCtrlX)*ease;
+    const ctrlY=restCtrlY+(peakCtrlY-restCtrlY)*ease;
+    const endX=restEndX+(peakEndX-restEndX)*ease;
+    const endY=restEndY+(peakEndY-restEndY)*ease;
+    c.save();
+    if(ease>0.3){c.shadowColor='#c77dff';c.shadowBlur=14*ease;}
+    c.strokeStyle=cc.ear;c.lineWidth=7+ease*4;c.lineCap='round';
+    c.beginPath();c.moveTo(tailBaseX,tailBaseY);c.quadraticCurveTo(ctrlX,ctrlY,endX,endY);c.stroke();
+    if(ease>0.7){c.fillStyle='#fff';c.globalAlpha=(ease-0.7)/0.3;c.beginPath();c.arc(endX,endY,6,0,Math.PI*2);c.fill();c.globalAlpha=1;}
+    if(wt<0.55&&ease>0.4){
+      c.strokeStyle='rgba(199,125,255,'+(ease*0.6)+')';c.lineWidth=2;
+      for(let m=1;m<=3;m++){c.beginPath();c.moveTo(endX-wd*m*11,endY+m*5);c.lineTo(endX-wd*m*22,endY+m*7);c.stroke();}
+    }
+    c.restore();
+  } else {
+    c.strokeStyle=cc.ear;c.lineWidth=7;c.lineCap='round';
+    c.beginPath();c.moveTo(cx-R+4,cy+15);c.quadraticCurveTo(cx-R-24,cy+43,cx-R-8,cy+64);c.stroke();
+  }
+
+  // Digging tool
+  if(digging){c.save();c.translate(cx+30,cy+20);c.rotate(Math.sin(phase*.3)*.4-.3);c.fillStyle='#8d6e63';c.fillRect(-4,-30,7,28);c.fillStyle='#78909c';c.fillRect(-9,-38,19,14);c.restore();}
+
+  // Nametag (pushed up to clear hat if worn)
+  if(name){
+    const nt=isMe?`${name} ★`:name;
+    c.font='bold 14px Nunito,sans-serif';
+    const tw=c.measureText(nt).width,tW=tw+14,tH=21,tX=cx-tW/2,tY=cy-R-38-(ot.hat?24:0);
+    c.fillStyle=isMe?'rgba(199,125,255,.92)':'rgba(22,14,34,.85)';
+    rr(c,tX,tY,tW,tH,6);c.fill();
+    c.fillStyle=isMe?'#1a0030':'#f0e6ff';c.textAlign='center';c.textBaseline='middle';c.fillText(nt,cx,tY+tH/2);
+  }
+
+  // Emote bubble
+  if(emote){
+    const bx=cx+28,by=cy-R-18-(ot.hat?24:0);
+    c.fillStyle='rgba(255,255,255,.93)';rr(c,bx-4,by-20,40,32,10);c.fill();
+    c.font='22px serif';c.textAlign='center';c.textBaseline='middle';c.fillText(emote,bx+16,by-4);
+  }
+
   c.restore();
 }
 
@@ -802,24 +1042,683 @@ function drawCat(c,x,y,color,name,isMe,emote,digging,phase){
 function render(){
   ctx.clearRect(0,0,W,H);
   if(isDigging) digPhase++;
+
+  // Advance tail whip animation and cooldown
+  if(tailWhip.cooldown > 0) tailWhip.cooldown--;
+  if(tailWhip.active){
+    tailWhip.frame++;
+    if(tailWhip.frame >= WHIP_DURATION){
+      tailWhip.active = false;
+      tailWhip.frame  = 0;
+      tailWhip.hits   = {};
+    }
+  }
+  const myWhipT   = tailWhip.active ? tailWhip.frame / WHIP_DURATION : 0;
+  const myWhipDir = tailWhip.dir;
+
   if (scene==='lobby') {
     drawWorld();
     Object.values(players).filter(p=>!p.inRoomId).sort((a,b)=>a.y-b.y).forEach(p=>{
-      drawCat(ctx,p.x,p.y,p.color,p.name,p.id===myId,p.emote,p.digging,p.id===myId?digPhase:(p.digPhase||0));
+      const isMe = p.id===myId;
+      const wt   = isMe ? myWhipT   : (p.whipT   || 0);
+      const wd   = isMe ? myWhipDir : (p.whipDir || 1);
+      const ot   = isMe ? myOutfit  : (p.outfit   || {});
+      drawCat(ctx,p.x,p.y,p.color,p.name,isMe,p.emote,p.digging,isMe?digPhase:(p.digPhase||0),wt,wd,ot);
+      // Draw hit flash
+      if (whipHitFlash[p.id] > 0) {
+        whipHitFlash[p.id]--;
+        const ft = whipHitFlash[p.id] / WHIP_HIT_FLASH_DURATION;
+        ctx.save();
+        ctx.globalAlpha = ft * 0.7;
+        ctx.fillStyle = '#ff5252';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 26, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = ft;
+        ctx.font = `${18 + (1 - ft) * 14}px serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('💥', p.x + 26, p.y - 22 - (1 - ft) * 16);
+        ctx.restore();
+      }
+      // Check whip hits against other players (only during swing-out, frame < half)
+      if(isMe && tailWhip.active && tailWhip.frame < WHIP_DURATION*0.6){
+        checkWhipHits(p);
+      }
     });
+    if(pondSpinning) drawPondSpinOverlay();
   } else if (scene==='room' && roomState) {
     drawRoom();
     const rPlayers = Object.values(roomState.players||{});
     rPlayers.sort((a,b)=>a.y-b.y).forEach(p=>{
-      drawCat(ctx,p.x,p.y,p.color,p.name,p.id===myId,p.emote,p.id===myId?isDigging:p.digging,p.id===myId?digPhase:(p.digPhase||0));
+      const isMe = p.id===myId;
+      const wt   = isMe ? myWhipT   : (p.whipT   || 0);
+      const wd   = isMe ? myWhipDir : (p.whipDir || 1);
+      const ot   = isMe ? myOutfit  : (p.outfit   || {});
+      drawCat(ctx,p.x,p.y,p.color,p.name,isMe,p.emote,isMe?isDigging:p.digging,isMe?digPhase:(p.digPhase||0),wt,wd,ot);
     });
+  } else if (scene==='aqua') {
+    drawAquaWorld();
   }
   requestAnimationFrame(render);
 }
 render();
 
+// ── Auto-scale app to fit viewport ───────────────────────────
+(function scaleApp(){
+  const APP_W=1440, APP_H=820;
+  function fit(){
+    const scaleX=window.innerWidth/APP_W;
+    const scaleY=window.innerHeight/APP_H;
+    const s=Math.min(scaleX,scaleY,1); // never scale up, only down
+    document.getElementById('app').style.transform=`scale(${s})`;
+  }
+  fit();
+  window.addEventListener('resize',fit);
+})();
+
 // ══════════════════════════════════════════════════════════════
-//  API
+//  🐾 TAIL WHIP ATTACK
+// ══════════════════════════════════════════════════════════════
+function startTailWhip(clickX, clickY) {
+  if (!joined || !socket) return;
+  if (tailWhip.active || tailWhip.cooldown > 0) return;
+  if (isDigging) return; // can't whip while digging
+  const me = players[myId]; if (!me) return;
+  // Direction determined by which side of the cat was clicked
+  tailWhip.dir     = clickX >= me.x ? 1 : -1;
+  tailWhip.active  = true;
+  tailWhip.frame   = 0;
+  tailWhip.hits    = {};
+  tailWhip.cooldown = WHIP_COOLDOWN;
+  // Broadcast to other players
+  socket.emit('tailWhip', { dir: tailWhip.dir });
+}
+
+function checkWhipHits(me) {
+  // The tail tip sweeps an arc: offset from cat center toward whipDir side
+  const wt   = tailWhip.frame / WHIP_DURATION;
+  const swing = wt < 0.5 ? wt / 0.5 : 1 - (wt - 0.5) / 0.5;
+  const ease  = Math.sin(swing * Math.PI * 0.5);
+  const wd    = tailWhip.dir;
+  // Approximate tip position (matches drawCat math)
+  const tipX = me.x + wd * 52 * ease;
+  const tipY = me.y + 8 - 28 * ease;
+
+  const pool = scene === 'room'
+    ? Object.values(roomState?.players || {})
+    : Object.values(players).filter(p => !p.inRoomId);
+
+  pool.forEach(p => {
+    if (p.id === myId) return;
+    if (tailWhip.hits[p.id]) return; // already hit this whip
+    const dist = Math.hypot(tipX - p.x, tipY - p.y);
+    if (dist < WHIP_RANGE) {
+      tailWhip.hits[p.id] = true;
+      socket.emit('tailWhipHit', { targetId: p.id });
+    }
+  });
+}
+
+// ── Whip hit flash: store per-player hit flash frames ─────────
+const whipHitFlash = {}; // socketId -> remaining flash frames
+const WHIP_HIT_FLASH_DURATION = 18;
+
+
+const AQUA_W = 3200, AQUA_H = 1400; // full world size
+const AQUA_GRAVITY = 0.018;          // drift downward speed
+const AQUA_SWIM_UP = -2.8;           // W key vertical force
+const AQUA_MOVE_SPD = 2.4;           // horizontal speed
+const POND_X = 843, POND_Y = 210;    // pond center in lobby (matches DECS)
+const POND_SPIN_DURATION = 120;       // frames before teleport
+// ── World entities generated once on first entry ──
+
+function generateAquaWorld() {
+  const plants = [], passives = [], dangers = [], collectibles = [];
+  const rng = (mn, mx) => mn + Math.random() * (mx - mn);
+
+  // SEA PLANTS - scattered across world
+  const plantTypes = [
+    { emoji:'🌿', h:40, sway:0.3 },
+    { emoji:'🪸', h:55, sway:0.2 },
+    { emoji:'🌾', h:35, sway:0.5 },
+    { emoji:'🫧', h:20, sway:0.8 },
+  ];
+  for (let i = 0; i < 80; i++) {
+    const pt = plantTypes[Math.floor(Math.random() * plantTypes.length)];
+    plants.push({ x: rng(40, AQUA_W - 40), y: rng(200, AQUA_H - 60),
+      emoji: pt.emoji, h: pt.h, sway: pt.sway, phase: rng(0, Math.PI * 2) });
+  }
+  // Extra plants on sea floor
+  for (let i = 0; i < 60; i++) {
+    plants.push({ x: rng(0, AQUA_W), y: rng(AQUA_H - 90, AQUA_H - 20),
+      emoji: ['🌿','🪸','🪨','🌾'][Math.floor(Math.random()*4)], h: rng(20,60), sway: rng(.1,.6), phase: rng(0, Math.PI*2) });
+  }
+
+  // PASSIVE sea creatures (animate, harmless)
+  const passiveTypes = [
+    { emoji:'🐠', name:'Clownfish',    spd:0.6, bob:0.4, w:28, h:22 },
+    { emoji:'🐡', name:'Pufferfish',   spd:0.4, bob:0.6, w:32, h:28 },
+    { emoji:'🦀', name:'Crab',         spd:0.3, bob:0.1, w:30, h:22 },
+    { emoji:'🦞', name:'Lobster',      spd:0.3, bob:0.1, w:36, h:24 },
+    { emoji:'🐙', name:'Octopus',      spd:0.5, bob:0.8, w:34, h:30 },
+    { emoji:'🦑', name:'Squid',        spd:0.7, bob:0.5, w:26, h:34 },
+    { emoji:'🐚', name:'Shell',        spd:0.1, bob:0.1, w:26, h:22 },
+    { emoji:'⭐', name:'Starfish',     spd:0.15,bob:0.05,w:28, h:28 },
+    { emoji:'🦐', name:'Shrimp',      spd:0.8, bob:0.3, w:24, h:18 },
+    { emoji:'🫧', name:'Bubble Buddy', spd:0.2, bob:1.2, w:20, h:20 },
+  ];
+  for (let i = 0; i < 55; i++) {
+    const pt = passiveTypes[Math.floor(Math.random() * passiveTypes.length)];
+    passives.push({
+      ...pt, id: `p_${i}`,
+      x: rng(80, AQUA_W - 80), y: rng(80, AQUA_H - 80),
+      startX: 0, startY: 0,
+      dir: Math.random() > 0.5 ? 1 : -1,
+      phase: rng(0, Math.PI * 2),
+      timer: rng(0, 200),
+    });
+    passives[passives.length - 1].startX = passives[passives.length - 1].x;
+    passives[passives.length - 1].startY = passives[passives.length - 1].y;
+  }
+
+  // DANGEROUS creatures (avoid!)
+  const dangerTypes = [
+    { emoji:'🦈', name:'Shark',       spd:2.2, w:52, h:34, patrol:300 },
+    { emoji:'🪼', name:'Jellyfish',   spd:0.8, w:38, h:44, patrol:100 },
+    { emoji:'🐍', name:'Sea Snake',   spd:1.8, w:60, h:18, patrol:200 },
+    { emoji:'🦂', name:'Sea Scorpion',spd:1.0, w:42, h:32, patrol:120 },
+    { emoji:'🎣', name:'Anglerfish',  spd:1.4, w:48, h:40, patrol:160 },
+  ];
+  for (let i = 0; i < 20; i++) {
+    const dt = dangerTypes[Math.floor(Math.random() * dangerTypes.length)];
+    const ex = rng(200, AQUA_W - 200);
+    const ey = rng(100, AQUA_H - 100);
+    dangers.push({ ...dt, id: `d_${i}`,
+      x: ex, y: ey, startX: ex, startY: ey,
+      dir: Math.random() > 0.5 ? 1 : -1,
+      phase: rng(0, Math.PI * 2),
+      timer: rng(0, 300),
+    });
+  }
+
+  // COLLECTIBLES (press space to pick up)
+  const collectibleTypes = [
+    { id:'cfish',    emoji:'🐟', label:'Small Fish',      rarity:'common',    value:3,  sellPrice:5  },
+    { id:'starfish', emoji:'⭐', label:'Starfish',        rarity:'uncommon',  value:8,  sellPrice:12 },
+    { id:'shell',    emoji:'🐚', label:'Sea Shell',       rarity:'common',    value:4,  sellPrice:6  },
+    { id:'pearl',    emoji:'🔮', label:'Ocean Pearl',     rarity:'rare',      value:25, sellPrice:40 },
+    { id:'seagem',   emoji:'💎', label:'Sea Crystal',     rarity:'rare',      value:20, sellPrice:35 },
+    { id:'goldfish', emoji:'🐠', label:'Golden Fish',     rarity:'legendary', value:50, sellPrice:180},
+    { id:'trident',  emoji:'🔱', label:'Mini Trident',    rarity:'legendary', value:60, sellPrice:200},
+    { id:'seaworm',  emoji:'🪱', label:'Sea Worm',        rarity:'common',    value:2,  sellPrice:3  },
+    { id:'coin_sea', emoji:'🪙', label:'Sunken Coin',     rarity:'common',    value:0,  sellPrice:0, coins:5 },
+    { id:'seaacorn', emoji:'🫧', label:'Bubble Gem',      rarity:'uncommon',  value:10, sellPrice:15 },
+    { id:'seahorse', emoji:'🦄', label:'Sea Unicorn',     rarity:'legendary', value:80, sellPrice:250},
+    { id:'crab',     emoji:'🦀', label:'Blue Crab',       rarity:'uncommon',  value:12, sellPrice:18 },
+  ];
+  for (let i = 0; i < 70; i++) {
+    const ct = collectibleTypes[Math.floor(Math.random() * collectibleTypes.length)];
+    collectibles.push({ ...ct, uid: `c_${i}`,
+      x: rng(60, AQUA_W - 60), y: rng(60, AQUA_H - 60),
+      bobPhase: rng(0, Math.PI * 2),
+      collected: false,
+    });
+  }
+
+  return { plants, passives, dangers, collectibles, frame: 0 };
+}
+
+// ── Enter / exit aqua world ───────────────────────────────────
+function tryEnterPond() {
+  if (!joined || pondSpinning || scene !== 'lobby') return;
+  const p = players[myId];
+  if (!p) return;
+  const dist = Math.hypot(p.x - POND_X, p.y - POND_Y);
+  if (dist < 55) startPondSpin();
+}
+
+function startPondSpin() {
+  pondSpinning = true;
+  pondSpinTimer = 0;
+  pondSpinAngle = 0;
+  // Freeze player movement
+  keys = {};
+  if (socket) socket.emit('keys', keys);
+}
+
+function drawPondSpinOverlay() {
+  const p = players[myId]; if (!p) return;
+  const t = pondSpinTimer / POND_SPIN_DURATION;
+  for (let r = 0; r < 4; r++) {
+    const radius = 28 + r * 20 + (t * 42);
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, 0.6 - t - r * 0.15);
+    ctx.strokeStyle = '#4fc3f7';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.ellipse(POND_X, POND_Y, radius, radius * 0.6, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+  pondSpinAngle += 0.18;
+  const radius = 40 * (1 - t * 0.7);
+  const sx = POND_X + Math.cos(pondSpinAngle) * radius;
+  const sy = POND_Y + Math.sin(pondSpinAngle) * radius * 0.5;
+  ctx.save();
+  ctx.globalAlpha = 1 - t * 0.5;
+  ctx.translate(sx, sy);
+  ctx.rotate(pondSpinAngle);
+  drawCat(ctx, 0, 0, p.color, '', true, null, false, 0, 0, 1, myOutfit);
+  ctx.restore();
+  if (t > 0.85) {
+    ctx.save();
+    ctx.globalAlpha = (t - 0.85) / 0.15;
+    ctx.fillStyle = '#e0f7fa';
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+  }
+}
+
+function enterAquaWorld() {
+  pondSpinning = false;
+  if (!aquaEntities) aquaEntities = generateAquaWorld();
+  // Spawn player at surface left side
+  aqua = { x: 120, y: 80, vx: 0, vy: 0, frame: 0, invincible: 0 };
+  scene = 'aqua';
+  document.getElementById('digRow').style.display = 'none';
+  document.getElementById('digBtn').disabled = true;
+  document.getElementById('roomBar').classList.remove('visible');
+  document.getElementById('locationHud').style.display = 'none';
+  document.getElementById('aquaBar').style.display = 'flex';
+  document.getElementById('aquaDepthBar').style.display = 'block';
+  document.getElementById('controls').textContent = 'W — swim up · A/D — move · Space — collect nearby items';
+  updateChatHeader('Lobby Chat');
+  keys = {};
+}
+
+function leaveAquaWorld(reason) {
+  if (scene !== 'aqua') return;
+  // Hard-reset canvas state first — prevents black screen from corrupted transform
+  ctx.restore(); // pop any dangling save
+  ctx.setTransform(1, 0, 0, 1, 0, 0); // reset to identity
+  ctx.globalAlpha = 1;
+  scene = 'lobby';
+  aqua = null;
+  document.getElementById('aquaBar').style.display = 'none';
+  document.getElementById('aquaDepthBar').style.display = 'none';
+  document.getElementById('aquaCollectHint').style.display = 'none';
+  document.getElementById('digRow').style.display = 'flex';
+  document.getElementById('digBtn').disabled = false;
+  document.getElementById('controls').textContent = 'WASD · Space to dig · Right-click to tail whip · Right-click player to interact';
+  if (reason) showToast('🌊', reason, reason, 'uncommon');
+  // Teleport player back near pond
+  const p = players[myId];
+  if (p) { p.x = POND_X + 80; p.y = POND_Y + 30; }
+  keys = {};
+  if (socket) socket.emit('keys', {});
+}
+
+document.getElementById('aquaLeaveBtn').addEventListener('click', () => leaveAquaWorld('Surfaced safely!'));
+
+// ── Aqua physics tick (called each frame) ────────────────────
+function tickAquaPhysics() {
+  if (!aqua || scene !== 'aqua') return;
+  aquaFrame++;
+  const ent = aquaEntities;
+  ent.frame = aquaFrame;
+
+  // Player physics
+  if (keys.up || keys.w)    aqua.vy = Math.max(aqua.vy + AQUA_SWIM_UP * 0.15, AQUA_SWIM_UP);
+  if (keys.left)  aqua.vx = Math.max(aqua.vx - 0.25, -AQUA_MOVE_SPD);
+  if (keys.right) aqua.vx = Math.min(aqua.vx + 0.25,  AQUA_MOVE_SPD);
+
+  // Gravity drift downward
+  aqua.vy = Math.min(aqua.vy + AQUA_GRAVITY, 1.6);
+  // Horizontal damping
+  aqua.vx *= 0.90;
+
+  aqua.x += aqua.vx;
+  aqua.y += aqua.vy;
+
+  // World bounds
+  aqua.x = Math.max(20, Math.min(AQUA_W - 20, aqua.x));
+  aqua.y = Math.max(20, Math.min(AQUA_H - 20, aqua.y));
+
+  // Update depth bar
+  const depthPct = aqua.y / AQUA_H;
+  document.getElementById('aquaDepthFill').style.height = (depthPct * 100) + '%';
+
+  // Move passive creatures
+  ent.passives.forEach(c => {
+    c.timer++;
+    c.x += c.spd * c.dir;
+    c.y = c.startY + Math.sin(aquaFrame * 0.03 + c.phase) * 18 * c.bob;
+    if (c.x > c.startX + c.patrol || c.x < c.startX - c.patrol) {
+      c.dir *= -1;
+    }
+    c.x = Math.max(20, Math.min(AQUA_W - 20, c.x));
+  });
+
+  // Move dangerous creatures
+  let hitCreature = null;
+  ent.dangers.forEach(c => {
+    if (hitCreature) return;
+    c.timer++;
+    c.x += c.spd * c.dir;
+    c.y = c.startY + Math.sin(aquaFrame * 0.04 + c.phase) * 25;
+    if (c.x > c.startX + c.patrol || c.x < c.startX - c.patrol) c.dir *= -1;
+    c.x = Math.max(20, Math.min(AQUA_W - 20, c.x));
+    if (aqua && aqua.invincible <= 0) {
+      const dist = Math.hypot(c.x - aqua.x, c.y - aqua.y);
+      if (dist < (c.w / 2) + 18) hitCreature = c;
+    }
+  });
+  if (hitCreature) {
+    leaveAquaWorld(`🦈 A ${hitCreature.name} got you! Back to shore…`);
+    return;
+  }
+
+  aqua.invincible = Math.max(0, aqua.invincible - 1);
+
+  // Check collectibles nearby
+  let nearCollect = false;
+  ent.collectibles.forEach(c => {
+    if (c.collected) return;
+    const dist = Math.hypot(c.x - aqua.x, c.y - aqua.y);
+    if (dist < 38) nearCollect = true;
+  });
+  document.getElementById('aquaCollectHint').style.display = nearCollect ? 'block' : 'none';
+}
+
+// Aqua space key collect
+function aquaCollect() {
+  if (scene !== 'aqua' || !aquaEntities) return;
+  const ent = aquaEntities;
+  let collected = false;
+  ent.collectibles.forEach(c => {
+    if (c.collected) return;
+    const dist = Math.hypot(c.x - aqua.x, c.y - aqua.y);
+    if (dist < 38) {
+      c.collected = true;
+      collected = true;
+      // Add to inventory or coins
+      if (c.coins) {
+        myCoins += c.coins;
+        document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
+        document.getElementById('aquaCoinsDisplay').textContent = `🪙 ${myCoins}`;
+        showToast(c.emoji, `Found ${c.label}! +${c.coins} 🪙`, 'Sunken treasure!', 'common');
+        if (socket) socket.emit('aquaCoinPickup', { amount: c.coins });
+      } else {
+        // Add to inventory
+        const existing = myInventory.find(i => i.id === c.id);
+        if (existing) existing.qty++;
+        else myInventory.push({ id: c.id, label: c.label, emoji: c.emoji, rarity: c.rarity, qty: 1, sellPrice: c.sellPrice, placeable: false });
+        renderInventory();
+        showToast(c.emoji, `Collected ${c.label}!`, `+1 to inventory`, c.rarity);
+        if (socket) socket.emit('aquaItemPickup', { id: c.id, label: c.label, emoji: c.emoji, rarity: c.rarity, sellPrice: c.sellPrice });
+      }
+    }
+  });
+  if (!collected) showToast('🌊', 'Nothing nearby…', 'Swim closer to items', 'nothing');
+}
+
+// ── Draw the aqua world ───────────────────────────────────────
+function drawAquaWorld() {
+  if (!aqua || !aquaEntities) return;
+  tickAquaPhysics();
+  // tickAquaPhysics may have called leaveAquaWorld() on collision — bail before touching canvas
+  if (scene !== 'aqua' || !aqua) return;
+
+  const ent = aquaEntities;
+
+  // Camera: center on player, clamped to world
+  const camX = Math.max(0, Math.min(AQUA_W - W, aqua.x - W / 2));
+  const camY = Math.max(0, Math.min(AQUA_H - H, aqua.y - H / 2));
+
+  ctx.save();
+  ctx.translate(-camX, -camY);
+
+  // ── Background gradient (deep ocean) ──
+  const bg = ctx.createLinearGradient(camX, camY, camX, camY + H);
+  const depthFrac = camY / (AQUA_H - H);
+  bg.addColorStop(0, depthFrac < 0.3 ? '#0077b6' : depthFrac < 0.7 ? '#023e8a' : '#03045e');
+  bg.addColorStop(1, depthFrac < 0.3 ? '#023e8a' : depthFrac < 0.7 ? '#03045e' : '#020024');
+  ctx.fillStyle = bg;
+  ctx.fillRect(camX, camY, W, H);
+
+  // ── Sunlight rays at top ──
+  if (camY < 300) {
+    ctx.save();
+    ctx.globalAlpha = 0.06;
+    ctx.fillStyle = '#90e0ef';
+    for (let r = 0; r < 8; r++) {
+      const rx = camX + (r / 8) * W + 30;
+      ctx.beginPath();
+      ctx.moveTo(rx, camY);
+      ctx.lineTo(rx - 40, camY + 300);
+      ctx.lineTo(rx + 40, camY + 300);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ── Surface shimmer ──
+  ctx.save();
+  ctx.globalAlpha = 0.18;
+  ctx.fillStyle = '#ade8f4';
+  ctx.fillRect(camX, 0, W, 28 + Math.sin(aquaFrame * 0.05) * 4);
+  ctx.globalAlpha = 1;
+  ctx.restore();
+
+  // ── Sea floor ──
+  const floorGrad = ctx.createLinearGradient(0, AQUA_H - 80, 0, AQUA_H);
+  floorGrad.addColorStop(0, '#5c4033');
+  floorGrad.addColorStop(1, '#3e2723');
+  ctx.fillStyle = floorGrad;
+  ctx.fillRect(camX, AQUA_H - 80, W, 80);
+
+  // Sand ripples
+  ctx.save();
+  ctx.strokeStyle = '#6d4c41';
+  ctx.lineWidth = 1.5;
+  ctx.globalAlpha = 0.4;
+  for (let sx = camX; sx < camX + W + 30; sx += 30) {
+    ctx.beginPath();
+    ctx.ellipse(sx, AQUA_H - 60, 18, 5, 0, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // ── Floating bubbles ──
+  ctx.save();
+  ctx.globalAlpha = 0.25;
+  ctx.strokeStyle = '#caf0f8';
+  ctx.lineWidth = 1;
+  for (let b = 0; b < 20; b++) {
+    const bx = camX + ((b * 173 + aquaFrame * 0.4) % W);
+    const by = ((camY + b * 97 - aquaFrame * (0.3 + b % 3 * 0.1)) % AQUA_H + AQUA_H) % AQUA_H;
+    if (by >= camY && by <= camY + H) {
+      ctx.beginPath();
+      ctx.arc(bx, by, 3 + b % 4, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+
+  // ── Plants ──
+  ent.plants.forEach(pl => {
+    if (pl.x < camX - 60 || pl.x > camX + W + 60) return;
+    if (pl.y < camY - 80 || pl.y > camY + H + 20) return;
+    const sway = Math.sin(aquaFrame * 0.04 + pl.phase) * pl.sway * 8;
+    ctx.save();
+    ctx.font = `${pl.h * 0.7}px serif`;
+    ctx.textAlign = 'center';
+    ctx.translate(pl.x + sway, pl.y);
+    ctx.fillText(pl.emoji, 0, 0);
+    ctx.restore();
+  });
+
+  // ── Collectibles ──
+  ent.collectibles.forEach(c => {
+    if (c.collected) return;
+    if (c.x < camX - 40 || c.x > camX + W + 40) return;
+    if (c.y < camY - 40 || c.y > camY + H + 40) return;
+    const bob = Math.sin(aquaFrame * 0.06 + c.bobPhase) * 6;
+    ctx.save();
+    // Glow for rare+
+    if (c.rarity === 'rare' || c.rarity === 'legendary') {
+      ctx.shadowColor = c.rarity === 'legendary' ? '#ffd700' : '#a78bfa';
+      ctx.shadowBlur = 14;
+    }
+    ctx.font = '24px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(c.emoji, c.x, c.y + bob);
+    // Proximity ring
+    const dist = Math.hypot(c.x - aqua.x, c.y - aqua.y);
+    if (dist < 60) {
+      ctx.globalAlpha = 0.5 * (1 - dist / 60);
+      ctx.strokeStyle = '#ffd166';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(c.x, c.y + bob, 18, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  });
+
+  // ── Passive creatures ──
+  ent.passives.forEach(c => {
+    if (c.x < camX - 60 || c.x > camX + W + 60) return;
+    if (c.y < camY - 60 || c.y > camY + H + 60) return;
+    ctx.save();
+    ctx.font = '26px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    if (c.dir < 0) { ctx.scale(-1, 1); ctx.fillText(c.emoji, -c.x, c.y); }
+    else ctx.fillText(c.emoji, c.x, c.y);
+    ctx.restore();
+  });
+
+  // ── Dangerous creatures ──
+  ent.dangers.forEach(c => {
+    if (c.x < camX - 80 || c.x > camX + W + 80) return;
+    if (c.y < camY - 80 || c.y > camY + H + 80) return;
+    ctx.save();
+    ctx.font = '32px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    // Red warning pulse
+    const pulse = (Math.sin(aquaFrame * 0.12) + 1) / 2;
+    ctx.shadowColor = `rgba(255,50,50,${0.4 + pulse * 0.5})`;
+    ctx.shadowBlur = 12 + pulse * 8;
+    if (c.dir < 0) { ctx.scale(-1, 1); ctx.fillText(c.emoji, -c.x, c.y); }
+    else ctx.fillText(c.emoji, c.x, c.y);
+    ctx.restore();
+    // Danger zone indicator when close
+    const dist = Math.hypot(c.x - aqua.x, c.y - aqua.y);
+    if (dist < 90) {
+      ctx.save();
+      ctx.globalAlpha = 0.3 * (1 - dist / 90);
+      ctx.fillStyle = '#ef5350';
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, c.w / 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  });
+
+  // ── Player cat ──
+  ctx.save();
+  const p = players[myId];
+  if (p && aqua.invincible % 6 < 4) { // blink when invincible
+    drawCat(ctx, aqua.x, aqua.y, p.color, p.name, true, null, false, 0, 0, 1, myOutfit);
+  }
+  ctx.restore();
+
+  // ── World edge walls (visual) ──
+  // Left wall
+  ctx.fillStyle = 'rgba(0,20,60,0.7)';
+  ctx.fillRect(0, 0, 20, AQUA_H);
+  ctx.fillRect(AQUA_W - 20, 0, 20, AQUA_H);
+  // "YOU MADE IT!" banner at right edge
+  if (aqua.x > AQUA_W - 120) {
+    ctx.save();
+    ctx.globalAlpha = Math.min(1, (aqua.x - (AQUA_W - 120)) / 100);
+    ctx.fillStyle = 'rgba(255,215,0,0.15)';
+    ctx.fillRect(AQUA_W - 100, 0, 100, AQUA_H);
+    ctx.fillStyle = '#ffd700';
+    ctx.font = 'bold 18px Nunito, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('🏆 EDGE', AQUA_W - 50, AQUA_H / 2);
+    ctx.fillText('OF THE', AQUA_W - 50, AQUA_H / 2 + 22);
+    ctx.fillText('SEA!', AQUA_W - 50, AQUA_H / 2 + 44);
+    ctx.restore();
+  }
+
+  ctx.restore(); // end camera transform
+
+  // ── HUD overlays (in screen space) ──
+  // Mini-map
+  const mm = { x: 14, y: H - 82, w: 164, h: 54 };
+  ctx.save();
+  ctx.globalAlpha = 0.65;
+  ctx.fillStyle = '#023e8a';
+  ctx.strokeStyle = '#29b6f6';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(mm.x, mm.y, mm.w, mm.h, 5);
+  ctx.fill(); ctx.stroke();
+  // Player dot
+  const mpx = mm.x + (aqua.x / AQUA_W) * mm.w;
+  const mpy = mm.y + (aqua.y / AQUA_H) * mm.h;
+  ctx.fillStyle = '#ffd166';
+  ctx.beginPath();
+  ctx.arc(mpx, mpy, 3, 0, Math.PI * 2);
+  ctx.fill();
+  // Danger dots
+  ctx.fillStyle = '#ef5350';
+  ent.dangers.forEach(c => {
+    const dx = mm.x + (c.x / AQUA_W) * mm.w;
+    const dy = mm.y + (c.y / AQUA_H) * mm.h;
+    ctx.beginPath();
+    ctx.arc(dx, dy, 2, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 0.9;
+  ctx.fillStyle = '#80deea';
+  ctx.font = '10px Nunito, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('🗺 Aqua Map', mm.x + 4, mm.y + 13);
+  ctx.restore();
+
+  // Depth label
+  ctx.save();
+  ctx.fillStyle = '#80deea';
+  ctx.font = '11px Nunito, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText(`Depth: ${Math.round((aqua.y / AQUA_H) * 100)}%`, W - 26, H / 2 + 124);
+  ctx.restore();
+
+  // Update aqua coin display
+  document.getElementById('aquaCoinsDisplay').textContent = `🪙 ${myCoins}`;
+}
+
+// ── Pond proximity check (runs each lobby frame) ──────────────
+setInterval(() => {
+  if (scene === 'lobby' && joined && !pondSpinning) tryEnterPond();
+  if (pondSpinning) {
+    pondSpinTimer++;
+    if (pondSpinTimer >= POND_SPIN_DURATION) enterAquaWorld();
+  }
+}, 1000 / 60);
+
+// ── Aqua space key handler ────────────────────────────────────
+// (integrated into the existing keydown handler below — patched there)
+
+
 // ══════════════════════════════════════════════════════════════
 async function apiPost(url,body){
   const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -1008,7 +1907,7 @@ async function openHouseDirectory(){
       const vCount=(onlineMap[u.id]||[]).length;
       const color=CAT_COLORS[u.colorIndex||0];
       html+=`<div class="hd-row">
-        <canvas class="hd-cat-mini" id="hdcat_${u.id}" width="32" height="40"></canvas>
+        <canvas class="hd-cat-mini" id="hdcat_${u.id}" width="46" height="56"></canvas>
         <div style="flex:1"><div class="hd-player-name">${esc(u.username)}</div>
           <div class="hd-player-sub">${online?`${vCount} cat${vCount===1?'':'s'} inside`:'Room is empty'}</div></div>
         ${online?`<div class="hd-online-dot" title="Active now"></div>`:`<div class="hd-offline-dot"></div>`}
@@ -1026,8 +1925,8 @@ async function openHouseDirectory(){
   // Draw mini cats
   others.forEach(u=>{
     const mc=document.getElementById(`hdcat_${u.id}`); if(!mc) return;
-    const mc2=mc.getContext('2d'); mc2.clearRect(0,0,32,40);
-    drawCat(mc2,16,28,CAT_COLORS[u.colorIndex||0],'',false,null,false,0);
+    const mc2=mc.getContext('2d'); mc2.clearRect(0,0,46,56);
+    drawCat(mc2,23,38,CAT_COLORS[u.colorIndex||0],'',false,null,false,0,0,1,u.outfit||{});
   });
 
   if(loggedInUser) document.getElementById('hdEnterMyRoom')?.addEventListener('click',()=>{document.getElementById('houseDirModal').style.display='none';enterRoom(loggedInUser.id);});
@@ -1060,7 +1959,7 @@ function exitRoomUI(){
   document.getElementById('locationHud').style.display='none';
   document.getElementById('digBtn').disabled=false;
   document.getElementById('digRow').style.display='flex';
-  document.getElementById('controls').textContent='WASD · Space to dig · Right-click player to interact';
+  document.getElementById('controls').textContent='WASD · Space to dig · Right-click to tail whip · Right-click player to interact';
   updateChatHeader('Lobby Chat');
   renderInventory();
 }
@@ -1138,19 +2037,24 @@ canvas.addEventListener('contextmenu',e=>{
       const hit=roomState.placedItems.find(it=>Math.hypot(it.x-mx,it.y-my)<28);
       if(hit){socket.emit('pickupItem',{instanceId:hit.instanceId});return;}
     }
-    // Right-click player in room
-    const hit=Object.values(roomState?.players||{}).find(p=>p.id!==myId&&Math.hypot(p.x-mx,p.y-my)<22);
-    if(hit){showCtxMenu(e,hit);} return;
+    // Right-click player in room → context menu
+    const hit=Object.values(roomState?.players||{}).find(p=>p.id!==myId&&Math.hypot(p.x-mx,p.y-my)<36);
+    if(hit){showCtxMenu(e,hit); return;}
+    // Right-click empty space → tail whip
+    startTailWhip(mx, my);
+    return;
   }
 
-  // Lobby right-click
-  const hit=Object.values(players).find(p=>p.id!==myId&&Math.hypot(p.x-mx,p.y-my)<22);
-  if(!hit){hideCtx();return;}
-  ctxTargetId=hit.id; ctxTargetDbId=null; // unknown dbId from lobby player
-  // Check if hit player has a dbUserId (they showed up in online list)
-  // We'll enable/disable Visit Room based on whether they're a non-guest
-  document.getElementById('ctxVisitRoom').style.display=hit.isGuest===false?'':'none';
-  showCtxMenu(e,hit);
+  // Lobby right-click: player hit → context menu, empty → tail whip
+  const hit=Object.values(players).find(p=>p.id!==myId&&Math.hypot(p.x-mx,p.y-my)<36);
+  if(hit){
+    ctxTargetId=hit.id; ctxTargetDbId=null;
+    document.getElementById('ctxVisitRoom').style.display=hit.isGuest===false?'':'none';
+    showCtxMenu(e,hit);
+  } else {
+    hideCtx();
+    startTailWhip(mx, my);
+  }
 });
 
 function showCtxMenu(e,hit){
@@ -1189,10 +2093,43 @@ function initSocket(name){
 
   socket.on('playerJoined',p=>{players[p.id]={...p,digPhase:0};updateOnlineCount();addSystemMsg(`🐱 ${p.name} joined`);});
   socket.on('playerLeft',id=>{if(players[id])addSystemMsg(`👋 ${players[id].name} left`);delete players[id];updateOnlineCount();if(trade&&trade.partnerId===id)closeTrade('Partner disconnected.');});
-  socket.on('playerUpdate',p=>{if(players[p.id])Object.assign(players[p.id],p);});
+  socket.on('playerUpdate',p=>{
+    if(players[p.id]) Object.assign(players[p.id],p);
+    // Keep myOutfit in sync if the server echoes our own update back
+    if(p.id===myId && p.outfit) myOutfit=p.outfit;
+  });
   socket.on('tick',updates=>{updates.forEach(u=>{if(!players[u.id])return;players[u.id].x=u.x;players[u.id].y=u.y;players[u.id].emote=u.emote;players[u.id].digging=u.digging;if(u.digging)players[u.id].digPhase=(players[u.id].digPhase||0)+1;});});
   socket.on('chat',m=>addChatMsg(m));
   socket.on('emote',({id,emote})=>{if(players[id])players[id].emote=emote;});
+
+  // ── Tail whip: animate other players' whips ──────────────────
+  socket.on('tailWhip', ({ id, dir }) => {
+    if (!players[id] || id === myId) return;
+    players[id].whipT = 0;
+    players[id].whipDir = dir;
+    players[id]._whipFrame = 0;
+    // Animate their whip across WHIP_DURATION frames
+    const interval = setInterval(() => {
+      if (!players[id]) { clearInterval(interval); return; }
+      players[id]._whipFrame = (players[id]._whipFrame || 0) + 1;
+      players[id].whipT = players[id]._whipFrame / WHIP_DURATION;
+      if (players[id]._whipFrame >= WHIP_DURATION) {
+        players[id].whipT = 0;
+        players[id]._whipFrame = 0;
+        clearInterval(interval);
+      }
+    }, 1000 / 60);
+  });
+
+  // ── Tail whip hit: show flash on hit player ───────────────────
+  socket.on('tailWhipHit', ({ targetId, attackerId, attackerName }) => {
+    // Flash the target
+    whipHitFlash[targetId] = WHIP_HIT_FLASH_DURATION;
+    // If we are the target, show a hit toast
+    if (targetId === myId) {
+      showToast('💥', `${attackerName || 'Someone'} tail-whipped you!`, 'Ouch!', 'uncommon');
+    }
+  });
   socket.on('playerDig',({id,digging})=>{if(players[id]){players[id].digging=digging;if(!digging)players[id].digPhase=0;}});
   socket.on('digFind',handleDigFind);
   socket.on('digStopped',endDig);
@@ -1295,7 +2232,7 @@ function showProfileModal(data){
   document.getElementById('profileCoins').textContent=data.coins;
   document.getElementById('profileItemCount').textContent=(data.inventory||[]).reduce((s,i)=>s+i.qty,0);
   const mc=document.getElementById('profileMiniCat'),mc2=mc.getContext('2d');mc2.clearRect(0,0,mc.width,mc.height);
-  drawCat(mc2,23,38,CAT_COLORS[data.colorIndex]||CAT_COLORS[0],'',false,null,false,0);
+  drawCat(mc2,33,50,CAT_COLORS[data.colorIndex]||CAT_COLORS[0],'',false,null,false,0,0,1,data.outfit||{});
   const grid=document.getElementById('profileInvGrid');const inv=data.inventory||[];
   if(!inv.length)grid.innerHTML='<div style="color:var(--muted);font-size:11px;grid-column:span 5">Nothing yet!</div>';
   else{const sorted=[...inv].sort((a,b)=>(RARITY_ORDER[a.rarity]||3)-(RARITY_ORDER[b.rarity]||3));grid.innerHTML=sorted.map(it=>`<div class="pi-item rarity-${it.rarity}" title="${esc(it.label)}"><span class="emoji">${it.emoji}</span>${it.qty>1?`<span class="qty">x${it.qty}</span>`:''}</div>`).join('');}
@@ -1352,11 +2289,16 @@ function renderInventory(){
       if(!items.length)continue;
       html+=`<div class="inv-slot-label">${label}</div><div class="inv-grid">`;
       items.forEach(it=>{
-        html+=`<div class="inv-item rarity-${it.rarity||'common'}" data-id="${it.id}" title="${esc(it.label)}" style="border-color:rgba(255,157,226,.35)">` +
+        const shopMeta = shopItems.find(s=>s.id===it.id);
+        const isEquipped = it.slot==='pattern'
+          ? myOutfit.pattern===(shopMeta?.patternKey||it.patternKey||it.id)
+          : myOutfit[it.slot]===it.id;
+        const equippedStyle = isEquipped ? ' style="border-color:#c77dff;background:rgba(199,125,255,.18);"' : ' style="border-color:rgba(255,157,226,.35)"';
+        html+=`<div class="inv-item rarity-${it.rarity||'common'}" data-id="${it.id}" title="${esc(it.label)}"${equippedStyle}>` +
           `<span class="emoji">${it.emoji}</span>` +
           `<span class="item-name">${esc(it.label)}</span>` +
           `<span class="item-rarity rarity-${it.rarity||'common'}">${it.rarity||'common'}</span>` +
-          `${it.qty>1?`<span class="item-qty">x${it.qty}</span>`:''}` +
+          `${isEquipped?'<span class="item-qty" style="color:#c77dff">ON</span>':it.qty>1?`<span class="item-qty">x${it.qty}</span>`:''}` +
           `</div>`;
       });
       html+='</div>';
@@ -1457,7 +2399,11 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{btn.addEventListener('click'
 window.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT')return;
   if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' '].includes(e.key))e.preventDefault();
-  if(e.key===' '&&joined&&socket){if(isDigging){socket.emit('stopDig');endDig();}else startDig();return;}
+  if(e.key===' '){
+    if(scene==='aqua'){ aquaCollect(); return; }
+    if(joined&&socket){if(isDigging){socket.emit('stopDig');endDig();}else startDig();}
+    return;
+  }
   handleKey(e.key,true);
 });
 window.addEventListener('keyup',e=>handleKey(e.key,false));
@@ -1465,7 +2411,9 @@ function handleKey(key,down){
   if(!joined)return;
   const m={ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right',ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down'};
   const k=m[key];if(!k)return;
-  if(keys[k]!==down){keys[k]=down;if(socket){if(scene==='room')socket.emit('roomKeys',keys);else socket.emit('keys',keys);}}
+  keys[k]=down;
+  // Only send movement to server when not in aqua (aqua is client-only physics)
+  if(scene!=='aqua'&&socket){if(scene==='room')socket.emit('roomKeys',keys);else socket.emit('keys',keys);}
 }
 document.querySelectorAll('.emote-btn').forEach(btn=>{btn.addEventListener('click',()=>{if(socket&&joined)socket.emit('emote',btn.dataset.emote);});});
 
@@ -1621,17 +2569,16 @@ document.getElementById('inventoryPane').addEventListener('contextmenu', e => {
   const item = myInventory.find(i => i.id === invCtxItemId);
   if (!item) return;
 
-  // Calculate sell price: dig items use ITEMS_META.sellPrice, clothing uses 40% of shopItems price
+  document.getElementById('invCtxItemName').innerHTML = `${item.emoji} ${esc(item.label)}`;
+
+  // Sell price
   const meta = ITEMS_META[invCtxItemId] || {};
   let sellPrice = meta.sellPrice || 0;
   if (!sellPrice && item.wearable && shopItems.length) {
     const shopMeta = shopItems.find(s => s.id === invCtxItemId);
     if (shopMeta?.price) sellPrice = Math.floor(shopMeta.price * 0.4);
   }
-
-  document.getElementById('invCtxItemName').innerHTML = `${item.emoji} ${esc(item.label)}`;
   const sellRow = document.getElementById('invCtxSell');
-
   if (sellPrice > 0) {
     sellRow.style.display = 'flex';
     sellRow.textContent = `💰 Sell for 🪙 ${sellPrice}`;
@@ -1639,10 +2586,31 @@ document.getElementById('inventoryPane').addEventListener('contextmenu', e => {
     sellRow.style.display = 'none';
   }
 
-  document.getElementById('invCtxEquip').style.display = 'none';
+  // Equip / unequip for wearable items
+  const equipRow   = document.getElementById('invCtxEquip');
+  const unequipRow = document.getElementById('invCtxUnequip');
+  equipRow.style.display   = 'none';
+  unequipRow.style.display = 'none';
+
+  if (item.wearable && item.slot) {
+    // pattern slot stores patternKey value, other slots store item id
+    const shopMeta = shopItems.find(s => s.id === invCtxItemId);
+    const slotKey  = item.slot; // 'hat' | 'shirt' | 'pattern'
+    const equipped = item.slot === 'pattern'
+      ? myOutfit.pattern === (shopMeta?.patternKey || item.patternKey || invCtxItemId)
+      : myOutfit[slotKey] === invCtxItemId;
+
+    if (equipped) {
+      unequipRow.style.display = 'flex';
+      unequipRow.textContent = `✖ Unequip ${item.label}`;
+    } else {
+      equipRow.style.display = 'flex';
+      equipRow.textContent = `✨ Equip ${item.label}`;
+    }
+  }
 
   invCtxMenu.style.left = Math.min(e.clientX, window.innerWidth - 200) + 'px';
-  invCtxMenu.style.top = Math.min(e.clientY, window.innerHeight - 120) + 'px';
+  invCtxMenu.style.top  = Math.min(e.clientY, window.innerHeight - 140) + 'px';
   invCtxMenu.classList.add('visible');
 });
 
@@ -1650,6 +2618,32 @@ document.getElementById('invCtxSell').addEventListener('click', () => {
   invCtxMenu.classList.remove('visible');
   if (!invCtxItemId || !socket) return;
   socket.emit('sellItem', { itemId: invCtxItemId, qty: 1 });
+});
+
+document.getElementById('invCtxEquip').addEventListener('click', () => {
+  invCtxMenu.classList.remove('visible');
+  if (!invCtxItemId || !socket) return;
+  const item = myInventory.find(i => i.id === invCtxItemId);
+  if (!item || !item.wearable || !item.slot) return;
+  const shopMeta = shopItems.find(s => s.id === invCtxItemId);
+  const value = item.slot === 'pattern'
+    ? (shopMeta?.patternKey || item.patternKey || invCtxItemId)
+    : invCtxItemId;
+  myOutfit[item.slot] = value;
+  socket.emit('equipItem', { slot: item.slot, value });
+  renderInventory();
+  showToast(item.emoji, `Equipped ${item.label}!`, `Wearing ${item.slot}`, item.rarity || 'common');
+});
+
+document.getElementById('invCtxUnequip').addEventListener('click', () => {
+  invCtxMenu.classList.remove('visible');
+  if (!invCtxItemId || !socket) return;
+  const item = myInventory.find(i => i.id === invCtxItemId);
+  if (!item || !item.wearable || !item.slot) return;
+  myOutfit[item.slot] = null;
+  socket.emit('unequipItem', { slot: item.slot });
+  renderInventory();
+  showToast(item.emoji, `Removed ${item.label}`, `Slot cleared`, 'common');
 });
 
 // Close inv ctx menu on any other click
