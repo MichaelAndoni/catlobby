@@ -22,6 +22,14 @@ body {
   user-select: none;
 }
 
+#app {
+    display: flex;
+    width: 1440px;
+    height: 820px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(199,125,255,.25), 0 0 0 1px var(--border);
+}
 /* all your existing CSS from the <style> block goes here */
 /* including #app, #gameWrap, #rightPanel, HUDs, buttons, modals, overlays, etc. */
 
@@ -39,6 +47,15 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text);disp
 #gameWrap{position:relative;flex:0 0 1060px;height:820px;background:#0d0818;overflow:hidden}
 canvas{display:block}
 */
+#gameWrap {
+    flex: 0 0 1060px; /* fixed width of main game area */
+    height: 820px;
+    position: relative;
+    background: #0d0818;
+    overflow: hidden;
+}
+
+
 /* RIGHT PANEL */
 #rightPanel{flex:1;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;height:820px;overflow:hidden}
 #tabBar{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
