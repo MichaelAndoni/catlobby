@@ -1,499 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🐱 Cat Lobby</title>
-<script src="/socket.io/socket.io.js"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#1a1025;--panel:#231533;--border:#3d2060;--accent:#c77dff;--accent2:#ff9de2;
-  --text:#f0e6ff;--muted:#9b8ab0;--chat-bg:#160e22;--input-bg:#2a1945;
-  --rc:#b0bec5;--ru:#69f0ae;--rr:#40c4ff;--rl:#ffd740;
-  --success:#66bb6a;--danger:#ef5350;
-}
-body{background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;user-select:none}
-#app{transform-origin:center center;}
-#app{display:flex;width:1440px;height:820px;border-radius:20px;overflow:hidden;box-shadow:0 0 60px rgba(199,125,255,.25),0 0 0 1px var(--border)}
-#topBar{display:flex;align-items:center;gap:0;height:44px;background:var(--panel);border-bottom:1px solid var(--border);flex-shrink:0;padding:0 10px;z-index:10;position:relative}
-#topBar .tb-sep{width:1px;height:22px;background:var(--border);margin:0 4px;flex-shrink:0}
-#topBar .tb-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:14px;font-size:12px;font-weight:800;color:var(--text);white-space:nowrap}
-#topBar .tb-pill.coins{color:#ffd740}
-#topBar .tb-pill.location{color:var(--muted);font-size:11px}
-#topBar .tb-pill.players{color:var(--accent)}
-#topBar .tb-spacer{flex:1}
-.tb-btn{display:flex;align-items:center;gap:5px;background:none;border:1px solid var(--border);border-radius:14px;padding:5px 12px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer;transition:background .12s,border-color .12s;white-space:nowrap;flex-shrink:0}
-.tb-btn:hover{background:rgba(199,125,255,.14);border-color:var(--accent);color:var(--accent)}
-.tb-btn.active{background:rgba(199,125,255,.18);border-color:var(--accent);color:var(--accent)}
-.tb-btn.shop{border-color:#4caf7d;color:#d4f5e5;background:rgba(42,96,73,.3)}
-.tb-btn.shop:hover{background:rgba(42,96,73,.55);border-color:#6fcf97}
-.tb-btn.room-edit{border-color:rgba(199,125,255,.4)}
-.tb-btn.room-leave{border-color:rgba(239,83,80,.4);color:var(--danger)}
-.tb-btn.room-leave:hover{background:rgba(239,83,80,.12);border-color:var(--danger)}
-/* World map dropdown */
-#wmDropdown{position:absolute;top:44px;left:0;right:0;background:var(--panel);border-bottom:2px solid var(--border);z-index:50;display:none;flex-direction:column;align-items:center;padding:20px 20px 24px;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.5)}
-#wmDropdown.open{display:flex}
-#wmDropdown .wmd-title{font-size:16px;font-weight:900;color:var(--accent)}
-#wmDropdown .wmd-locations{display:flex;gap:14px;align-items:flex-start}
-#wmDropdown .wm-loc-card{padding:14px 18px;width:130px}
-#wmDropdown .wm-loc-icon{font-size:32px}
-#wmDropdown .wm-loc-name{font-size:12px}
-#wmDropdown .wm-loc-desc{font-size:9px}
-#gameWrap{position:relative;flex:0 0 1060px;height:820px;background:#0d0818;overflow:hidden;display:flex;flex-direction:column}
-canvas{display:block}
-
-/* RIGHT PANEL */
-#rightPanel{flex:1;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;height:820px;overflow:hidden}
-#tabBar{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
-.tab-btn{flex:1;background:none;border:none;padding:11px 4px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;letter-spacing:.4px;text-transform:uppercase;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;position:relative}
-.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
-.tab-btn:hover:not(.active){color:var(--text)}
-.tab-pane{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
-.tab-pane.active{display:flex}
-
-/* ACCOUNT / GUEST BARS */
-#accountBar{flex-shrink:0;background:rgba(42,25,69,.5);border-bottom:1px solid var(--border);padding:7px 14px;display:flex;align-items:center;gap:8px}
-#accountBar.hidden{display:none}
-.ab-name{font-size:12px;font-weight:800;color:var(--accent);flex:1}
-.ab-email{font-size:10px;color:var(--muted)}
-.ab-logout{background:none;border:1px solid var(--border);border-radius:7px;padding:3px 10px;font-size:11px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--muted);cursor:pointer}
-.ab-logout:hover{color:var(--danger);border-color:var(--danger)}
-#guestBanner{flex-shrink:0;background:linear-gradient(135deg,rgba(199,125,255,.12),rgba(255,157,226,.08));border-bottom:1px solid rgba(199,125,255,.25);padding:10px 14px;display:flex;flex-direction:column;gap:6px}
-#guestBanner.hidden{display:none}
-.gb-title{font-size:11px;font-weight:900;color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
-.gb-text{font-size:11px;color:var(--muted);line-height:1.4}
-.gb-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer;align-self:flex-start}
-
-/* CHAT */
-#chatMessages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:7px;background:var(--chat-bg)}
-#chatMessages::-webkit-scrollbar{width:4px}
-#chatMessages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-.chat-msg{display:flex;flex-direction:column;gap:2px;animation:fadeUp .18s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-.chat-meta{display:flex;align-items:center;gap:6px}
-.chat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.chat-name{font-size:11px;font-weight:800;cursor:pointer;text-decoration:underline dotted}
-.chat-name:hover{opacity:.75}
-.chat-time{font-size:10px;color:var(--muted);margin-left:auto}
-.chat-text{font-size:13px;color:#d9cce8;padding-left:14px;line-height:1.45;word-break:break-word}
-.chat-system{text-align:center;font-size:11px;color:var(--muted);font-style:italic;padding:1px 0}
-.chat-trade-notif{background:rgba(42,25,69,.7);border:1px solid var(--border);border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:7px;animation:fadeUp .18s ease}
-.chat-trade-notif.incoming{border-color:rgba(199,125,255,.5)}
-.chat-trade-notif.sent{border-color:rgba(102,187,106,.4)}
-.chat-trade-notif.declined{border-color:rgba(239,83,80,.4)}
-.trade-notif-text{font-size:12px;font-weight:700}
-.trade-notif-text span{color:var(--accent)}
-.trade-notif-btns{display:flex;gap:6px}
-.trade-notif-btns button{flex:1;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-.btn-accept-sm{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#1a0030}
-.btn-decline-sm{background:rgba(239,83,80,.2);border:1px solid rgba(239,83,80,.4)!important;color:var(--danger)}
-#chatInputWrap{padding:10px;border-top:1px solid var(--border);display:flex;gap:8px;background:var(--panel);flex-shrink:0}
-#chatInput{flex:1;background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:13px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;transition:border-color .2s}
-#chatInput:focus{border-color:var(--accent)}
-#chatInput::placeholder{color:var(--muted)}
-#sendBtn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:transform .1s;flex-shrink:0}
-#sendBtn:hover{transform:scale(1.07)}
-
-/* INVENTORY */
-#inventoryPane{flex:1;overflow-y:auto;padding:12px;background:var(--chat-bg)}
-#inventoryPane::-webkit-scrollbar{width:4px}
-#inventoryPane::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-.inv-section-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:10px 0 6px}
-.inv-section-title:first-child{margin-top:0}
-.inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:4px}
-.inv-item{background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:8px 6px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;cursor:default}
-.inv-item.placeable{cursor:pointer;transition:border-color .15s,background .1s}
-.inv-item.placeable:hover{background:rgba(199,125,255,.1);border-color:var(--accent)}
-.inv-item .emoji{font-size:22px;line-height:1}
-.inv-item .item-name{font-size:9px;font-weight:700;text-align:center;line-height:1.2}
-.inv-item .item-qty{position:absolute;top:4px;right:6px;font-size:10px;font-weight:900;color:var(--muted)}
-.inv-item .item-rarity{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
-.inv-place-badge{position:absolute;bottom:3px;right:4px;font-size:8px;color:var(--accent);font-weight:900}
-.rarity-common{color:var(--rc)}.rarity-uncommon{color:var(--ru)}.rarity-rare{color:var(--rr)}.rarity-legendary{color:var(--rl)}
-.inv-item.rarity-uncommon{border-color:rgba(105,240,174,.3)}
-.inv-item.rarity-rare{border-color:rgba(64,196,255,.3)}
-.inv-item.rarity-legendary{border-color:rgba(255,215,64,.4);box-shadow:0 0 8px rgba(255,215,64,.12)}
-.inv-slot-label{font-size:10px;font-weight:800;color:var(--accent2);margin:6px 0 4px;padding-left:2px;letter-spacing:.3px}
-.inv-empty{text-align:center;color:var(--muted);font-size:12px;padding:28px 10px}
-.inv-empty .big{font-size:30px;display:block;margin-bottom:8px}
-#invBadge{display:none;position:absolute;top:-4px;right:-4px;background:var(--accent2);color:#1a0030;font-size:9px;font-weight:900;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center}
-#invBadge.show{display:flex}
-
-/* HUD */
-#hud{display:none}
-.hud-pill{display:none}
-#playerCount{color:var(--accent)}
-#coinHud{border-color:#c9a227;color:#ffd740;display:none}
-#locationHud{color:var(--muted);font-size:11px;display:none;pointer-events:auto}
-
-/* WORLD MAP BUTTON */
-/* worldMapBtn now in topBar as .tb-btn */
-
-/* BOTTOM BAR */
-#bottomBar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);z-index:2;pointer-events:none}
-#emoteBar{display:flex;gap:2px;align-items:center}
-.emote-btn{background:none;border:none;font-size:18px;cursor:pointer;padding:3px 5px;border-radius:8px;transition:transform .1s,background .1s;line-height:1}
-.emote-btn:hover{transform:scale(1.35);background:rgba(199,125,255,.15)}
-#digRow{display:flex;align-items:center;gap:8px}
-#digBtn{background:linear-gradient(135deg,#8b5e3c,#c8874a);border:none;border-radius:14px;padding:5px 14px;font-size:12px;font-weight:900;font-family:'Nunito',sans-serif;color:#fff3e0;cursor:pointer;box-shadow:0 2px 8px rgba(200,135,74,.4);transition:transform .1s;letter-spacing:.3px}
-#digBtn:hover:not(:disabled){transform:scale(1.04)}
-#digBtn:disabled{opacity:.5;cursor:not-allowed}
-#digBtn.digging{background:linear-gradient(135deg,#c62828,#e53935)}
-#digProgressWrap{display:none;width:100px;height:7px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
-#digProgress{height:100%;background:linear-gradient(90deg,#8b5e3c,#ffd740);border-radius:4px;width:100%;transition:width .15s linear}
-#digProgressWrap.active{display:block}
-#controls{background:rgba(35,21,51,.75);border:1px solid var(--border);border-radius:12px;padding:5px 10px;font-size:10px;color:var(--muted);backdrop-filter:blur(6px);pointer-events:none}
-
-/* SHOP BUTTON */
-/* shopBtn now in topBar as .tb-btn.shop */
-
-/* SHOP MODAL */
-#shopModal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(6px)}
-#shopModal.visible{display:flex}
-.shop-box{background:var(--panel);border:1px solid var(--border);border-radius:18px;width:680px;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(76,175,80,.2),0 0 0 1px rgba(76,175,80,.12);overflow:hidden}
-.shop-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;background:linear-gradient(135deg,rgba(42,96,73,.4),rgba(35,21,51,.6))}
-.shop-head-icon{font-size:30px}
-.shop-head-info{flex:1}
-.shop-head-title{font-size:17px;font-weight:900;color:#d4f5e5}
-.shop-head-sub{font-size:11px;color:var(--muted);margin-top:1px}
-.shop-coins-display{background:rgba(255,215,64,.1);border:1px solid rgba(201,162,39,.4);border-radius:20px;padding:5px 14px;font-size:14px;font-weight:900;color:#ffd740}
-.shop-close{background:none;border:1px solid var(--border);border-radius:50%;width:28px;height:28px;color:var(--muted);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;flex-shrink:0}
-.shop-close:hover{color:var(--danger);border-color:var(--danger)}
-.shop-cats{display:flex;gap:6px;padding:12px 20px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;background:rgba(0,0,0,.15)}
-.shop-cats::-webkit-scrollbar{display:none}
-.shop-cat-btn{background:none;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .15s}
-.shop-cat-btn:hover{color:var(--text);border-color:rgba(76,175,80,.5)}
-.shop-cat-btn.active{background:rgba(76,175,80,.15);border-color:#4caf7d;color:#d4f5e5}
-.shop-body{flex:1;overflow-y:auto;padding:16px 20px}
-.shop-body::-webkit-scrollbar{width:4px}
-.shop-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-.shop-table{width:100%;border-collapse:collapse}
-.shop-table th{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:0 10px 8px;text-align:left;border-bottom:1px solid var(--border)}
-.shop-table th:last-child{text-align:right}
-.shop-row{border-bottom:1px solid rgba(61,32,96,.5);transition:background .12s}
-.shop-row:hover{background:rgba(76,175,80,.06)}
-.shop-row td{padding:9px 10px;vertical-align:middle}
-.shop-item-cell{display:flex;align-items:center;gap:10px}
-.shop-emoji-box{width:38px;height:38px;background:var(--input-bg);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:1px solid var(--border)}
-.shop-item-name{font-size:13px;font-weight:800;color:var(--text)}
-.shop-item-desc{font-size:10px;color:var(--muted);margin-top:2px}
-.shop-rarity-badge{display:inline-block;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;padding:1px 7px;border-radius:20px;margin-top:3px}
-.shop-rarity-badge.rarity-common{background:rgba(176,190,197,.12);color:var(--rc);border:1px solid rgba(176,190,197,.25)}
-.shop-rarity-badge.rarity-uncommon{background:rgba(105,240,174,.1);color:var(--ru);border:1px solid rgba(105,240,174,.2)}
-.shop-rarity-badge.rarity-rare{background:rgba(64,196,255,.1);color:var(--rr);border:1px solid rgba(64,196,255,.2)}
-.shop-rarity-badge.rarity-legendary{background:rgba(255,215,64,.1);color:var(--rl);border:1px solid rgba(255,215,64,.25)}
-.shop-price-bubble{display:inline-flex;align-items:center;gap:4px;background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.3);border-radius:20px;padding:4px 11px;font-size:13px;font-weight:900;color:#ffd740;white-space:nowrap}
-.shop-buy-btn{background:linear-gradient(135deg,#2a6049,#3a8060);border:1px solid #4caf7d;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;color:#d4f5e5;cursor:pointer;transition:transform .1s,background .15s;white-space:nowrap}
-.shop-buy-btn:hover{background:linear-gradient(135deg,#357a50,#4aad70);transform:scale(1.04)}
-.shop-buy-btn:active{transform:scale(.97)}
-.shop-buy-btn.equipped{background:linear-gradient(135deg,#5c4299,#7e57c2);border-color:#9c88d4;color:#e8e0ff}
-.shop-empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px}
-.shop-section-header{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:12px 10px 6px;border-bottom:1px solid rgba(61,32,96,.3)}
-
-/* INVENTORY RIGHT-CLICK CONTEXT MENU */
-#invCtxMenu{position:fixed;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:6px 0;z-index:200;min-width:170px;box-shadow:0 8px 32px rgba(0,0,0,.5);display:none}
-#invCtxMenu.visible{display:block}
-.inv-ctx-head{padding:7px 14px;border-bottom:1px solid var(--border);margin-bottom:4px}
-.inv-ctx-name{font-size:12px;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:6px}
-.inv-ctx-row{padding:8px 14px;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;transition:background .1s}
-.inv-ctx-row:hover{background:rgba(199,125,255,.1)}
-.inv-ctx-row.sell{color:#69f0ae}
-.inv-ctx-row.sell:hover{background:rgba(105,240,174,.1)}
-.inv-ctx-row.equip{color:var(--accent)}
-
-/* SHOP SUCCESS TOAST */
-@keyframes shopToastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.shop-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(42,96,73,.95);border:1px solid #4caf7d;border-radius:14px;padding:10px 20px;font-size:13px;font-weight:800;color:#d4f5e5;z-index:300;animation:shopToastIn .2s ease;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(76,175,80,.3)}
-
-/* ROOM CONTROLS BAR */
-#roomBar{display:none}/* room buttons now in topBar */
-/* room-bar-btn replaced by .tb-btn */
-
-/* TOASTS */
-#toastContainer{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:6px;pointer-events:none;width:240px;z-index:5}
-.find-toast{background:rgba(22,14,34,.94);border:1px solid var(--border);border-radius:12px;padding:9px 14px;display:flex;align-items:center;gap:11px;animation:toastIn .22s ease;backdrop-filter:blur(8px)}
-.find-toast.remove{animation:toastOut .28s ease forwards}
-@keyframes toastIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
-@keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateX(-14px)}}
-.find-toast .t-emoji{font-size:26px;flex-shrink:0}
-.find-toast .t-label{font-weight:800;font-size:13px}
-.find-toast .t-sub{font-size:11px;color:var(--muted)}
-.find-toast.coin{border-color:#c9a227}
-.find-toast.legendary{border-color:var(--rl);box-shadow:0 0 10px rgba(255,215,64,.25)}
-.find-toast.rare{border-color:var(--rr)}.find-toast.uncommon{border-color:var(--ru)}.find-toast.nothing{opacity:.55}
-
-/* CONTEXT MENU */
-#ctxMenu{position:fixed;background:rgba(20,11,32,.97);border:1px solid var(--border);border-radius:12px;padding:5px;min-width:148px;z-index:500;box-shadow:0 8px 32px rgba(0,0,0,.6);backdrop-filter:blur(12px);display:none}
-.ctx-head{padding:5px 10px 7px;border-bottom:1px solid var(--border);margin-bottom:3px}
-.ctx-player-name{font-size:13px;font-weight:900;color:var(--accent)}
-.ctx-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;color:var(--text);transition:background .1s}
-.ctx-row:hover{background:rgba(199,125,255,.13)}
-.ctx-icon{font-size:14px;width:18px;text-align:center}
-
-/* MODAL BASE */
-.modal-back{position:fixed;inset:0;background:rgba(8,4,18,.75);backdrop-filter:blur(4px);z-index:300;display:flex;align-items:center;justify-content:center;animation:mfadeIn .15s ease}
-@keyframes mfadeIn{from{opacity:0}to{opacity:1}}
-.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);animation:mslide .18s ease}
-@keyframes mslide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.modal-head{padding:16px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px}
-.modal-title{font-size:16px;font-weight:900;color:var(--text);flex:1}
-.modal-close-btn{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;padding:2px 4px;border-radius:6px}
-.modal-close-btn:hover{color:var(--text);background:rgba(255,255,255,.06)}
-.modal-foot{padding:11px 18px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.btn{border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:opacity .1s}
-.btn:hover{opacity:.88}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#1a0030}
-.btn-secondary{background:var(--input-bg);color:var(--muted);border:1px solid var(--border)}
-.btn-secondary:hover{color:var(--text)}
-.btn-danger{background:rgba(239,83,80,.18);border:1px solid rgba(239,83,80,.4);color:var(--danger)}
-.btn-success{background:linear-gradient(135deg,#388e3c,#66bb6a);color:#fff}
-
-/* FORM */
-.form-group{display:flex;flex-direction:column;gap:5px}
-.form-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-.form-input{background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:9px 13px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;transition:border-color .2s;width:100%}
-.form-input:focus{border-color:var(--accent)}
-.form-input::placeholder{color:var(--muted)}
-.form-error{font-size:11px;color:var(--danger);font-weight:700;min-height:16px}
-.form-success{font-size:11px;color:var(--success);font-weight:700;min-height:16px}
-.form-link{font-size:12px;color:var(--accent);cursor:pointer;font-weight:700;background:none;border:none;padding:0;text-decoration:underline dotted}
-
-/* ENTRY OVERLAY */
-#entryOverlay{position:absolute;inset:0;background:rgba(10,5,20,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(8px);z-index:20}
-.entry-card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:36px 40px;width:340px;display:flex;flex-direction:column;align-items:center;gap:18px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.entry-logo{font-size:48px}
-.entry-title{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center}
-.entry-sub{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
-.entry-sep{width:100%;height:1px;background:var(--border)}
-.entry-section-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted);align-self:flex-start}
-.entry-name-row{display:flex;gap:8px;width:100%}
-.entry-name-input{flex:1;background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;transition:border-color .2s}
-.entry-name-input:focus{border-color:var(--accent)}
-.entry-name-input::placeholder{color:var(--muted)}
-.entry-guest-btn{background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer;white-space:nowrap}
-.entry-guest-btn:hover{border-color:var(--accent)}
-.entry-divider-text{font-size:12px;color:var(--muted)}
-.entry-auth-btns{display:flex;gap:10px;width:100%}
-.entry-signin-btn{flex:1;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;padding:11px;font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer}
-.entry-signup-btn{flex:1;background:var(--input-bg);border:1.5px solid var(--border);border-radius:12px;padding:11px;font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--text);cursor:pointer}
-.entry-signup-btn:hover{border-color:var(--accent)}
-
-/* AUTH MODAL */
-#authModal .modal-box{width:360px}
-.auth-body{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
-.auth-divider{text-align:center;color:var(--muted);font-size:11px;position:relative}
-.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
-.auth-divider::before{left:0}.auth-divider::after{right:0}
-
-/* WORLD MAP OVERLAY */
-#worldMapOverlay{display:none}/* replaced by wmDropdown */
-.wm-title{font-size:24px;font-weight:900;margin-bottom:4px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.wm-sub{font-size:12px;color:var(--muted);margin-bottom:28px}
-.wm-locations{display:flex;gap:20px;align-items:flex-end}
-.wm-loc{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:transform .15s}
-.wm-loc:hover{transform:translateY(-4px)}
-.wm-loc-card{background:var(--panel);border:2px solid var(--border);border-radius:16px;padding:20px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;width:150px;transition:border-color .15s,box-shadow .15s}
-.wm-loc:hover .wm-loc-card{border-color:var(--accent);box-shadow:0 0 24px rgba(199,125,255,.2)}
-.wm-loc.active .wm-loc-card{border-color:var(--accent2);background:rgba(255,157,226,.06)}
-.wm-loc-icon{font-size:44px;line-height:1}
-.wm-loc-name{font-size:14px;font-weight:900}
-.wm-loc-desc{font-size:10px;color:var(--muted);text-align:center;line-height:1.4}
-.wm-loc-count{font-size:10px;font-weight:800;color:var(--accent);margin-top:2px}
-.wm-close{position:absolute;top:20px;right:24px;background:none;border:1px solid var(--border);border-radius:10px;padding:6px 14px;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--muted);cursor:pointer}
-.wm-close:hover{color:var(--text);border-color:var(--text)}
-
-/* HOUSE DIRECTORY MODAL */
-#houseDirModal .modal-box{width:560px;max-height:80vh;display:flex;flex-direction:column}
-.house-dir-body{padding:16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px}
-.hd-my-room{background:linear-gradient(135deg,rgba(199,125,255,.1),rgba(255,157,226,.06));border:1px solid rgba(199,125,255,.3);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px}
-.hd-my-room-info{flex:1}
-.hd-my-room-title{font-size:14px;font-weight:900}
-.hd-my-room-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.hd-section-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
-.hd-table{display:flex;flex-direction:column;gap:6px}
-.hd-row{background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px}
-.hd-row:hover{border-color:var(--border)}
-.hd-cat-mini{width:46px;height:56px;flex-shrink:0}
-.hd-player-name{font-size:13px;font-weight:800;flex:1}
-.hd-player-sub{font-size:10px;color:var(--muted)}
-.hd-online-dot{width:7px;height:7px;border-radius:50%;background:#4caf50;flex-shrink:0}
-.hd-offline-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0}
-.hd-visitor-count{font-size:10px;color:var(--accent);font-weight:800;margin-right:8px}
-.hd-enter-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:8px;padding:5px 14px;font-size:11px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0030;cursor:pointer}
-.hd-enter-btn:hover{opacity:.88}
-.hd-empty{text-align:center;color:var(--muted);font-size:12px;padding:20px;font-style:italic}
-.hd-guest-notice{background:rgba(239,83,80,.08);border:1px solid rgba(239,83,80,.3);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--danger);font-weight:700}
-
-/* PROFILE MODAL */
-#profileModal .modal-box{width:310px}
-.profile-cat-wrap{flex-shrink:0}
-.profile-name-text{font-size:17px;font-weight:900}
-.profile-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.profile-body{padding:14px 18px}
-.stat-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(61,32,96,.4);font-size:13px}
-.stat-row:last-child{border-bottom:none}
-.stat-icon{font-size:15px;width:22px;text-align:center}
-.stat-label{color:var(--muted);font-size:11px;font-weight:700;flex:1}
-.stat-val{font-weight:800}
-.profile-inv-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:13px 0 7px}
-.profile-inv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
-.pi-item{background:var(--input-bg);border:1px solid var(--border);border-radius:7px;padding:5px 3px 4px;display:flex;flex-direction:column;align-items:center;gap:1px;position:relative}
-.pi-item .emoji{font-size:16px;line-height:1}
-.pi-item .qty{position:absolute;top:2px;right:3px;font-size:8px;font-weight:900;color:var(--muted)}
-.pi-item.rarity-uncommon{border-color:rgba(105,240,174,.3)}
-.pi-item.rarity-rare{border-color:rgba(64,196,255,.3)}
-.pi-item.rarity-legendary{border-color:rgba(255,215,64,.4);box-shadow:0 0 6px rgba(255,215,64,.12)}
-
-/* TRADE MODAL */
-#tradeModal .modal-box{width:700px;max-height:88vh;display:flex;flex-direction:column}
-.trade-body{display:flex;flex:1;overflow:hidden;min-height:0}
-.trade-col{flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;min-width:0}
-.trade-col::-webkit-scrollbar{width:3px}
-.trade-col::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.trade-col-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
-.trade-col-name{font-size:15px;font-weight:900}
-.trade-divider{width:1px;background:var(--border);flex-shrink:0;margin:14px 0}
-.section-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
-.offer-zone{min-height:80px;background:rgba(42,25,69,.35);border:1.5px dashed rgba(61,32,96,.8);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start}
-.offer-zone.mine:hover{border-color:var(--accent)}
-.offer-empty-label{font-size:11px;color:var(--muted);font-style:italic;padding:6px 2px;width:100%}
-.offer-chip{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:6px 5px 5px;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;min-width:52px;max-width:60px}
-.offer-chip.mine{cursor:pointer}
-.offer-chip.mine:hover{border-color:var(--danger)}
-.offer-chip.mine:hover::after{content:'✕';position:absolute;top:-5px;left:-5px;background:var(--danger);color:#fff;font-size:9px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:14px;text-align:center}
-.offer-chip .oc-emoji{font-size:18px;line-height:1}
-.offer-chip .oc-name{font-size:8px;font-weight:700;text-align:center;line-height:1.2;max-width:52px}
-.offer-chip .oc-qty{position:absolute;top:2px;right:4px;font-size:9px;font-weight:900;color:var(--muted)}
-.offer-chip.rarity-uncommon{border-color:rgba(105,240,174,.3)}
-.offer-chip.rarity-rare{border-color:rgba(64,196,255,.3)}
-.offer-chip.rarity-legendary{border-color:rgba(255,215,64,.4)}
-.coins-offer-row{background:rgba(42,25,69,.35);border:1px solid var(--border);border-radius:9px;padding:8px 11px;display:flex;align-items:center;gap:8px}
-.coins-offer-row label{font-size:12px;font-weight:700;color:#ffd740;flex:1}
-.coins-offer-row .coins-avail{font-size:10px;color:var(--muted)}
-.coins-offer-row input{width:68px;background:var(--input-bg);border:1.5px solid var(--border);border-radius:7px;padding:4px 7px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:#ffd740;outline:none;text-align:right}
-.coins-offer-row input:focus{border-color:#ffd740}
-.coins-offer-row .coins-display{font-size:14px;font-weight:900;color:#ffd740}
-.avail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-.avail-item{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:6px 4px 5px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative}
-.avail-item:hover{background:rgba(199,125,255,.1);border-color:var(--accent)}
-.avail-item.rarity-uncommon{border-color:rgba(105,240,174,.3)}
-.avail-item.rarity-rare{border-color:rgba(64,196,255,.3)}
-.avail-item.rarity-legendary{border-color:rgba(255,215,64,.4)}
-.avail-item .a-emoji{font-size:18px;line-height:1}
-.avail-item .a-name{font-size:8px;font-weight:700;text-align:center;line-height:1.2}
-.avail-item .a-qty{position:absolute;top:2px;right:4px;font-size:9px;font-weight:900;color:var(--muted)}
-.avail-item.used-up{opacity:.38;cursor:not-allowed;pointer-events:none}
-.trade-footer{padding:11px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
-.trade-status-text{flex:1;font-size:11px;color:var(--muted)}
-.status-chip{display:inline-block;border-radius:20px;padding:1px 9px;font-size:10px;font-weight:800;font-style:normal}
-.chip-ready{background:rgba(102,187,106,.15);border:1px solid var(--success);color:var(--success)}
-
-/* PLACE ITEM CURSOR */
-#placeCursor{position:absolute;pointer-events:none;z-index:10;display:none;font-size:38px;transform:translate(-50%,-50%);filter:drop-shadow(0 0 8px rgba(199,125,255,.8))}
-/* ── ZONE HUD (shared by all world zones) ─────────────────── */
-#zoneBar{position:absolute;top:8px;left:50%;transform:translateX(-50%);display:none;align-items:center;gap:10px;background:rgba(20,15,5,.78);border:1px solid #c9a227;border-radius:20px;padding:6px 18px;font-size:13px;font-weight:800;color:#fff8dc;backdrop-filter:blur(6px);z-index:20}
-#zoneBar .zone-name{color:#ffd54f}
-#zoneBar .zone-coins{color:#ffd54f}
-#zoneLeaveBtn{background:linear-gradient(135deg,#8b6914,#c9a227);border:none;border-radius:12px;padding:5px 14px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;color:#1a0f00;cursor:pointer}
-#zoneLeaveBtn:hover{opacity:.88}
-
-#aquaBar{position:absolute;top:8px;left:50%;transform:translateX(-50%);display:none;align-items:center;gap:10px;background:rgba(0,40,80,.75);border:1px solid #29b6f6;border-radius:20px;padding:6px 18px;font-size:13px;font-weight:800;color:#e0f7fa;backdrop-filter:blur(6px);z-index:20}
-#aquaBar .aqua-loc{color:#80deea;font-size:13px}
-#aquaBar .aqua-coins{color:#ffd54f}
-#aquaLeaveBtn{background:linear-gradient(135deg,#0288d1,#4fc3f7);border:none;border-radius:12px;padding:6px 16px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;color:#fff;cursor:pointer}
-#aquaLeaveBtn:hover{opacity:.88}
-#aquaCollectHint{position:absolute;bottom:54px;left:50%;transform:translateX(-50%);background:rgba(0,60,100,.8);color:#b3e5fc;border:1px solid #29b6f6;border-radius:12px;padding:6px 18px;font-size:13px;font-weight:700;pointer-events:none;display:none;z-index:20}
-#aquaDepthBar{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:11px;height:220px;background:rgba(0,40,80,.5);border:1px solid #0288d1;border-radius:5px;display:none;z-index:20;overflow:hidden}
-#aquaDepthFill{position:absolute;bottom:0;width:100%;background:linear-gradient(to top,#0d47a1,#4fc3f7);transition:height .3s;border-radius:4px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 Cat Lobby</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
 <div id="app">
   <div id="gameWrap">
-    <!-- TOP BAR -->
-    <div id="topBar">
-      <span class="tb-pill players" id="playerCount">🐱 0</span>
-      <div class="tb-sep"></div>
-      <span class="tb-pill coins" id="coinHud" style="display:none">🪙 0</span>
-      <span class="tb-pill location" id="locationHud" style="display:none">🏠 Room</span>
-      <div class="tb-spacer"></div>
-      <!-- Emote bar inline -->
-      <div id="emoteBar">
-        <button class="emote-btn" data-emote="👋">👋</button>
-        <button class="emote-btn" data-emote="❤️">❤️</button>
-        <button class="emote-btn" data-emote="😸">😸</button>
-        <button class="emote-btn" data-emote="🐟">🐟</button>
-        <button class="emote-btn" data-emote="⭐">⭐</button>
-        <button class="emote-btn" data-emote="💤">💤</button>
-        <button class="emote-btn" data-emote="🎵">🎵</button>
-      </div>
-      <div class="tb-sep"></div>
-      <!-- Dig -->
-      <div id="digRow" style="display:flex;align-items:center;gap:6px">
-        <button id="digBtn">⛏️ Dig</button>
-        <div id="digProgressWrap"><div id="digProgress"></div></div>
-      </div>
-      <div class="tb-sep" id="roomBtnSep" style="display:none"></div>
-      <!-- Room controls (shown only in room) -->
-      <button class="tb-btn room-edit" id="editRoomBtn" style="display:none">✏️ Edit</button>
-      <button class="tb-btn room-edit" id="saveRoomBtn" style="display:none">💾 Save</button>
-      <button class="tb-btn room-leave" id="leaveRoomBtn" style="display:none">← Leave</button>
-      <div class="tb-sep"></div>
-      <!-- Nav buttons -->
-      <button class="tb-btn" id="worldMapBtn">🗺️ Map</button>
-      <button class="tb-btn shop" id="shopBtn">🛒 Shop</button>
+    <canvas id="canvas" width="1060" height="820"></canvas>
+    <div id="hud">
+      <div class="hud-pill" id="playerCount">🐱 0 online</div>
+      <div class="hud-pill" id="coinHud">🪙 0</div>
+      <div class="hud-pill" id="locationHud">🏠 Room</div>
     </div>
-    <!-- WORLD MAP DROPDOWN -->
-    <div id="wmDropdown">
-      <div class="wmd-title">🗺️ World Map</div>
-      <div class="wmd-locations">
-        <div class="wm-loc" id="wmLobby">
-          <div class="wm-loc-card">
-            <div class="wm-loc-icon">🌳</div>
-            <div class="wm-loc-name">The Lobby</div>
-            <div class="wm-loc-desc">Hang out, dig, and trade with other cats</div>
-            <div class="wm-loc-count" id="wmLobbyCount"></div>
-          </div>
-        </div>
-        <div class="wm-loc" id="wmHouses">
-          <div class="wm-loc-card">
-            <div class="wm-loc-icon">🏠</div>
-            <div class="wm-loc-name">House District</div>
-            <div class="wm-loc-desc">Visit player rooms and decorate your own</div>
-            <div class="wm-loc-count" id="wmHouseCount"></div>
-          </div>
-        </div>
-        <div class="wm-loc" style="opacity:.45;cursor:not-allowed">
-          <div class="wm-loc-card" style="pointer-events:none">
-            <div class="wm-loc-icon">⚒️</div>
-            <div class="wm-loc-name">Mine Caves</div>
-            <div class="wm-loc-desc">Deeper digging coming soon!</div>
-            <div class="wm-loc-count" style="color:var(--muted)">Soon</div>
-          </div>
-        </div>
-        <div class="wm-loc" id="wmAqua">
-          <div class="wm-loc-card">
-            <div class="wm-loc-icon">🌊</div>
-            <div class="wm-loc-name">Aqua World</div>
-            <div class="wm-loc-desc">Swim to the pond in the lobby</div>
-            <div class="wm-loc-count" style="color:var(--muted)">Via Pond</div>
-          </div>
-        </div>
-        <div class="wm-loc" id="wmSunflower">
-          <div class="wm-loc-card" style="border-color:#c9a227">
-            <div class="wm-loc-icon">🌻</div>
-            <div class="wm-loc-name">Sunflower Plains</div>
-            <div class="wm-loc-desc">Harvest, explore & fight the Crow King</div>
-            <div class="wm-loc-count" id="wmSunflowerCount"></div>
-          </div>
-        </div>
-      </div>
+    <button id="worldMapBtn">🗺️ World Map</button>
+    <div id="roomBar">
+      <button class="room-bar-btn" id="editRoomBtn">✏️ Edit Room</button>
+      <button class="room-bar-btn" id="saveRoomBtn" style="display:none">💾 Save Room</button>
+      <button class="room-bar-btn danger" id="leaveRoomBtn">← Leave Room</button>
     </div>
-    <!-- CANVAS -->
-    <canvas id="canvas" width="1060" height="776"></canvas>
     <div id="placeCursor"></div>
     <div id="toastContainer"></div>
     <!-- AQUA WORLD HUD -->
@@ -504,15 +32,23 @@ canvas{display:block}
     </div>
     <div id="aquaDepthBar"><div id="aquaDepthFill"></div></div>
     <div id="aquaCollectHint">Press SPACE to collect</div>
-    <!-- ZONE HUD (Sunflower Plains etc.) -->
-    <div id="zoneBar">
-      <span class="zone-name" id="zoneNameLabel">🌻 Sunflower Plains</span>
-      <span class="zone-coins" id="zoneCoinsDisplay">🪙 0</span>
-      <button id="zoneLeaveBtn">← Leave Zone</button>
-    </div>
     <div id="bottomBar">
-      <div id="controls">WASD · Space to dig · Q to tail whip · Right-click player to interact</div>
+      <div id="emoteBar">
+        <button class="emote-btn" data-emote="👋">👋</button>
+        <button class="emote-btn" data-emote="❤️">❤️</button>
+        <button class="emote-btn" data-emote="😸">😸</button>
+        <button class="emote-btn" data-emote="🐟">🐟</button>
+        <button class="emote-btn" data-emote="⭐">⭐</button>
+        <button class="emote-btn" data-emote="💤">💤</button>
+        <button class="emote-btn" data-emote="🎵">🎵</button>
+      </div>
+      <div id="digRow">
+        <button id="digBtn">⛏️ Dig</button>
+        <div id="digProgressWrap"><div id="digProgress"></div></div>
+      </div>
     </div>
+    <div id="controls">WASD · Space to dig · Right-click to tail whip · Right-click player to interact</div>
+    <button id="shopBtn">🛒 General Store</button>
 
     <!-- ENTRY OVERLAY -->
     <div id="entryOverlay">
@@ -534,7 +70,38 @@ canvas{display:block}
       </div>
     </div>
 
-
+    <!-- WORLD MAP OVERLAY -->
+    <div id="worldMapOverlay">
+      <button class="wm-close" id="wmCloseBtn">✕ Close</button>
+      <div class="wm-title">🗺️ World Map</div>
+      <div class="wm-sub">Where would you like to go?</div>
+      <div class="wm-locations">
+        <div class="wm-loc" id="wmLobby">
+          <div class="wm-loc-card">
+            <div class="wm-loc-icon">🌳</div>
+            <div class="wm-loc-name">The Lobby</div>
+            <div class="wm-loc-desc">Hang out, dig, and trade with other cats</div>
+            <div class="wm-loc-count" id="wmLobbyCount"></div>
+          </div>
+        </div>
+        <div class="wm-loc" id="wmHouses">
+          <div class="wm-loc-card">
+            <div class="wm-loc-icon">🏠</div>
+            <div class="wm-loc-name">House District</div>
+            <div class="wm-loc-desc">Visit player rooms and decorate your own</div>
+            <div class="wm-loc-count" id="wmHouseCount"></div>
+          </div>
+        </div>
+        <div class="wm-loc" style="opacity:.45;cursor:not-allowed">
+          <div class="wm-loc-card" style="pointer-events:none">
+            <div class="wm-loc-icon">⚒️</div>
+            <div class="wm-loc-name">Mine Caves</div>
+            <div class="wm-loc-desc">Deeper digging coming soon!</div>
+            <div class="wm-loc-count" style="color:var(--muted)">Coming Soon</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- RIGHT PANEL -->
@@ -703,7 +270,7 @@ canvas{display:block}
 // ══════════════════════════════════════════════════════════════
 //  CONSTANTS
 // ══════════════════════════════════════════════════════════════
-const W=1060,H=776;
+const W=1060,H=820;
 const CAT_COLORS=[
   {body:'#f4a261',ear:'#e07a2f',stripe:'#d4813f'},
   {body:'#a8dadc',ear:'#6cbfc3',stripe:'#89c8ca'},
@@ -768,11 +335,11 @@ const ctx=canvas.getContext('2d');
 // ── World decorations ──────────────────────────────────────
 const DECS=(()=>{
   const d=[];
-  [[80,76],[200,99],[950,80],[975,204],[65,279],[90,563],[960,511],[990,667],[215,691],[475,66],[585,724],[815,691],[105,435],[920,369],[460,714],[610,71]]
+  [[80,80],[200,105],[950,85],[975,215],[65,295],[90,595],[960,540],[990,705],[215,730],[475,70],[585,765],[815,730],[105,460],[920,390],[460,755],[610,75]]
     .forEach(([x,y])=>d.push({t:'tree',x,y}));
   for(let i=0;i<40;i++) d.push({t:'flower',x:40+Math.random()*(W-80),y:40+Math.random()*(H-80),c:['#ff6b9d','#ffd166','#06d6a0','#ff9de2','#c77dff'][i%5]});
-  [[270,189],[790,256],[200,539],[885,568],[408,658],[650,166]].forEach(([x,y])=>d.push({t:'rock',x,y,s:.8+Math.random()*.5}));
-  d.push({t:'bench',x:270,y:128},{t:'bench',x:762,y:643},{t:'well',x:530,y:386},{t:'pond',x:843,y:199,rx:70,ry:43});
+  [[270,200],[790,270],[200,570],[885,600],[408,695],[650,175]].forEach(([x,y])=>d.push({t:'rock',x,y,s:.8+Math.random()*.5}));
+  d.push({t:'bench',x:270,y:135},{t:'bench',x:762,y:680},{t:'well',x:530,y:408},{t:'pond',x:843,y:210,rx:70,ry:43});
   d.sort((a,b)=>({pond:0,rock:1,flower:1,bench:2,tree:3,well:3}[a.t]||0)-({pond:0,rock:1,flower:1,bench:2,tree:3,well:3}[b.t]||0));
   return d;
 })();
@@ -1150,8 +717,6 @@ function render(){
       const ot   = isMe ? myOutfit  : (p.outfit   || {});
       drawCat(ctx,p.x,p.y,p.color,p.name,isMe,p.emote,isMe?isDigging:p.digging,isMe?digPhase:(p.digPhase||0),wt,wd,ot);
     });
-  } else if (scene==='sunflower') {
-    drawSunflowerPlains();
   } else if (scene==='aqua') {
     drawAquaWorld();
   }
@@ -1165,7 +730,7 @@ render();
   function fit(){
     const scaleX=window.innerWidth/APP_W;
     const scaleY=window.innerHeight/APP_H;
-    const s=Math.min(scaleX,scaleY,1);
+    const s=Math.min(scaleX,scaleY,1); // never scale up, only down
     document.getElementById('app').style.transform=`scale(${s})`;
   }
   fit();
@@ -1173,670 +738,20 @@ render();
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  🌻 SUNFLOWER PLAINS  — Part 1 of the MMO World Expansion
-// ══════════════════════════════════════════════════════════════
-
-// ── Zone state ────────────────────────────────────────────────
-let sfPlains = null;   // null = not in zone
-let sfFrame  = 0;
-
-const SF_SPEED     = 4;
-const SF_WORLD_W   = 2400;
-const SF_WORLD_H   = 1100;
-
-// ── Collectible items found in Sunflower Plains ───────────────
-const SF_COLLECTIBLES_DEF = [
-  { id:'sunflower_seed', label:'Sunflower Seed', emoji:'🌻', rarity:'common',   sellPrice:6,  qty:0 },
-  { id:'honey_jar',      label:'Honey Jar',      emoji:'🍯', rarity:'uncommon', sellPrice:18, qty:0 },
-  { id:'golden_wheat',   label:'Golden Wheat',   emoji:'🌾', rarity:'uncommon', sellPrice:15, qty:0 },
-  { id:'scarecrow_hat',  label:'Scarecrow Hat',  emoji:'🎃', rarity:'rare',     sellPrice:45, qty:0 },
-  { id:'sunstone',       label:'Sun Stone',      emoji:'🟡', rarity:'rare',     sellPrice:55, qty:0 },
-  { id:'rainbow_corn',   label:'Rainbow Corn',   emoji:'🌽', rarity:'legendary',sellPrice:150,qty:0 },
-  { id:'sf_coin',        label:'Dropped Coin',   emoji:'🪙', rarity:'common',   coins:8,      qty:0 },
-];
-
-// ── Generate the zone world ───────────────────────────────────
-function generateSunflowerPlains() {
-  const rng = (mn, mx) => mn + Math.random() * (mx - mn);
-  const irng = (mn, mx) => Math.floor(rng(mn, mx));
-
-  // Giant sunflowers (background scenery)
-  const sunflowers = [];
-  for (let i = 0; i < 120; i++) {
-    sunflowers.push({
-      x: rng(40, SF_WORLD_W - 40),
-      y: rng(80, SF_WORLD_H - 80),
-      h: rng(55, 110),
-      sway: rng(-0.3, 0.3),
-      phase: rng(0, Math.PI * 2),
-      bloom: Math.random() > 0.25,
-    });
-  }
-
-  // Wheat rows (decorative strips)
-  const wheatRows = [];
-  for (let wy = 120; wy < SF_WORLD_H - 120; wy += 90) {
-    wheatRows.push({ y: wy, offset: rng(0, 40) });
-  }
-
-  // Decorations: barn, windmill, scarecrows, beehives, fence posts
-  const decorations = [
-    { t: 'barn',      x: 480,  y: 280 },
-    { t: 'barn',      x: 1820, y: 580 },
-    { t: 'windmill',  x: 1200, y: 200 },
-    { t: 'windmill',  x: 2100, y: 700 },
-    { t: 'scarecrow', x: 320,  y: 500 },
-    { t: 'scarecrow', x: 900,  y: 180 },
-    { t: 'scarecrow', x: 1550, y: 350 },
-    { t: 'scarecrow', x: 2200, y: 260 },
-    { t: 'beehive',   x: 680,  y: 640 },
-    { t: 'beehive',   x: 1380, y: 720 },
-    { t: 'beehive',   x: 2050, y: 300 },
-    { t: 'well',      x: 760,  y: 420 },
-    { t: 'well',      x: 1900, y: 180 },
-  ];
-
-  // Fence line along south edge
-  const fencePosts = [];
-  for (let fx = 0; fx < SF_WORLD_W; fx += 70) {
-    fencePosts.push(fx);
-  }
-
-  // Butterflies (animated)
-  const butterflies = [];
-  for (let i = 0; i < 28; i++) {
-    butterflies.push({
-      x: rng(0, SF_WORLD_W), y: rng(50, SF_WORLD_H - 100),
-      vx: rng(-0.6, 0.6), vy: rng(-0.4, 0.4),
-      color: ['#ff69b4','#ffb347','#87ceeb','#98fb98','#dda0dd'][i % 5],
-      phase: rng(0, Math.PI * 2),
-      size: rng(6, 11),
-    });
-  }
-
-  // Bees (near hives)
-  const bees = [];
-  for (let i = 0; i < 18; i++) {
-    const hive = decorations.filter(d => d.t === 'beehive')[i % 3];
-    bees.push({
-      x: hive.x + rng(-80, 80), y: hive.y + rng(-60, 60),
-      homeX: hive.x, homeY: hive.y,
-      phase: rng(0, Math.PI * 2),
-    });
-  }
-
-  // Collectible pickups scattered around
-  const pickups = [];
-  const pickupTypes = SF_COLLECTIBLES_DEF.filter(c => !c.coins);
-  const coinDef = SF_COLLECTIBLES_DEF.find(c => c.coins);
-  for (let i = 0; i < 55; i++) {
-    const def = i < 10 ? coinDef : pickupTypes[irng(0, pickupTypes.length)];
-    pickups.push({
-      ...def,
-      uid: `sfp_${i}`,
-      x: rng(80, SF_WORLD_W - 80),
-      y: rng(80, SF_WORLD_H - 80),
-      bobPhase: rng(0, Math.PI * 2),
-      collected: false,
-    });
-  }
-
-  // Crow King boss — patrols a zone near center
-  const boss = {
-    x: 1200, y: 480,
-    vx: 1.8, vy: 0,
-    patrolX: 1200, patrolY: 480,
-    patrolRange: 280,
-    phase: 0,
-    angry: false,         // becomes angry when player is near
-    aggro: false,         // chases player when very close
-    hp: 5,                // hits before player is ejected
-    hitCooldown: 0,
-    emoji: '🐦‍⬛',
-  };
-
-  // Passive critters: rabbits, chickens
-  const critters = [];
-  for (let i = 0; i < 20; i++) {
-    critters.push({
-      emoji: i % 3 === 0 ? '🐔' : '🐇',
-      x: rng(100, SF_WORLD_W - 100), y: rng(100, SF_WORLD_H - 100),
-      startX: 0, dir: Math.random() > 0.5 ? 1 : -1,
-      phase: rng(0, Math.PI * 2), speed: rng(0.3, 0.8),
-    });
-    critters[critters.length - 1].startX = critters[critters.length - 1].x;
-  }
-
-  return { sunflowers, wheatRows, decorations, fencePosts, butterflies, bees, pickups, boss, critters, frame: 0 };
-}
-
-// ── Enter / leave zone ────────────────────────────────────────
-function enterSunflowerPlains() {
-  if (!sfPlains) sfPlains = generateSunflowerPlains();
-  // Reset boss hp for this visit
-  sfPlains.boss.hp = 5;
-  sfPlains.boss.hitCooldown = 0;
-  sfPlains.boss.aggro = false;
-  sfFrame = 0;
-  scene = 'sunflower';
-  // HUD
-  document.getElementById('zoneBar').style.display = 'flex';
-  document.getElementById('zoneNameLabel').textContent = '🌻 Sunflower Plains';
-  document.getElementById('zoneCoinsDisplay').textContent = `🪙 ${myCoins}`;
-  document.getElementById('digRow').style.display = 'flex';
-  document.getElementById('digBtn').disabled = false;
-  document.getElementById('locationHud').style.display = 'flex';
-  document.getElementById('locationHud').textContent = '🌻 Sunflower Plains';
-  document.getElementById('editRoomBtn').style.display = 'none';
-  document.getElementById('saveRoomBtn').style.display = 'none';
-  document.getElementById('leaveRoomBtn').style.display = 'none';
-  document.getElementById('roomBtnSep').style.display = 'none';
-  document.getElementById('controls').textContent = 'WASD to explore · Space to dig · Q to tail whip · Right-click player to interact';
-  updateChatHeader('Sunflower Plains Chat');
-  keys = {};
-  if (socket) socket.emit('keys', {});
-  if (socket) socket.emit('enterZone', { zone: 'sunflower' });
-  closeWorldMap();
-}
-
-function leaveSunflowerPlains(reason) {
-  if (scene !== 'sunflower') return;
-  scene = 'lobby';
-  document.getElementById('zoneBar').style.display = 'none';
-  document.getElementById('locationHud').style.display = 'none';
-  document.getElementById('digRow').style.display = 'flex';
-  document.getElementById('digBtn').disabled = false;
-  document.getElementById('controls').textContent = 'WASD · Space to dig · Q to tail whip · Right-click player to interact';
-  updateChatHeader('Lobby Chat');
-  if (reason) showToast('🌻', reason, 'Back in the lobby', 'uncommon');
-  const p = players[myId];
-  if (p) { p.x = W / 2; p.y = H / 2; }
-  keys = {};
-  if (socket) { socket.emit('keys', {}); socket.emit('leaveZone'); }
-}
-
-document.getElementById('zoneLeaveBtn').addEventListener('click', () => leaveSunflowerPlains('Left Sunflower Plains'));
-
-// ── Collect nearby pickups ─────────────────────────────────────
-function sfCollect() {
-  if (scene !== 'sunflower' || !sfPlains || !sfPlains._playerX) return;
-  const px = sfPlains._playerX, py = sfPlains._playerY;
-  let collected = false;
-  sfPlains.pickups.forEach(c => {
-    if (c.collected) return;
-    const dist = Math.hypot(c.x - px, c.y - py);
-    if (dist < 48) {
-      c.collected = true;
-      collected = true;
-      if (c.coins) {
-        myCoins += c.coins;
-        document.getElementById('coinHud').textContent = `🪙 ${myCoins}`;
-        document.getElementById('zoneCoinsDisplay').textContent = `🪙 ${myCoins}`;
-        showToast(c.emoji, `Found ${c.label}! +${c.coins} 🪙`, 'Dropped coin', 'common');
-        if (socket) socket.emit('aquaCoinPickup', { amount: c.coins }); // reuse coin handler
-      } else {
-        const existing = myInventory.find(i => i.id === c.id);
-        if (existing) existing.qty++;
-        else myInventory.push({ id: c.id, label: c.label, emoji: c.emoji, rarity: c.rarity, qty: 1, sellPrice: c.sellPrice, placeable: false, wearable: false });
-        renderInventory();
-        showToast(c.emoji, `Picked up ${c.label}!`, `+1 · Sell for 🪙${c.sellPrice}`, c.rarity);
-        if (socket) socket.emit('aquaItemPickup', { id: c.id, label: c.label, emoji: c.emoji, rarity: c.rarity, sellPrice: c.sellPrice });
-      }
-    }
-  });
-  if (!collected) showToast('🌻', 'Nothing nearby…', 'Walk up to glowing items', 'common');
-}
-
-// ── Zone physics tick ─────────────────────────────────────────
-function tickSunflowerPlains(p) {
-  // p is the local player object
-  sfFrame++;
-  const sf = sfPlains;
-  sf.frame = sfFrame;
-
-  // Player movement (server handles it; we mirror locally for camera)
-  // We read the player's server position but clamp to zone bounds
-  const px = Math.max(30, Math.min(SF_WORLD_W - 30, p.x));
-  const py = Math.max(30, Math.min(SF_WORLD_H - 30, p.y));
-  sf._playerX = px;
-  sf._playerY = py;
-
-  // Animate butterflies
-  sf.butterflies.forEach(b => {
-    b.x += b.vx + Math.sin(sfFrame * 0.04 + b.phase) * 0.4;
-    b.y += b.vy + Math.cos(sfFrame * 0.03 + b.phase) * 0.3;
-    if (b.x < 0) b.x = SF_WORLD_W;
-    if (b.x > SF_WORLD_W) b.x = 0;
-    if (b.y < 20)           { b.y = 20;              b.vy *= -1; }
-    if (b.y > SF_WORLD_H - 40) { b.y = SF_WORLD_H - 40; b.vy *= -1; }
-  });
-
-  // Animate bees (orbit hive)
-  sf.bees.forEach((b, i) => {
-    const t = sfFrame * 0.05 + b.phase;
-    b.x = b.homeX + Math.cos(t) * (30 + i * 4);
-    b.y = b.homeY + Math.sin(t * 1.3) * 18;
-  });
-
-  // Animate critters
-  sf.critters.forEach(c => {
-    c.x += c.speed * c.dir;
-    c.y += Math.sin(sfFrame * 0.04 + c.phase) * 0.2;
-    if (Math.abs(c.x - c.startX) > 120) c.dir *= -1;
-    c.x = Math.max(20, Math.min(SF_WORLD_W - 20, c.x));
-  });
-
-  // Boss AI
-  const boss = sf.boss;
-  boss.phase += 0.04;
-  boss.hitCooldown = Math.max(0, boss.hitCooldown - 1);
-  const bossDistToPlayer = Math.hypot(boss.x - px, boss.y - py);
-  boss.angry = bossDistToPlayer < 200;
-  boss.aggro  = bossDistToPlayer < 120;
-
-  if (boss.aggro) {
-    // Chase player
-    const angle = Math.atan2(py - boss.y, px - boss.x);
-    boss.x += Math.cos(angle) * 2.2;
-    boss.y += Math.sin(angle) * 2.2;
-    // Hit player
-    if (bossDistToPlayer < 40 && boss.hitCooldown === 0) {
-      boss.hitCooldown = 90;
-      boss.hp--;
-      showToast('🐦‍⬛', 'The Crow King attacks!', `${boss.hp} hits remaining before flee`, 'rare');
-      if (boss.hp <= 0) {
-        leaveSunflowerPlains('🐦‍⬛ The Crow King drove you away!');
-        return;
-      }
-    }
-  } else {
-    // Patrol
-    boss.x += boss.vx;
-    boss.y += Math.sin(boss.phase * 0.7) * 0.8;
-    if (Math.abs(boss.x - boss.patrolX) > boss.patrolRange) boss.vx *= -1;
-    boss.x = Math.max(20, Math.min(SF_WORLD_W - 20, boss.x));
-    boss.y = Math.max(20, Math.min(SF_WORLD_H - 20, boss.y));
-  }
-
-  // Pickup proximity hint
-  let nearPickup = false;
-  sf.pickups.forEach(c => { if (!c.collected && Math.hypot(c.x - px, c.y - py) < 50) nearPickup = true; });
-  const hint = document.getElementById('aquaCollectHint');
-  if (hint) hint.style.display = nearPickup ? 'block' : 'none';
-}
-
-// ── Helper drawing functions ──────────────────────────────────
-function drawSFBarn(c, x, y) {
-  c.save();
-  // Base
-  c.fillStyle = '#8B4513'; c.fillRect(x - 42, y - 36, 84, 60);
-  // Roof
-  c.fillStyle = '#c0392b';
-  c.beginPath(); c.moveTo(x - 52, y - 36); c.lineTo(x, y - 72); c.lineTo(x + 52, y - 36); c.closePath(); c.fill();
-  // Door
-  c.fillStyle = '#5d2e0c'; c.fillRect(x - 14, y - 12, 28, 36);
-  c.beginPath(); c.arc(x, y - 12, 14, Math.PI, 0); c.fill();
-  // Window
-  c.fillStyle = '#87ceeb'; c.fillRect(x - 36, y - 28, 20, 16);
-  c.fillRect(x + 16, y - 28, 20, 16);
-  // X window cross
-  c.strokeStyle = '#5d2e0c'; c.lineWidth = 2;
-  c.beginPath(); c.moveTo(x - 36, y - 28); c.lineTo(x - 16, y - 12); c.moveTo(x - 16, y - 28); c.lineTo(x - 36, y - 12); c.stroke();
-  c.restore();
-}
-
-function drawSFWindmill(c, x, y, frame) {
-  c.save();
-  // Tower
-  c.fillStyle = '#d4b896';
-  c.beginPath(); c.moveTo(x - 16, y + 40); c.lineTo(x + 16, y + 40); c.lineTo(x + 8, y - 30); c.lineTo(x - 8, y - 30); c.closePath(); c.fill();
-  // Cap
-  c.fillStyle = '#a0522d';
-  c.beginPath(); c.moveTo(x - 12, y - 30); c.lineTo(x, y - 50); c.lineTo(x + 12, y - 30); c.closePath(); c.fill();
-  // Blades rotating
-  c.translate(x, y - 32);
-  c.rotate(frame * 0.025);
-  c.fillStyle = '#f5deb3';
-  for (let b = 0; b < 4; b++) {
-    c.save(); c.rotate((b / 4) * Math.PI * 2);
-    c.fillRect(-4, -36, 8, 34);
-    c.restore();
-  }
-  c.restore();
-}
-
-function drawSFScarecrow(c, x, y) {
-  c.save();
-  // Post
-  c.strokeStyle = '#8B4513'; c.lineWidth = 5;
-  c.beginPath(); c.moveTo(x, y - 50); c.lineTo(x, y + 30); c.stroke();
-  c.beginPath(); c.moveTo(x - 22, y - 20); c.lineTo(x + 22, y - 20); c.stroke();
-  // Body (shirt)
-  c.fillStyle = '#c8a96e'; c.fillRect(x - 18, y - 38, 36, 32);
-  // Patch
-  c.fillStyle = '#b8860b'; c.fillRect(x - 6, y - 24, 12, 10);
-  // Hat
-  c.fillStyle = '#2c1810';
-  c.beginPath(); c.ellipse(x, y - 52, 20, 5, 0, 0, Math.PI * 2); c.fill();
-  c.fillRect(x - 12, y - 72, 24, 22);
-  // Face (carved pumpkin style)
-  c.fillStyle = '#ff8c00';
-  c.beginPath(); c.arc(x, y - 44, 12, 0, Math.PI * 2); c.fill();
-  c.fillStyle = '#2c1810';
-  c.beginPath(); c.arc(x - 4, y - 46, 2.5, 0, Math.PI * 2); c.fill();
-  c.beginPath(); c.arc(x + 4, y - 46, 2.5, 0, Math.PI * 2); c.fill();
-  c.restore();
-}
-
-function drawSFBeehive(c, x, y, frame) {
-  c.save();
-  // Hive
-  c.fillStyle = '#c9a227';
-  c.beginPath(); c.ellipse(x, y, 18, 22, 0, 0, Math.PI * 2); c.fill();
-  // Stripes
-  c.strokeStyle = '#8b6914'; c.lineWidth = 2;
-  for (let i = -1; i <= 1; i++) {
-    c.beginPath(); c.ellipse(x, y + i * 8, 18, 4, 0, 0, Math.PI * 2); c.stroke();
-  }
-  // Entry hole
-  c.fillStyle = '#5c3a00';
-  c.beginPath(); c.ellipse(x, y + 14, 6, 4, 0, 0, Math.PI * 2); c.fill();
-  // Dripping honey
-  const drip = (Math.sin(frame * 0.04) + 1) * 4;
-  c.fillStyle = 'rgba(255,180,0,0.7)';
-  c.beginPath(); c.ellipse(x - 4, y + 22 + drip, 3, 5, 0, 0, Math.PI * 2); c.fill();
-  c.restore();
-}
-
-function drawSFWell(c, x, y) {
-  c.save();
-  c.fillStyle = '#9e9e9e'; c.beginPath(); c.ellipse(x, y + 9, 26, 14, 0, 0, Math.PI * 2); c.fill();
-  c.fillStyle = '#bdbdbd'; c.fillRect(x - 26, y - 20, 52, 29);
-  c.fillStyle = '#9e9e9e'; c.beginPath(); c.ellipse(x, y - 20, 26, 14, 0, 0, Math.PI * 2); c.fill();
-  c.fillStyle = '#4fc3f7'; c.beginPath(); c.ellipse(x, y - 20, 20, 10, 0, 0, Math.PI * 2); c.fill();
-  c.fillStyle = '#5d4037'; c.fillRect(x - 32, y - 52, 7, 36); c.fillRect(x + 25, y - 52, 7, 36);
-  c.fillStyle = '#bf360c';
-  c.beginPath(); c.moveTo(x - 40, y - 49); c.lineTo(x, y - 75); c.lineTo(x + 40, y - 49); c.closePath(); c.fill();
-  c.restore();
-}
-
-// ── Main draw function ────────────────────────────────────────
-function drawSunflowerPlains() {
-  const p = players[myId];
-  if (!p || !sfPlains) return;
-  tickSunflowerPlains(p);
-  if (scene !== 'sunflower') return; // may have been ejected
-
-  const sf = sfPlains;
-  const px = sf._playerX, py = sf._playerY;
-
-  // Camera clamp
-  const camX = Math.max(0, Math.min(SF_WORLD_W - W, px - W / 2));
-  const camY = Math.max(0, Math.min(SF_WORLD_H - H, py - H / 2));
-
-  ctx.save();
-  ctx.translate(-camX, -camY);
-
-  // ── Sky gradient ──────────────────────────────────────────
-  const sky = ctx.createLinearGradient(camX, camY, camX, camY + H);
-  sky.addColorStop(0, '#87ceeb');
-  sky.addColorStop(0.55, '#fffacd');
-  sky.addColorStop(1, '#ffd700');
-  ctx.fillStyle = sky;
-  ctx.fillRect(camX, camY, W, H);
-
-  // ── Sun ───────────────────────────────────────────────────
-  ctx.save();
-  ctx.globalAlpha = 0.85;
-  const sunGlow = ctx.createRadialGradient(camX + W * 0.78, camY + 80, 10, camX + W * 0.78, camY + 80, 80);
-  sunGlow.addColorStop(0, '#fff7a0');
-  sunGlow.addColorStop(0.5, '#ffd700');
-  sunGlow.addColorStop(1, 'transparent');
-  ctx.fillStyle = sunGlow;
-  ctx.beginPath(); ctx.arc(camX + W * 0.78, camY + 80, 80, 0, Math.PI * 2); ctx.fill();
-  ctx.globalAlpha = 1;
-  ctx.restore();
-
-  // ── Fluffy clouds ─────────────────────────────────────────
-  ctx.save();
-  ctx.fillStyle = 'rgba(255,255,255,0.82)';
-  const cloudOffsets = [[80,55,1],[340,40,0.7],[680,70,1],[1050,45,0.8],[1380,60,0.9],[1700,38,0.7],[2100,55,1]];
-  cloudOffsets.forEach(([cx2, cy2, sc]) => {
-    const cx3 = ((camX + cx2) % SF_WORLD_W);
-    ctx.save(); ctx.scale(sc, sc * 0.7);
-    const bx = cx3 / sc, by = cy2 / (sc * 0.7);
-    ctx.beginPath(); ctx.arc(bx, by, 30, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(bx + 28, by + 8, 22, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(bx - 22, by + 10, 20, 0, Math.PI * 2); ctx.fill();
-    ctx.restore();
-  });
-  ctx.restore();
-
-  // ── Ground (rolling green) ────────────────────────────────
-  const ground = ctx.createLinearGradient(camX, camY + H * 0.45, camX, camY + H);
-  ground.addColorStop(0, '#7bc67e');
-  ground.addColorStop(0.3, '#5aad5a');
-  ground.addColorStop(1, '#3d8b3d');
-  ctx.fillStyle = ground;
-  ctx.fillRect(camX, camY + H * 0.42, W, H);
-
-  // ── Dirt path through field ───────────────────────────────
-  ctx.fillStyle = '#c8a96e';
-  ctx.fillRect(camX, SF_WORLD_H / 2 - 25, W, 50);
-  ctx.fillRect(SF_WORLD_W / 2 - 25, camY, 50, H);
-  ctx.globalAlpha = 0.35; ctx.fillStyle = '#a0844a';
-  ctx.fillRect(camX, SF_WORLD_H / 2 - 1, W, 2);
-  ctx.fillRect(SF_WORLD_W / 2 - 1, camY, 2, H);
-  ctx.globalAlpha = 1;
-
-  // ── Wheat rows ────────────────────────────────────────────
-  sf.wheatRows.forEach(row => {
-    if (row.y < camY - 50 || row.y > camY + H + 50) return;
-    for (let wx = camX - 40; wx < camX + W + 40; wx += 16) {
-      const sway = Math.sin(sfFrame * 0.03 + wx * 0.05 + row.offset) * 4;
-      ctx.save();
-      ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 2.5;
-      ctx.beginPath(); ctx.moveTo(wx, row.y + 20); ctx.lineTo(wx + sway, row.y - 12); ctx.stroke();
-      // wheat head
-      ctx.fillStyle = '#daa520';
-      ctx.beginPath(); ctx.ellipse(wx + sway, row.y - 16, 3, 7, 0.2, 0, Math.PI * 2); ctx.fill();
-      ctx.restore();
-    }
-  });
-
-  // ── Fence line ────────────────────────────────────────────
-  const fenceY = SF_WORLD_H - 60;
-  ctx.strokeStyle = '#8B4513'; ctx.lineWidth = 3;
-  ctx.beginPath(); ctx.moveTo(camX, fenceY); ctx.lineTo(camX + W, fenceY); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(camX, fenceY + 18); ctx.lineTo(camX + W, fenceY + 18); ctx.stroke();
-  sf.fencePosts.forEach(fx => {
-    if (fx < camX - 20 || fx > camX + W + 20) return;
-    ctx.fillStyle = '#8B4513';
-    ctx.fillRect(fx - 4, fenceY - 12, 8, 42);
-  });
-
-  // ── Sunflowers ────────────────────────────────────────────
-  sf.sunflowers.forEach(sf2 => {
-    if (sf2.x < camX - 80 || sf2.x > camX + W + 80) return;
-    if (sf2.y < camY - sf2.h - 20 || sf2.y > camY + H + 20) return;
-    const sway = Math.sin(sfFrame * 0.035 + sf2.phase) * sf2.sway * 10;
-    ctx.save();
-    // Stem
-    ctx.strokeStyle = '#2d6a4f'; ctx.lineWidth = Math.max(2, sf2.h / 25);
-    ctx.beginPath(); ctx.moveTo(sf2.x, sf2.y); ctx.lineTo(sf2.x + sway * 0.3, sf2.y - sf2.h * 0.5); ctx.lineTo(sf2.x + sway, sf2.y - sf2.h); ctx.stroke();
-    // Leaves
-    ctx.fillStyle = '#40916c'; ctx.globalAlpha = 0.8;
-    ctx.save(); ctx.translate(sf2.x + sway * 0.3, sf2.y - sf2.h * 0.45);
-    ctx.rotate(0.5 + sway * 0.05);
-    ctx.beginPath(); ctx.ellipse(12, 0, 14, 7, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.rotate(-1);
-    ctx.beginPath(); ctx.ellipse(-12, 0, 12, 6, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.restore(); ctx.globalAlpha = 1;
-    if (sf2.bloom) {
-      // Petals
-      ctx.fillStyle = '#ffd700';
-      for (let p2 = 0; p2 < 12; p2++) {
-        const pa = (p2 / 12) * Math.PI * 2 + sfFrame * 0.008;
-        ctx.beginPath(); ctx.ellipse(sf2.x + sway + Math.cos(pa) * (sf2.h / 9), sf2.y - sf2.h + Math.sin(pa) * (sf2.h / 9), sf2.h / 12, sf2.h / 20, pa, 0, Math.PI * 2); ctx.fill();
-      }
-      // Center
-      ctx.fillStyle = '#3d1a00';
-      ctx.beginPath(); ctx.arc(sf2.x + sway, sf2.y - sf2.h, sf2.h / 10, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#5c2d00';
-      ctx.beginPath(); ctx.arc(sf2.x + sway, sf2.y - sf2.h, sf2.h / 16, 0, Math.PI * 2); ctx.fill();
-    }
-    ctx.restore();
-  });
-
-  // ── Decorations ───────────────────────────────────────────
-  sf.decorations.forEach(d => {
-    if (d.x < camX - 120 || d.x > camX + W + 120) return;
-    if (d.y < camY - 120 || d.y > camY + H + 60) return;
-    if (d.t === 'barn')      drawSFBarn(ctx, d.x, d.y);
-    if (d.t === 'windmill')  drawSFWindmill(ctx, d.x, d.y, sfFrame);
-    if (d.t === 'scarecrow') drawSFScarecrow(ctx, d.x, d.y);
-    if (d.t === 'beehive')   drawSFBeehive(ctx, d.x, d.y, sfFrame);
-    if (d.t === 'well')      drawSFWell(ctx, d.x, d.y);
-  });
-
-  // ── Collectible pickups ───────────────────────────────────
-  sf.pickups.forEach(c => {
-    if (c.collected) return;
-    if (c.x < camX - 40 || c.x > camX + W + 40) return;
-    if (c.y < camY - 40 || c.y > camY + H + 40) return;
-    const bob = Math.sin(sfFrame * 0.06 + c.bobPhase) * 5;
-    ctx.save();
-    if (c.rarity === 'rare' || c.rarity === 'legendary') {
-      ctx.shadowColor = c.rarity === 'legendary' ? '#ffd700' : '#ffb347';
-      ctx.shadowBlur = 14;
-    }
-    ctx.font = '22px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(c.emoji, c.x, c.y + bob);
-    const dist = Math.hypot(c.x - px, c.y - py);
-    if (dist < 65) {
-      ctx.globalAlpha = 0.55 * (1 - dist / 65);
-      ctx.strokeStyle = '#ffd700'; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(c.x, c.y + bob, 18, 0, Math.PI * 2); ctx.stroke();
-    }
-    ctx.restore();
-  });
-
-  // ── Passive critters ──────────────────────────────────────
-  sf.critters.forEach(c => {
-    if (c.x < camX - 40 || c.x > camX + W + 40) return;
-    ctx.save();
-    ctx.font = '20px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    if (c.dir < 0) { ctx.scale(-1, 1); ctx.fillText(c.emoji, -c.x, c.y); }
-    else ctx.fillText(c.emoji, c.x, c.y);
-    ctx.restore();
-  });
-
-  // ── Bees ──────────────────────────────────────────────────
-  sf.bees.forEach(b => {
-    if (b.x < camX - 30 || b.x > camX + W + 30) return;
-    ctx.save();
-    ctx.font = '14px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('🐝', b.x, b.y);
-    ctx.restore();
-  });
-
-  // ── Butterflies ───────────────────────────────────────────
-  sf.butterflies.forEach(b => {
-    if (b.x < camX - 30 || b.x > camX + W + 30) return;
-    if (b.y < camY - 30 || b.y > camY + H + 30) return;
-    const wing = Math.abs(Math.sin(sfFrame * 0.18 + b.phase));
-    ctx.save();
-    ctx.fillStyle = b.color;
-    ctx.globalAlpha = 0.85;
-    ctx.beginPath(); ctx.ellipse(b.x - wing * b.size, b.y, b.size * wing, b.size * 0.6, -0.4, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(b.x + wing * b.size, b.y, b.size * wing, b.size * 0.6,  0.4, 0, Math.PI * 2); ctx.fill();
-    ctx.globalAlpha = 1;
-    ctx.restore();
-  });
-
-  // ── Crow King Boss ────────────────────────────────────────
-  const boss = sf.boss;
-  if (boss.x > camX - 60 && boss.x < camX + W + 60) {
-    ctx.save();
-    // Warning ring when angry
-    if (boss.angry) {
-      const pulse = (Math.sin(sfFrame * 0.15) + 1) / 2;
-      ctx.globalAlpha = 0.25 + pulse * 0.3;
-      ctx.fillStyle = '#cc0000';
-      ctx.beginPath(); ctx.arc(boss.x, boss.y, 60, 0, Math.PI * 2); ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-    // Boss emoji + crown
-    ctx.font = `${boss.aggro ? '46px' : '38px'} serif`;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    if (boss.aggro) { ctx.shadowColor = '#ff0000'; ctx.shadowBlur = 18; }
-    if (boss.vx < 0) { ctx.scale(-1, 1); ctx.fillText(boss.emoji, -boss.x, boss.y); }
-    else ctx.fillText(boss.emoji, boss.x, boss.y);
-    // Crown
-    ctx.resetTransform();
-    ctx.translate(-camX, -camY); // restore translation
-    if (boss.vx < 0) ctx.translate(0, 0); // undo scale
-    ctx.font = '18px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-    ctx.shadowBlur = 0;
-    ctx.fillText('👑', boss.x, boss.y - 22);
-    // HP hearts above
-    ctx.font = '12px serif'; ctx.textBaseline = 'middle';
-    const hearts = Array(boss.hp).fill('❤️').concat(Array(5 - boss.hp).fill('🖤')).join('');
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Nunito,sans-serif';
-    ctx.fillText(hearts, boss.x, boss.y - 38);
-    // Name label
-    ctx.fillStyle = '#ffcccc'; ctx.font = 'bold 11px Nunito,sans-serif';
-    ctx.fillText('👑 Crow King', boss.x, boss.y - 52);
-    ctx.restore();
-  }
-
-  // ── Local player ──────────────────────────────────────────
-  ctx.save();
-  if (players[myId]) {
-    drawCat(ctx, px, py, p.color, p.name, true, p.emote, p.digging, digPhase,
-      tailWhip.active ? tailWhip.frame / WHIP_DURATION : 0, tailWhip.dir, myOutfit);
-  }
-  ctx.restore();
-
-  ctx.restore(); // end camera transform
-
-  // ── HUD overlays (screen space) ───────────────────────────
-  // Mini-map
-  const mm = { x: 14, y: H - 82, w: 164, h: 54 };
-  ctx.save();
-  ctx.globalAlpha = 0.7;
-  ctx.fillStyle = '#1a1200'; ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.roundRect(mm.x, mm.y, mm.w, mm.h, 5); ctx.fill(); ctx.stroke();
-  // Player dot
-  ctx.fillStyle = '#ffd700';
-  ctx.beginPath(); ctx.arc(mm.x + (px / SF_WORLD_W) * mm.w, mm.y + (py / SF_WORLD_H) * mm.h, 3, 0, Math.PI * 2); ctx.fill();
-  // Boss dot
-  ctx.fillStyle = '#ff4444';
-  ctx.beginPath(); ctx.arc(mm.x + (boss.x / SF_WORLD_W) * mm.w, mm.y + (boss.y / SF_WORLD_H) * mm.h, 3.5, 0, Math.PI * 2); ctx.fill();
-  ctx.globalAlpha = 0.9; ctx.fillStyle = '#ffd54f'; ctx.font = '10px Nunito,sans-serif'; ctx.textAlign = 'left';
-  ctx.fillText('🌻 Plains Map', mm.x + 4, mm.y + 12);
-  ctx.restore();
-
-  // Coins display update
-  document.getElementById('zoneCoinsDisplay').textContent = `🪙 ${myCoins}`;
-}
-
-
-// ══════════════════════════════════════════════════════════════
 //  🐾 TAIL WHIP ATTACK
 // ══════════════════════════════════════════════════════════════
-function startTailWhip() {
+function startTailWhip(clickX, clickY) {
   if (!joined || !socket) return;
   if (tailWhip.active || tailWhip.cooldown > 0) return;
-  if (isDigging) return;
-  if (scene === 'aqua') return;
+  if (isDigging) return; // can't whip while digging
   const me = players[myId]; if (!me) return;
-  // Alternate direction each whip, or use last horizontal movement direction
-  tailWhip.dir = tailWhip._lastDir = -(tailWhip._lastDir || 1);
+  // Direction determined by which side of the cat was clicked
+  tailWhip.dir     = clickX >= me.x ? 1 : -1;
   tailWhip.active  = true;
   tailWhip.frame   = 0;
   tailWhip.hits    = {};
   tailWhip.cooldown = WHIP_COOLDOWN;
+  // Broadcast to other players
   socket.emit('tailWhip', { dir: tailWhip.dir });
 }
 
@@ -1874,7 +789,7 @@ const AQUA_W = 3200, AQUA_H = 1400; // full world size
 const AQUA_GRAVITY = 0.018;          // drift downward speed
 const AQUA_SWIM_UP = -2.8;           // W key vertical force
 const AQUA_MOVE_SPD = 2.4;           // horizontal speed
-const POND_X = 843, POND_Y = 199;    // pond center in lobby (matches DECS)
+const POND_X = 843, POND_Y = 210;    // pond center in lobby (matches DECS)
 const POND_SPIN_DURATION = 120;       // frames before teleport
 // ── World entities generated once on first entry ──
 
@@ -2033,10 +948,7 @@ function enterAquaWorld() {
   scene = 'aqua';
   document.getElementById('digRow').style.display = 'none';
   document.getElementById('digBtn').disabled = true;
-  document.getElementById('editRoomBtn').style.display='none';
-  document.getElementById('saveRoomBtn').style.display='none';
-  document.getElementById('leaveRoomBtn').style.display='none';
-  document.getElementById('roomBtnSep').style.display='none';
+  document.getElementById('roomBar').classList.remove('visible');
   document.getElementById('locationHud').style.display = 'none';
   document.getElementById('aquaBar').style.display = 'flex';
   document.getElementById('aquaDepthBar').style.display = 'block';
@@ -2058,8 +970,7 @@ function leaveAquaWorld(reason) {
   document.getElementById('aquaCollectHint').style.display = 'none';
   document.getElementById('digRow').style.display = 'flex';
   document.getElementById('digBtn').disabled = false;
-  document.getElementById('controls').textContent = 'WASD · Space to dig · Q to tail whip · Right-click player to interact';
-  closeWorldMap();
+  document.getElementById('controls').textContent = 'WASD · Space to dig · Right-click to tail whip · Right-click player to interact';
   if (reason) showToast('🌊', reason, reason, 'uncommon');
   // Teleport player back near pond
   const p = players[myId];
@@ -2544,46 +1455,27 @@ function doJoin(name,asGuest){
 // ══════════════════════════════════════════════════════════════
 //  WORLD MAP
 // ══════════════════════════════════════════════════════════════
-// World map dropdown (replaces full-screen overlay)
-const wmDropdown = document.getElementById('wmDropdown');
-function toggleWorldMap(){
-  if(!joined) return;
-  const isOpen = wmDropdown.classList.contains('open');
-  if(isOpen){ wmDropdown.classList.remove('open'); return; }
-  document.getElementById('wmLobby').classList.toggle('active', scene==='lobby'||scene==='aqua');
-  document.getElementById('wmHouses').classList.toggle('active', scene==='room');
-  document.getElementById('wmSunflower').classList.toggle('active', scene==='sunflower');
-  const lobbyCount=Object.values(players).filter(p=>!p.inRoomId).length;
-  document.getElementById('wmLobbyCount').textContent=lobbyCount>0?`${lobbyCount} cat${lobbyCount===1?'':'s'} here`:'';
-  wmDropdown.classList.add('open');
-  document.getElementById('worldMapBtn').classList.add('active');
-}
-function closeWorldMap(){ wmDropdown.classList.remove('open'); document.getElementById('worldMapBtn').classList.remove('active'); }
-
-document.getElementById('worldMapBtn').addEventListener('click', toggleWorldMap);
+const worldMapOverlay=document.getElementById('worldMapOverlay');
+document.getElementById('worldMapBtn').addEventListener('click',()=>{if(!joined)return;openWorldMap();});
+document.getElementById('wmCloseBtn').addEventListener('click',()=>worldMapOverlay.classList.remove('visible'));
 document.getElementById('wmLobby').addEventListener('click',()=>{
-  closeWorldMap();
+  worldMapOverlay.classList.remove('visible');
   if(scene==='room') goBackToLobby();
-  else if(scene==='aqua') leaveAquaWorld('Surfaced safely!');
-  else if(scene==='sunflower') leaveSunflowerPlains('Left Sunflower Plains');
 });
 document.getElementById('wmHouses').addEventListener('click',()=>{
-  closeWorldMap();
+  worldMapOverlay.classList.remove('visible');
   openHouseDirectory();
 });
-document.getElementById('wmSunflower').addEventListener('click',()=>{
-  closeWorldMap();
-  if(scene!=='sunflower') enterSunflowerPlains();
-});
-// Close dropdown when clicking outside
-document.addEventListener('click', e=>{
-  if(wmDropdown.classList.contains('open') && !wmDropdown.contains(e.target) && e.target.id!=='worldMapBtn'){
-    closeWorldMap();
-  }
-});
 
-// Legacy reference kept for Escape key handler
-const worldMapOverlay={ classList:{ remove:()=>closeWorldMap(), add:()=>{} } };
+function openWorldMap(){
+  // Mark active location
+  document.getElementById('wmLobby').classList.toggle('active', scene==='lobby');
+  document.getElementById('wmHouses').classList.toggle('active', scene==='room');
+  // Update counts
+  const lobbyCount=Object.values(players).filter(p=>!p.inRoomId).length;
+  document.getElementById('wmLobbyCount').textContent=lobbyCount>0?`${lobbyCount} cat${lobbyCount===1?'':'s'} here`:'';
+  worldMapOverlay.classList.add('visible');
+}
 
 // ══════════════════════════════════════════════════════════════
 //  HOUSE DIRECTORY
@@ -2683,14 +1575,11 @@ function goBackToLobby(){
 }
 function exitRoomUI(){
   scene='lobby'; roomState=null; editMode=false; placingItemId=null;
-  document.getElementById('editRoomBtn').style.display='none';
-  document.getElementById('saveRoomBtn').style.display='none';
-  document.getElementById('leaveRoomBtn').style.display='none';
-  document.getElementById('roomBtnSep').style.display='none';
+  document.getElementById('roomBar').classList.remove('visible');
   document.getElementById('locationHud').style.display='none';
   document.getElementById('digBtn').disabled=false;
   document.getElementById('digRow').style.display='flex';
-  document.getElementById('controls').textContent='WASD · Space to dig · Q to tail whip · Right-click player to interact';
+  document.getElementById('controls').textContent='WASD · Space to dig · Right-click to tail whip · Right-click player to interact';
   updateChatHeader('Lobby Chat');
   renderInventory();
 }
@@ -2703,14 +1592,12 @@ function enterRoomUI(data){
     placedItems:data.placedItems||[], players:{},
   };
   data.players.forEach(p=>{roomState.players[p.id]={...p,digPhase:0};});
-  document.getElementById('editRoomBtn').style.display=data.isOwner?'flex':'none';
-  document.getElementById('saveRoomBtn').style.display='none';
-  document.getElementById('leaveRoomBtn').style.display='flex';
-  document.getElementById('roomBtnSep').style.display=data.isOwner?'block':'none';
+  document.getElementById('roomBar').classList.add('visible');
+  document.getElementById('editRoomBtn').style.display=data.isOwner?'':'none';
   document.getElementById('locationHud').style.display='flex';
   document.getElementById('locationHud').textContent=`🏠 ${data.roomName||data.ownerName+"'s Room"}`;
   document.getElementById('digBtn').disabled=false;
-  document.getElementById('controls').textContent='WASD to move · Space to dig · Q to tail whip · Right-click items to pick up (owner only)';
+  document.getElementById('controls').textContent='WASD to move · Space to dig · Right-click items to pick up (owner only)';
   updateChatHeader(`${data.roomName||data.ownerName+"'s Room"} Chat`);
   data.chatHistory.forEach(m=>addChatMsg(m, true));
   renderInventory();
@@ -2725,8 +1612,8 @@ function updateChatHeader(label){
 document.getElementById('editRoomBtn').addEventListener('click',()=>{
   if(!roomState?.isOwner) return;
   editMode=!editMode;
-  document.getElementById('editRoomBtn').textContent=editMode?'✏️ Stop':'✏️ Edit';
-  document.getElementById('saveRoomBtn').style.display=editMode?'flex':'none';
+  document.getElementById('editRoomBtn').textContent=editMode?'🏠 Stop Editing':'✏️ Edit Room';
+  document.getElementById('saveRoomBtn').style.display=editMode?'':'none';
   if(!editMode){placingItemId=null;document.getElementById('placeCursor').style.display='none';}
   renderInventory();
 });
@@ -2770,13 +1657,15 @@ canvas.addEventListener('contextmenu',e=>{
       const hit=roomState.placedItems.find(it=>Math.hypot(it.x-mx,it.y-my)<28);
       if(hit){socket.emit('pickupItem',{instanceId:hit.instanceId});return;}
     }
-    // Right-click player → context menu
+    // Right-click player in room → context menu
     const hit=Object.values(roomState?.players||{}).find(p=>p.id!==myId&&Math.hypot(p.x-mx,p.y-my)<36);
-    if(hit){showCtxMenu(e,hit);}
+    if(hit){showCtxMenu(e,hit); return;}
+    // Right-click empty space → tail whip
+    startTailWhip(mx, my);
     return;
   }
 
-  // Lobby right-click: player hit → context menu only
+  // Lobby right-click: player hit → context menu, empty → tail whip
   const hit=Object.values(players).find(p=>p.id!==myId&&Math.hypot(p.x-mx,p.y-my)<36);
   if(hit){
     ctxTargetId=hit.id; ctxTargetDbId=null;
@@ -2784,6 +1673,7 @@ canvas.addEventListener('contextmenu',e=>{
     showCtxMenu(e,hit);
   } else {
     hideCtx();
+    startTailWhip(mx, my);
   }
 });
 
@@ -2949,7 +1839,7 @@ document.getElementById('ctxVisitRoom').addEventListener('click',()=>{
   socket.emit('requestProfile',t);
 });
 document.addEventListener('click',e=>{if(!ctxMenu.contains(e.target))hideCtx();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideCtx();closeProfileModal();closeTradeModalUI();document.getElementById('authModal').style.display='none';closeWorldMap();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideCtx();closeProfileModal();closeTradeModalUI();document.getElementById('authModal').style.display='none';worldMapOverlay.classList.remove('visible');}});
 function hideCtx(){ctxMenu.style.display='none';ctxTargetId=null;}
 
 // ══════════════════════════════════════════════════════════════
@@ -3129,10 +2019,8 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{btn.addEventListener('click'
 window.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT')return;
   if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' '].includes(e.key))e.preventDefault();
-  if(e.key==='q'||e.key==='Q'){ startTailWhip(); return; }
   if(e.key===' '){
     if(scene==='aqua'){ aquaCollect(); return; }
-    if(scene==='sunflower'){ sfCollect(); return; }
     if(joined&&socket){if(isDigging){socket.emit('stopDig');endDig();}else startDig();}
     return;
   }
@@ -3144,11 +2032,8 @@ function handleKey(key,down){
   const m={ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right',ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down'};
   const k=m[key];if(!k)return;
   keys[k]=down;
-  // aqua is client-only physics; all other scenes send keys to server
-  if(scene!=='aqua'&&socket){
-    if(scene==='room') socket.emit('roomKeys',keys);
-    else socket.emit('keys',keys);
-  }
+  // Only send movement to server when not in aqua (aqua is client-only physics)
+  if(scene!=='aqua'&&socket){if(scene==='room')socket.emit('roomKeys',keys);else socket.emit('keys',keys);}
 }
 document.querySelectorAll('.emote-btn').forEach(btn=>{btn.addEventListener('click',()=>{if(socket&&joined)socket.emit('emote',btn.dataset.emote);});});
 
