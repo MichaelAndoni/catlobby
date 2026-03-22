@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APP_DIR=~/catlobby
-BRANCH=new_feature_postgres_two
+BRANCH=new_feature_postgres_three
 
 echo "Deploying latest code..."
 
